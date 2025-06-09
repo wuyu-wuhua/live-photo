@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react';
-import Loading from '@/app/[locale]/loading';
-import { routing } from '@/i18n/i18nNavigation';
+import { HeroUIProvider } from '@heroui/react';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { Inter } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import React, { Suspense } from 'react';
+import Loading from '@/app/[locale]/loading';
+import { routing } from '@/i18n/i18nNavigation';
 import '@/styles/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -43,7 +44,9 @@ export default async function LocaleLayout({ children, params }: Props) {
     <html lang={locale}>
       <body className={inter.className}>
         <NextIntlClientProvider messages={messages}>
-          <Suspense fallback={<Loading />}>{children}</Suspense>
+          <HeroUIProvider>
+            <Suspense fallback={<Loading />}>{children}</Suspense>
+          </HeroUIProvider>
         </NextIntlClientProvider>
       </body>
     </html>

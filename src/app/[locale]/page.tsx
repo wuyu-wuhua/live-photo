@@ -1,5 +1,6 @@
-import { Link } from '@/i18n/i18nNavigation';
+import { Button } from '@heroui/react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { Link } from '@/i18n/i18nNavigation';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -24,6 +25,7 @@ export default async function Home({ params }: Props) {
   return (
     <main className="flex h-screen flex-col items-center justify-center">
       <div className="mb-9 flex">
+        <Button color="primary">Button</Button>
         <Link href="/" locale="en">
           In english
         </Link>
