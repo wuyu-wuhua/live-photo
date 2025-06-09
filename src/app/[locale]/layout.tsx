@@ -1,52 +1,45 @@
 import type { ReactNode } from 'react';
-import { HeroUIProvider } from '@heroui/react';
-import { hasLocale, NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
-import { Inter } from 'next/font/google';
-import { notFound } from 'next/navigation';
-import React, { Suspense } from 'react';
-import Loading from '@/app/[locale]/loading';
-import { routing } from '@/i18n/i18nNavigation';
+import clsx from 'clsx';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
+import React from 'react';
+import { Footer } from '@/components/footer';
+import Navbar from '@/components/Navigation';
+import { fontSans } from '@/config/fonts';
+import { RootProvider } from '@/provider/RootProvider';
 import '@/styles/globals.css';
-
-const inter = Inter({ subsets: ['latin'] });
 
 type Props = {
   children: ReactNode;
-  params: Promise<{ locale: string }>;
 };
 
-export function generateStaticParams() {
-  return routing.locales.map(locale => ({ locale }));
-}
+// export async function generateMetadata(): Promise<Metadata> {
+//   const t = await getTranslations('LocaleLayout');
 
-export async function generateMetadata({ params }: Omit<Props, 'children'>) {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'LocaleLayout' });
+//   return {
+//     title: t('title'),
+//   };
+// }
 
-  return {
-    title: t('title'),
-  };
-}
-
-export default async function LocaleLayout({ children, params }: Props) {
-  // Validate that the incoming `locale` parameter is valid
-  const { locale } = await params;
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
-
-  // Enable static rendering
-  setRequestLocale(locale);
-
+export default async function RootLayout({ children }: Props) {
   const messages = await getMessages();
+
   return (
-    <html lang={locale}>
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={clsx(
+          'min-h-screen bg-background font-sans antialiased',
+          fontSans.variable,
+        )}
+      >
         <NextIntlClientProvider messages={messages}>
-          <HeroUIProvider>
-            <Suspense fallback={<Loading />}>{children}</Suspense>
-          </HeroUIProvider>
+          <RootProvider>
+            <div className="relative flex min-h-screen flex-col">
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </RootProvider>
         </NextIntlClientProvider>
       </body>
     </html>

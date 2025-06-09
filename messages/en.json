@@ -1,19 +1,142 @@
 {
-  "Home": {
-    "desc": "🚀🎉📚 Boilerplate and Starter for Next.js 13+ with App Router and Page Router support,Tailwind CSS 3.3 and TypeScript ⚡️ Made with developer experience first: Next.js + TypeScript + ESLint + Prettier + Husky + Lint-Staged + Jest + Testing Library + Cypress +Storybook + Commitlint + VSCode + Netlify + PostCSS + Tailwind CSS"
+  "app": {
+    "title": "Supabase Next.js Template",
+    "description": "A robust template built with Next.js and Supabase"
   },
-
-  "PathnamesPage": {
-    "title": "Pathnames",
-    "description": "<p>The pathnames are internationalized too.</p><p>If you're using the default language English, you'll see <code>/en/pathnames</code> in the browser address bar on this page.</p><p>If you change the locale to German, the URL is localized accordingly (<code>/de/pfadnamen</code>).</p>"
-  },
-
-  "LocaleLayout": {
-    "title": "next-js-starter-Boilerplate"
-  },
-
-  "Navigation": {
+  "nav": {
     "home": "Home",
-    "pathnames": "Pathnames"
+    "products": "Products",
+    "dashboard": "Dashboard",
+    "admin": "Admin",
+    "notifications": "Notifications",
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "pricing": "Pricing"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "welcome": "Welcome",
+    "appName": "SmartPhoto",
+    "success": "Success",
+    "confirm": "Confirm",
+    "add": "Add",
+    "remove": "Remove",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "yes": "Yes",
+    "no": "No",
+    "close": "Close",
+    "open": "Open",
+    "submit": "Submit",
+    "retry": "Retry",
+    "selectLanguage": "Select Language",
+    "search": "Search",
+    "textToSpeech": "Text to Speech",
+    "textToSpeechDescription": "Convert your text to natural-sounding speech",
+    "enterText": "Enter text",
+    "enterTextPlaceholder": "Type or paste your text here...",
+    "selectVoice": "Select voice",
+    "speechRate": "Speech rate",
+    "volume": "Volume",
+    "generate": "Generate",
+    "i18n_test": "i18n Test",
+    "heroTitle": "See your photos in realistic colors",
+    "heroDescription": "Upload your photo, pick your unique filter, and watch your moment transform with vibrant, lifelike colors in seconds.",
+    "colorizePhoto": "Colorize Photo",
+    "rating": "2.8M+ Users | Rated 4.9 Stars",
+    "sampleText": "↓ Or click on a sample ↓",
+    "trustedInProductions": "Trusted in productions for:",
+    "remarkablyAccurate": "Remarkably accurate",
+    "worldsBestAI": "World's best AI to color B&W photos",
+    "inALeagueOfItsOwn": "In a league of its own",
+    "experienceTheDifference": "Experience The Difference",
+    "light": "Light",
+    "flowers": "Flowers",
+    "interior": "Interior",
+    "history": "History",
+    "clothes": "Clothes",
+    "before": "BEFORE",
+    "after": "AFTER",
+    "newPalette": "NEW PALETTE",
+    "trustedByPhotographers": "Trusted by 2.8M+ Photographers and Creators",
+    "newGenerationAI": "A New Generation of AI colorization",
+    "yearsOfResearch": "Years of research led to Palette. Only available here and by our partners.",
+    "millionPhotosColorized": "54 Million Photos Already Colorized",
+    "getStartNow": "Get Start Now",
+    "filtersLabel": "21+ Color filters"
+  },
+  "pricing": {
+    "title": "Simple, transparent pricing",
+    "subtitle": "Choose the perfect plan for your needs. Each credit lets you colorize one photo in high resolution without watermarks.",
+    "month": "month",
+    "billedAnnually": "Billed annually",
+    "mostPopular": "Most Popular",
+    "free": {
+      "name": "Free",
+      "description": "Start colorizing with basic features",
+      "price": {
+        "monthly": "$0",
+        "yearly": "$0"
+      },
+      "features": {
+        "watermarked": "Watermarked images",
+        "resolution": "Max 500x500px resolution",
+        "previews": "Unlimited color previews",
+        "filters": "Access to 21+ color filters"
+      },
+      "cta": "Get Started"
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "Perfect for enthusiasts and creators",
+      "price": {
+        "monthly": "$6",
+        "yearly": "$72"
+      },
+      "features": {
+        "credits": "480 credits per year",
+        "highRes": "High resolution (up to 5000x5000px)",
+        "noWatermark": "No watermarks",
+        "rollover": "Unused credits roll over",
+        "filters": "Access to all color filters"
+      },
+      "cta": "Subscribe",
+      "savingLabel": "Save 28%"
+    },
+    "onetime": {
+      "name": "One-time",
+      "description": "Pay once for a pack of credits",
+      "price": {
+        "value": "$49"
+      },
+      "priceDetail": "$0.65 per credit",
+      "features": {
+        "credits": "75 credits",
+        "highRes": "High resolution (up to 5000x5000px)",
+        "noWatermark": "No watermarks",
+        "validity": "Valid for 2 years",
+        "filters": "Access to all color filters"
+      },
+      "cta": "Buy Now"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "question1": "What is a credit?",
+      "answer1": "One credit allows you to colorize one photo in high resolution without watermarks. You can use credits for any supported image size up to 5000x5000 pixels.",
+      "question2": "Do credits expire?",
+      "answer2": "For subscription plans, unused credits roll over up to five times your monthly allocation. Credits remain valid as long as your subscription is active. For one-time purchases, credits are valid for 2 years.",
+      "question3": "Can I cancel my subscription anytime?",
+      "answer3": "Yes, you can cancel your subscription at any time. Your benefits will continue until the end of your billing period.",
+      "question4": "Is there a limit to how many photos I can colorize?",
+      "answer4": "The free plan allows unlimited colorizations with watermarks. For high-resolution, watermark-free images, you're limited by the number of credits in your plan."
+    }
   }
 }

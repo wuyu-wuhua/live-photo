@@ -1,0 +1,142 @@
+{
+  "app": {
+    "title": "Supabase Next.js 模板",
+    "description": "使用 Next.js 和 Supabase 构建的强大模板"
+  },
+  "nav": {
+    "home": "首页",
+    "products": "产品",
+    "dashboard": "仪表盘",
+    "admin": "管理",
+    "notifications": "通知",
+    "login": "登录",
+    "signup": "注册",
+    "logout": "退出",
+    "pricing": "价格"
+  },
+  "common": {
+    "create": "创建",
+    "welcome": "欢迎",
+    "appName": "智能相册",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "cancel": "取消",
+    "confirm": "确认",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "add": "添加",
+    "remove": "移除",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "yes": "是",
+    "no": "否",
+    "close": "关闭",
+    "open": "打开",
+    "submit": "提交",
+    "retry": "重试",
+    "selectLanguage": "选择语言",
+    "search": "搜索",
+    "textToSpeech": "文本转语音",
+    "textToSpeechDescription": "将您的文本转换为自然流畅的语音",
+    "enterText": "输入文本",
+    "enterTextPlaceholder": "在此处输入或粘贴您的文本...",
+    "selectVoice": "选择语音",
+    "speechRate": "语速",
+    "volume": "音量",
+    "generate": "生成",
+    "i18n_test": "国际化测试",
+    "heroTitle": "让您的照片呈现逼真色彩",
+    "heroDescription": "上传您的照片，选择独特的滤镜，几秒钟内就能看到您的瞬间转变为充满活力、栩栩如生的色彩。",
+    "colorizePhoto": "为照片上色",
+    "rating": "280万+用户 | 4.9星评价",
+    "sampleText": "↓ 或点击示例 ↓",
+    "trustedInProductions": "制作中信赖的选择：",
+    "remarkablyAccurate": "非常准确",
+    "worldsBestAI": "世界上最好的黑白照片上色AI",
+    "inALeagueOfItsOwn": "独树一帜",
+    "experienceTheDifference": "体验不同之处",
+    "trustedByPhotographers": "受到280万+摄影师和创作者信赖",
+    "newGenerationAI": "新一代AI上色技术",
+    "yearsOfResearch": "多年研究成就了Palette。仅在此处及我们的合作伙伴处提供。",
+    "millionPhotosColorized": "已为5400万张照片上色",
+    "getStartNow": "立即开始",
+    "light": "光线",
+    "flowers": "花朵",
+    "interior": "室内",
+    "history": "历史",
+    "clothes": "服装",
+    "before": "处理前",
+    "after": "处理后",
+    "newPalette": "新调色板",
+    "filtersLabel": "21+种色彩滤镜"
+  },
+  "pricing": {
+    "title": "简单透明的价格",
+    "subtitle": "选择适合您需求的完美方案。每个积分可让您为一张照片上色，高分辨率且无水印。",
+    "month": "月",
+    "billedAnnually": "年付",
+    "mostPopular": "最受欢迎",
+    "free": {
+      "name": "免费版",
+      "description": "开始使用基本功能上色",
+      "price": {
+        "monthly": "¥0",
+        "yearly": "¥0"
+      },
+      "features": {
+        "watermarked": "带水印图片",
+        "resolution": "最大500x500像素分辨率",
+        "previews": "无限色彩预览",
+        "filters": "使用21+种色彩滤镜"
+      },
+      "cta": "开始使用"
+    },
+    "pro": {
+      "name": "专业版",
+      "description": "适合爱好者和创作者",
+      "price": {
+        "monthly": "¥42",
+        "yearly": "¥504"
+      },
+      "features": {
+        "credits": "每年480个积分",
+        "highRes": "高分辨率（最大5000x5000像素）",
+        "noWatermark": "无水印",
+        "rollover": "未使用积分可结转",
+        "filters": "使用所有色彩滤镜"
+      },
+      "cta": "订阅",
+      "savingLabel": "节省28%"
+    },
+    "onetime": {
+      "name": "一次性购买",
+      "description": "一次付款获得积分包",
+      "price": {
+        "value": "¥343"
+      },
+      "priceDetail": "每积分¥4.6",
+      "features": {
+        "credits": "75个积分",
+        "highRes": "高分辨率（最大5000x5000像素）",
+        "noWatermark": "无水印",
+        "validity": "有效期2年",
+        "filters": "使用所有色彩滤镜"
+      },
+      "cta": "立即购买"
+    },
+    "faq": {
+      "title": "常见问题",
+      "question1": "什么是积分？",
+      "answer1": "一个积分允许您为一张照片上色，高分辨率且无水印。您可以将积分用于任何支持的图像尺寸，最大可达5000x5000像素。",
+      "question2": "积分会过期吗？",
+      "answer2": "对于订阅计划，未使用的积分可结转，最多为您每月分配量的五倍。只要您的订阅处于活动状态，积分就一直有效。对于一次性购买，积分有效期为2年。",
+      "question3": "我可以随时取消订阅吗？",
+      "answer3": "是的，您可以随时取消订阅。您的权益将持续到您的计费周期结束。",
+      "question4": "我可以为多少照片上色有限制吗？",
+      "answer4": "免费计划允许无限制上色，但带有水印。对于高分辨率、无水印的图像，您受到计划中积分数量的限制。"
+    }
+  }
+}
