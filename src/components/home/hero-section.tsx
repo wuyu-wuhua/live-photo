@@ -196,7 +196,7 @@ export function HeroSection() {
               {t('rating')}
             </span>
           </div>
-          <Link href="/dashboard/image-edit">
+          <Link href="/generate">
             <Button
               className="px-12 py-4 text-lg font-semibold"
               color="primary"
@@ -220,9 +220,9 @@ export function HeroSection() {
               <div
                 className={`
                   h-16 w-16 cursor-pointer overflow-hidden rounded-lg border
-                  border-gray-300 transition-transform duration-200
-                  hover:scale-110 hover:border-purple-400
-                  dark:border-gray-600
+                  border-default-200 transition-transform duration-200
+                  hover:scale-110 hover:border-primary
+                  dark:border-default-100
                 `}
                 key={index}
               >

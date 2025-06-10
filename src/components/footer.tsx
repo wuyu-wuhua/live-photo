@@ -9,7 +9,7 @@ import { cn } from '@/lib/cn';
 
 export function Footer({ className }: { className?: string }) {
   return (
-    <footer className={cn('border-t bg-background', className)}>
+    <footer className={cn('border-t border-divider bg-background', className)}>
       <div
         className={`
           container mx-auto max-w-7xl px-4 py-12
@@ -262,7 +262,7 @@ export function Footer({ className }: { className?: string }) {
             </ul>
           </div>
         </div>
-        <div className="mt-12 border-t pt-8">
+        <div className="mt-12 border-t border-divider pt-8">
           <div
             className={`
               flex flex-col items-center justify-between gap-4

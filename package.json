@@ -1,8 +1,8 @@
 {
   "name": "next-js-starter-boilerplate",
+  "type": "module",
   "version": "0.1.0",
   "private": true,
-  "author": "ghbishal (https://github.com/ghbishal)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -17,6 +17,7 @@
   "dependencies": {
     "@heroui/react": "^2.8.0-beta.7",
     "@iconify/react": "^6.0.0",
+    "@radix-ui/react-label": "^2.1.7",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.50.0",
     "@t3-oss/env-nextjs": "^0.11.1",
@@ -31,6 +32,8 @@
     "next-themes": "^0.4.6",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-images-uploading": "^3.1.7",
+    "react-resizable-panels": "^3.0.2",
     "tailwind-merge": "^3.3.0",
     "zod": "^3.25.56"
   },
@@ -61,6 +64,7 @@
     "postcss": "^8.5.4",
     "storybook": "^8.6.14",
     "tailwindcss": "^4.1.8",
+    "tw-animate-css": "^1.3.4",
     "typescript": "^5.8.3"
   }
 }
