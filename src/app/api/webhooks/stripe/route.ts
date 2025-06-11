@@ -3,9 +3,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createSupabaseClient } from '@/lib/supabase';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-06-20',
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {});
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
@@ -29,7 +27,7 @@ export async function POST(request: NextRequest) {
       case 'payment_intent.succeeded': {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
 
-        console.log('Payment succeeded:', paymentIntent.id);
+        console.warn('Payment succeeded:', paymentIntent.id);
 
         // 更新支付意图状态
         const { error: updateError } = await supabase
@@ -50,7 +48,7 @@ export async function POST(request: NextRequest) {
       case 'payment_intent.payment_failed': {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
 
-        console.log('Payment failed:', paymentIntent.id);
+        console.warn('Payment failed:', paymentIntent.id);
 
         // 更新支付意图状态
         const { error: updateError } = await supabase
@@ -69,7 +67,7 @@ export async function POST(request: NextRequest) {
       }
 
       default:
-        console.log(`Unhandled event type: ${event.type}`);
+        console.warn(`Unhandled event type: ${event.type}`);
     }
 
     return NextResponse.json({ received: true });

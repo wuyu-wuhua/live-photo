@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 
 // 常量定义
 const STORAGE_BUCKET = 'live-photos';
-const ACCEPTED_FILE_TYPES = ['jpg', 'gif', 'png', 'jpeg', 'webp'] as const;
+const ACCEPTED_FILE_TYPES = ['jpg', 'gif', 'png', 'jpeg', 'webp'];
 
 // 默认值常量
 const DEFAULT_FILE_LIST: UploadFile[] = [];
@@ -58,6 +58,7 @@ export type UploadFile = {
   status?: 'done' | 'error' | 'uploading';
   uid: string;
   url: string;
+  error?: string; // 添加 error 属性
 };
 
 /**
@@ -224,13 +225,10 @@ export function PictureCardUpload({
       return uploadedFile;
     } catch (error) {
       console.error('Upload failed:', error);
-      const errorMessage
-        = error instanceof Error ? error.message : '上传失败，请重试';
 
       // 更新文件状态为错误
       const errorFile: UploadFile = {
         ...tempFile,
-        error: errorMessage,
         status: 'error',
       };
 
@@ -306,9 +304,9 @@ export function PictureCardUpload({
                         <Image
                           alt={file.name}
                           className="absolute h-full w-full object-cover opacity-50"
-                          onError={(e) => {
+                          onError={() => {
                             console.warn('Preview image load error:', file.url);
-                            e.currentTarget.style.display = 'none';
+                            // e.currentTarget.style.display = 'none'
                           }}
                           src={file.url}
                         />
@@ -352,18 +350,21 @@ export function PictureCardUpload({
                           <Image
                             alt={file.name}
                             className="h-full w-full object-cover"
-                            onError={(e) => {
+                            onError={() => {
                               console.warn('Image load error:', file.url);
-                              const target = e.currentTarget;
-                              target.style.display = 'none';
-                              // 显示错误占位符
-                              const errorDiv
-                          = target.nextElementSibling as HTMLElement;
-                              if (
-                                errorDiv
-                                && errorDiv.classList.contains('error-placeholder')
-                              ) {
-                                errorDiv.style.display = 'flex';
+                              // 使用 DOM API 获取当前图片元素
+                              const images = document.querySelectorAll(`img[src="${file.url}"]`);
+                              const target = images[images.length - 1];
+                              if (target) {
+                                (target as HTMLElement).style.display = 'none';
+                                // 显示错误占位符
+                                const errorDiv = target.nextElementSibling as HTMLElement;
+                                if (
+                                  errorDiv
+                                  && errorDiv.classList.contains('error-placeholder')
+                                ) {
+                                  errorDiv.style.display = 'flex';
+                                }
                               }
                             }}
                             src={file.url}

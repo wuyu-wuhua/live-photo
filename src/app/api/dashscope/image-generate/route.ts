@@ -325,7 +325,7 @@ async function processImageUploadAsync(
     return downloadAndUploadImage(res.url, result.task_id, index, userId, fileUploadService);
   });
 
-  const uploadResults = await Promise.allSettled(uploadPromises);
+  const uploadResults = await Promise.allSettled(uploadPromises || []);
 
   // 收集成功上传的图片
   uploadResults.forEach((result) => {
@@ -577,7 +577,7 @@ export async function POST(request: NextRequest) {
     // 将积分交易ID保存到任务记录中
     if (transactionId) {
       editTaskData.request_parameters = {
-        ...editTaskData.request_parameters,
+        ...(editTaskData.request_parameters as object),
         creditTransactionId: transactionId,
       };
     }

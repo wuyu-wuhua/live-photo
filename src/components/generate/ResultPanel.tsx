@@ -46,7 +46,7 @@ export function ResultPanel({
   const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure();
 
   const [imageEditResult, setImageEditResult] = useState<ImageEditResult | null>(null);
-  const [_isSubscribed, setIsSubscribed] = useState(false);
+  const [, setIsSubscribed] = useState(false);
 
   // 视频生成相关状态
   const [selectedVideoType, setSelectedVideoType] = useState<'emoji' | 'liveportrait'>('emoji');
@@ -159,7 +159,7 @@ export function ResultPanel({
         body: JSON.stringify(requestBody),
       });
 
-      const result = await response.json();
+      const result: any = await response.json();
 
       if (!response.ok) {
         throw new Error(result.error || t('generateFailed'));
@@ -263,7 +263,7 @@ export function ResultPanel({
                                   variant="flat"
                                   color="secondary"
                                   startContent={<Download className="w-4 h-4" />}
-                                  onPress={() => downloadImage(generatedImages[0], `generated-image-${Date.now()}.png`)}
+                                  onPress={() => downloadImage(generatedImages[0]!, `generated-image-${Date.now()}.png`)}
                                   className="text-xs"
                                 >
                                   {t('download')}
@@ -392,7 +392,7 @@ export function ResultPanel({
             />
           </DrawerBody>
           <DrawerFooter>
-            <Button color="danger" variant="light" onPress={handleDrawerClose}>
+            <Button color="danger" variant="light" onClick={handleDrawerClose}>
               {t('cancel')}
             </Button>
             <Button

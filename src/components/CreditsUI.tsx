@@ -358,7 +358,7 @@ export default function CreditsUI() {
           </ModalBody>
 
           <ModalFooter>
-            <Button color="primary" variant="light" onPress={onClose}>
+            <Button color="primary" variant="light" onClick={onClose}>
               关闭
             </Button>
           </ModalFooter>

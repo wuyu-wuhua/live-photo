@@ -41,41 +41,25 @@ type VideoParameterPanelProps = {
   onAudioUrlChange: (url: string) => void;
   onDrivenIdChange: (id: string) => void;
   onGenerate?: () => void;
+  onClose?: () => void;
+  onSuccess?: () => void;
 };
 
 export function VideoParameterPanel({
   imageData,
   isLoading,
-  isGenerating,
   error,
   videoType,
-  audioUrl,
   drivenId,
   onVideoTypeChange,
   onAudioUrlChange,
   onDrivenIdChange,
-  onGenerate,
 }: VideoParameterPanelProps) {
   const [audioFiles, setAudioFiles] = useState<FormUploadFile[]>([]);
 
   // 处理音频文件上传
   const handleAudioChange = (files: FormUploadFile[]) => {
     setAudioFiles(files);
-  };
-
-  // 检查是否可以生成视频
-  const canGenerate = () => {
-    if (isLoading || isGenerating || !imageData) {
-      return false;
-    }
-
-    if (videoType === 'emoji') {
-      // 表情视频需要检查表情兼容性
-      return !!imageData.emoji_compatible;
-    } else {
-      // 对口型视频需要检查LivePortrait兼容性和音频URL
-      return !!imageData.liveportrait_compatible && !!audioUrl;
-    }
   };
 
   return (
@@ -176,7 +160,7 @@ export function VideoParameterPanel({
                   isDisabled={!imageData?.emoji_compatible}
                 >
                   {EMOJI_TEMPLATE_OPTIONS.map(option => (
-                    <SelectItem key={option.value} value={option.value} description={option.description}>
+                    <SelectItem key={option.value} description={option.description}>
                       {option.label}
                     </SelectItem>
                   ))}
@@ -210,7 +194,6 @@ export function VideoParameterPanel({
                   onChange={handleAudioChange}
                   maxCount={1}
                   className="w-full"
-                  accept="audio/*"
                   onUploadComplete={(result) => {
                     if (result.success) {
                       if (result.file?.url) {

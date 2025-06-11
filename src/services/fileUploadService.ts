@@ -403,7 +403,7 @@ export class FileUploadService {
       const totalFiles = data?.length || 0;
       const typeBreakdown: Record<string, number> = {};
 
-      data?.forEach((file) => {
+      data?.forEach((file: { type: string | number }) => {
         typeBreakdown[file.type] = (typeBreakdown[file.type] || 0) + 1;
       });
 

@@ -170,7 +170,7 @@ export default function GeneratePage() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const result = await response.json();
+      const result: any = await response.json();
       if (result.success && result.data?.output?.results) {
         const imageUrls = result.data.output.results.map((item: any) => item.url);
         setGeneratedImages(imageUrls);
@@ -185,7 +185,7 @@ export default function GeneratePage() {
 
         // 刷新积分数据
         refreshCredits();
-        
+
         // 显示成功提示
         toast.success(t('generate.generateSuccess'));
       } else {

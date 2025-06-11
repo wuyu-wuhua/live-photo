@@ -24,7 +24,7 @@ export default function TtsPlayer({ initialText = '', className = '' }: TtsPlaye
     async function fetchVoices() {
       try {
         const response = await fetch('/api/tts');
-        const data = await response.json();
+        const data: any = await response.json();
 
         if (data.success && data.data.voices) {
           setVoices(data.data.voices);
@@ -74,7 +74,7 @@ export default function TtsPlayer({ initialText = '', className = '' }: TtsPlaye
         }),
       });
 
-      const data = await response.json();
+      const data: any = await response.json();
 
       if (data.success && data.data.audioUrl) {
         setAudioUrl(data.data.audioUrl);

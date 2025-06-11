@@ -1,3 +1,4 @@
+import type { SupabaseClient } from '@supabase/supabase-js';
 import type {
   ApiResponse,
   Customer,
@@ -271,7 +272,7 @@ export class ImageEditService {
     id: string,
     statusOrUpdates: TaskStatus | Partial<ImageEditResultUpdate>,
     updates?: Partial<ImageEditResultUpdate>,
-    customClient?: any,
+    customClient?: SupabaseClient,
   ): Promise<ApiResponse<ImageEditResult>> {
     try {
       const client = customClient || supabase;

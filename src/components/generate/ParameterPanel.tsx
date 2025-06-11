@@ -321,7 +321,6 @@ export function ParameterPanel({
         {FUNCTION_OPTIONS.map(option => (
           <SelectItem
             key={option.value}
-            value={option.value}
             startContent={<span className={`text-lg ${option.color}`}>{option.icon}</span>}
             description={option.description}
           >
@@ -350,7 +349,7 @@ export function ParameterPanel({
           </Label>
           <Select
             placeholder={t('parameterPanel.selectPresetFilter')}
-            selectedKeys={COLORIZATION_PRESETS.find(preset => preset.value === formData.prompt)?.value ? [COLORIZATION_PRESETS.find(preset => preset.value === formData.prompt)!.value] : ['']}
+            selectedKeys={formData.prompt ? [formData.prompt] : ['']}
             onSelectionChange={(keys) => {
               const selectedPreset = Array.from(keys)[0] as string;
               if (selectedPreset) {
@@ -375,8 +374,7 @@ export function ParameterPanel({
             {COLORIZATION_PRESETS.map(preset => (
               <SelectItem
                 key={preset.value}
-                value={preset.value}
-                startContent={<span className={`text-lg ${preset.color}`}>{preset.icon}</span>}
+                startContent={<div className={`text-lg ${preset.color}`}>{preset.icon}</div>}
                 description={preset.description}
               >
                 {preset.label}

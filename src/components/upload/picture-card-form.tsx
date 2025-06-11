@@ -11,7 +11,7 @@ import { useImageUpload } from '@/hooks/useFileUpload';
 import { cn } from '@/lib/utils';
 
 // 常量定义
-const ACCEPTED_FILE_TYPES = ['jpg', 'gif', 'png', 'jpeg', 'webp'] as const;
+const ACCEPTED_FILE_TYPES = ['jpg', 'gif', 'png', 'jpeg', 'webp']; // 移除 as const 断言
 const DEFAULT_FILE_LIST: FormUploadFile[] = [];
 const UPLOAD_CONFIG: FileUploadConfig = {
   maxFileSize: 5 * 1024 * 1024,

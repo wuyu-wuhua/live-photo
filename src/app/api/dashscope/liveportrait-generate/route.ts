@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 解析请求数据
-    const requestData = await request.json();
+    const requestData: any = await request.json();
 
     // 验证必要参数
     if (!requestData.imageId) {
@@ -82,6 +82,7 @@ export async function POST(request: NextRequest) {
     // 更新对口型视频状态为处理中
     await ImageEditService.updateStatus(
       requestData.imageId,
+      'SUCCEEDED',
       {
         liveportrait_status: 'RUNNING',
       },
@@ -98,6 +99,7 @@ export async function POST(request: NextRequest) {
     // 更新数据库记录
     await ImageEditService.updateStatus(
       requestData.imageId,
+      'SUCCEEDED',
       {
         liveportrait_result_url: videoUrl, // 对口型视频结果URL
         liveportrait_status: 'SUCCEEDED', // 对口型视频生成状态
@@ -119,11 +121,12 @@ export async function POST(request: NextRequest) {
     // 尝试更新对口型视频状态为失败
     try {
       if (request.body) {
-        const requestData = await request.clone().json();
+        const requestData: any = await request.clone().json();
         if (requestData.imageId) {
           const supabase = await createClient();
           await ImageEditService.updateStatus(
             requestData.imageId,
+            'SUCCEEDED',
             {
               liveportrait_status: 'FAILED',
             },

@@ -3,8 +3,8 @@
 import type { FileUploadResult } from '@/services/fileUploadService';
 import { Button, Card, CardBody, CardHeader, Divider } from '@heroui/react';
 import { useState } from 'react';
-import { type FormUploadFile, PictureCardForm } from '@/components/upload/picture-card-form';
 import { toast } from 'sonner';
+import { type FormUploadFile, PictureCardForm } from '@/components/upload/picture-card-form';
 
 export default function UploadDemoPage() {
   const [singleFile, setSingleFile] = useState<FormUploadFile[]>([]);
@@ -171,7 +171,6 @@ export default function UploadDemoPage() {
             <h2 className="text-2xl font-semibold">操作日志</h2>
             <Button
               size="sm"
-              variant="outline"
               onPress={clearResults}
               isDisabled={uploadResults.length === 0}
             >

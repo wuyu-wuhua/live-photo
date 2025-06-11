@@ -99,205 +99,227 @@
       },
       "description_edit": {
         "label": "指令编辑",
-        "description": "根据文字描述编辑图像"
+        "description": "根据文本描述编辑图像"
+      },
+      "description_edit_with_mask": {
+        "label": "局部编辑",
+        "description": "使用蒙版指定区域进行编辑"
       },
       "expand": {
         "label": "扩图",
-        "description": "扩展图像边界"
-      },
-      "remove_watermark": {
-        "label": "去文字水印",
-        "description": "移除图像中的文字水印"
+        "description": "扩展图像边界，生成更大画面"
       },
       "super_resolution": {
-        "label": "图像超分",
-        "description": "提升图像分辨率和清晰度"
+        "label": "超分辨率",
+        "description": "提高图像分辨率和清晰度"
+      },
+      "doodle": {
+        "label": "涂鸦",
+        "description": "将简单涂鸦转换为精美图像"
+      },
+      "control_cartoon": {
+        "label": "卡通控制",
+        "description": "将图像转换为卡通风格"
       }
     },
-    "presets": {
-      "custom": {
-        "label": "自定义",
-        "description": "手动输入提示词"
-      },
-      "natural": {
-        "label": "自然色彩",
-        "description": "真实自然的色彩还原",
-        "value": "自然真实的色彩，保持原有的光影效果"
-      },
-      "warm": {
-        "label": "温暖色调",
-        "description": "温馨舒适的暖色调",
-        "value": "温暖的色调，增强黄色和橙色，营造温馨氛围"
-      },
-      "cool": {
-        "label": "冷色调",
-        "description": "清冷优雅的冷色调",
-        "value": "冷色调为主，增强蓝色和青色，营造清冷氛围"
-      },
-      "vintage": {
-        "label": "复古怀旧",
-        "description": "怀旧复古的色彩风格",
-        "value": "复古怀旧的色彩风格，略微泛黄的色调"
-      },
-      "vibrant": {
-        "label": "鲜艳活力",
-        "description": "充满活力的鲜艳色彩",
-        "value": "鲜艳饱和的色彩，高对比度，充满活力"
-      },
-      "soft": {
-        "label": "柔和淡雅",
-        "description": "文艺清新的淡雅色调",
-        "value": "柔和淡雅的色彩，低饱和度，文艺清新"
-      },
-      "cinematic": {
-        "label": "电影级调色",
-        "description": "专业电影级色彩效果",
-        "value": "电影级调色，专业的色彩分级效果"
-      },
-      "japanese": {
-        "label": "日系清新",
-        "description": "明亮通透的日系风格",
-        "value": "日系小清新色彩，明亮通透，略微过曝的效果"
-      },
-      "korean": {
-        "label": "韩系浪漫",
-        "description": "柔美浪漫的韩系色调",
-        "value": "韩系色彩风格，偏粉色调，柔美浪漫"
-      },
-      "historical": {
-        "label": "历史还原",
-        "description": "还原历史照片真实色彩",
-        "value": "黑白照片上色，还原历史照片的真实色彩"
-      }
+    "colorPresets": {
+      "natural": "自然色彩",
+      "warm": "温暖色调",
+      "cool": "冷色调",
+      "vibrant": "鲜艳色彩",
+      "vintage": "复古风格",
+      "blackAndWhite": "黑白艺术",
+      "sepia": "棕褐色调",
+      "custom": "自定义"
     }
-  },
-  "NotFound": {
-    "description": "抱歉，您访问的页面不存在。",
-    "backToHome": "返回首页"
   },
   "common": {
     "create": "创建",
     "welcome": "欢迎",
-    "appName": "智能相册",
     "loading": "加载中...",
     "error": "错误",
     "success": "成功",
-    "cancel": "取消",
-    "confirm": "确认",
     "save": "保存",
+    "cancel": "取消",
     "delete": "删除",
     "edit": "编辑",
-    "add": "添加",
-    "remove": "移除",
+    "update": "更新",
+    "submit": "提交",
     "back": "返回",
     "next": "下一步",
     "previous": "上一步",
+    "search": "搜索",
+    "filter": "筛选",
+    "sort": "排序",
+    "all": "全部",
+    "none": "无",
     "yes": "是",
     "no": "否",
-    "close": "关闭",
-    "open": "打开",
-    "submit": "提交",
-    "retry": "重试",
-    "noData": "暂无数据",
+    "or": "或",
+    "and": "和",
+    "more": "更多",
+    "less": "更少",
+    "show": "显示",
+    "hide": "隐藏",
+    "download": "下载",
+    "upload": "上传",
+    "share": "分享",
+    "copy": "复制",
+    "paste": "粘贴",
+    "cut": "剪切",
+    "select": "选择",
+    "selectAll": "全选",
+    "deselectAll": "取消全选",
+    "add": "添加",
+    "remove": "移除",
+    "move": "移动",
+    "resize": "调整大小",
+    "rotate": "旋转",
+    "flip": "翻转",
+    "crop": "裁剪",
+    "zoom": "缩放",
+    "zoomIn": "放大",
+    "zoomOut": "缩小",
+    "reset": "重置",
+    "undo": "撤销",
+    "redo": "重做",
+    "preview": "预览",
+    "apply": "应用",
+    "generate": "生成",
+    "regenerate": "重新生成",
+    "processing": "处理中",
     "completed": "已完成",
     "failed": "失败",
-    "pending": "处理中",
-    "image": "图片",
-    "result": "结果",
-    "generationHistory": "生成记录",
-    "plans": {
-      "basic": {
-        "name": "基础套餐",
-        "description": "适合轻度使用"
-      },
-      "standard": {
-        "name": "标准套餐",
-        "description": "适合中度使用"
-      },
-      "premium": {
-        "name": "高级套餐",
-        "description": "适合重度使用"
-      }
-    },
-    "selectLanguage": "选择语言",
-    "search": "搜索",
-    "textToSpeech": "文本转语音",
-    "textToSpeechDescription": "将您的文本转换为自然流畅的语音",
-    "enterText": "输入文本",
-    "enterTextPlaceholder": "在此处输入或粘贴您的文本...",
-    "selectVoice": "选择语音",
-    "speechRate": "语速",
-    "volume": "音量",
-    "generate": "生成",
-    "i18n_test": "国际化测试",
-    "heroTitle": "让您的照片呈现逼真色彩",
-    "heroDescription": "上传您的照片，选择独特的滤镜，几秒钟内就能看到您的瞬间转变为充满活力、栩栩如生的色彩。",
-    "colorizePhoto": "为照片上色",
-    "rating": "280万+用户 | 4.9星评价",
-    "sampleText": "↓ 或点击示例 ↓",
-    "trustedInProductions": "制作中信赖的选择：",
-    "remarkablyAccurate": "非常准确",
-    "worldsBestAI": "世界上最好的黑白照片上色AI",
-    "inALeagueOfItsOwn": "独树一帜",
-    "experienceTheDifference": "体验不同之处",
-    "trustedByPhotographers": "受到280万+摄影师和创作者信赖",
-    "newGenerationAI": "新一代AI上色技术",
-    "yearsOfResearch": "多年研究成就了Palette。仅在此处及我们的合作伙伴处提供。",
-    "millionPhotosColorized": "已为5400万张照片上色",
-    "getStartNow": "立即开始",
-    "light": "光线",
-    "flowers": "花朵",
-    "interior": "室内",
-    "history": "历史",
-    "clothes": "服装",
-    "before": "处理前",
-    "after": "处理后",
-    "newPalette": "新调色板",
-    "filtersLabel": "21+种色彩滤镜"
+    "pending": "待处理",
+    "waiting": "等待中",
+    "running": "运行中",
+    "paused": "已暂停",
+    "stopped": "已停止",
+    "cancelled": "已取消",
+    "expired": "已过期",
+    "active": "活跃",
+    "inactive": "不活跃",
+    "enabled": "已启用",
+    "disabled": "已禁用",
+    "visible": "可见",
+    "invisible": "不可见",
+    "public": "公开",
+    "private": "私有",
+    "draft": "草稿",
+    "published": "已发布",
+    "unpublished": "未发布",
+    "archived": "已归档",
+    "deleted": "已删除",
+    "trashed": "已丢弃",
+    "restored": "已恢复",
+    "blocked": "已屏蔽",
+    "reported": "已举报",
+    "flagged": "已标记",
+    "unflagged": "已取消标记",
+    "pinned": "已置顶",
+    "unpinned": "已取消置顶",
+    "starred": "已收藏",
+    "unstarred": "已取消收藏",
+    "liked": "已点赞",
+    "unliked": "已取消点赞",
+    "followed": "已关注",
+    "unfollowed": "已取消关注",
+    "subscribed": "已订阅",
+    "unsubscribed": "已取消订阅",
+    "joined": "已加入",
+    "left": "已离开",
+    "invited": "已邀请",
+    "accepted": "已接受",
+    "declined": "已拒绝",
+    "approved": "已批准",
+    "rejected": "已拒绝",
+    "verified": "已验证",
+    "unverified": "未验证",
+    "locked": "已锁定",
+    "unlocked": "已解锁",
+    "muted": "已静音",
+    "unmuted": "已取消静音",
+    "bookmarked": "已收藏",
+    "unbookmarked": "已取消收藏"
   },
   "pricing": {
-    "title": "简单透明的价格",
-    "subtitle": "选择适合您需求的完美方案。每个积分可让您为一张照片上色，高分辨率且无水印。",
-    "month": "月",
-    "billedAnnually": "年付",
-    "mostPopular": "最受欢迎",
+    "title": "价格套餐",
+    "subtitle": "选择适合您的套餐",
+    "monthly": "月付",
+    "yearly": "年付",
     "free": {
       "name": "免费版",
-      "description": "开始使用基本功能上色",
+      "description": "适合初次尝试",
       "price": {
-        "monthly": "¥0",
-        "yearly": "¥0"
+        "value": "¥0",
+        "period": "/月"
       },
       "features": {
-        "watermarked": "带水印图片",
-        "resolution": "最大500x500像素分辨率",
-        "previews": "无限色彩预览",
-        "filters": "使用21+种色彩滤镜"
+        "credits": "5个免费积分",
+        "watermark": "结果带水印",
+        "resolution": "标准分辨率",
+        "support": "社区支持"
       },
       "cta": "开始使用"
     },
-    "pro": {
-      "name": "专业版",
-      "description": "适合爱好者和创作者",
+    "basic": {
+      "name": "基础版",
+      "description": "适合个人使用",
       "price": {
-        "monthly": "¥42",
-        "yearly": "¥504"
+        "value": "¥39",
+        "period": "/月"
       },
+      "priceDetail": "每积分¥3.9",
       "features": {
-        "credits": "每年480个积分",
+        "credits": "10个积分/月",
         "highRes": "高分辨率（最大5000x5000像素）",
         "noWatermark": "无水印",
-        "rollover": "未使用积分可结转",
+        "rollover": "未用完积分可结转",
+        "filters": "使用所有色彩滤镜"
+      },
+      "cta": "订阅"
+    },
+    "standard": {
+      "name": "标准版",
+      "description": "适合专业用户",
+      "price": {
+        "value": "¥99",
+        "period": "/月"
+      },
+      "priceDetail": "每积分¥3.3",
+      "features": {
+        "credits": "30个积分/月",
+        "highRes": "高分辨率（最大5000x5000像素）",
+        "noWatermark": "无水印",
+        "rollover": "未用完积分可结转",
+        "filters": "使用所有色彩滤镜"
+      },
+      "cta": "订阅",
+      "savingLabel": "节省20%"
+    },
+    "premium": {
+      "name": "高级版",
+      "description": "适合专业团队",
+      "price": {
+        "value": "¥199",
+        "period": "/月"
+      },
+      "priceDetail": "每积分¥2.8",
+      "features": {
+        "credits": "70个积分/月",
+        "highRes": "高分辨率（最大5000x5000像素）",
+        "noWatermark": "无水印",
+        "rollover": "未用完积分可结转",
         "filters": "使用所有色彩滤镜"
       },
       "cta": "订阅",
       "savingLabel": "节省28%"
     },
     "onetime": {
-      "name": "一次性购买",
-      "description": "一次付款获得积分包",
+      "name": "一次性",
+      "description": "一次性购买积分包",
       "price": {
-        "value": "¥343"
+        "value": "¥349"
       },
       "priceDetail": "每积分¥4.6",
       "features": {
@@ -376,9 +398,18 @@
     "emoji": "表情",
     "lipsync": "对口型",
     "configureAndGenerate": "配置参数并生成视频",
-    "cancel": "取消",
     "generating": "生成中...",
     "startGenerate": "开始生成",
+    "filters": {
+      "allStatus": "所有状态",
+      "succeeded": "已完成",
+      "processing": "处理中",
+      "waiting": "等待中",
+      "failed": "失败",
+      "allTypes": "所有类型",
+      "image": "图片",
+      "video": "视频"
+    },
     "status": {
       "waiting": "等待中",
       "processing": "处理中",
@@ -472,7 +503,6 @@
     "refund": "退款",
     "expiration": "积分过期",
     "promotional": "促销赠送",
-    "credits": "积分",
     "balance": "余额",
     "noTransactions": "暂无交易记录",
     "noGenerations": "暂无生成记录",

@@ -126,6 +126,7 @@ export async function POST(request: NextRequest) {
     // 更新表情视频状态为处理中
     await ImageEditService.updateStatus(
       requestData.imageId,
+      'SUCCEEDED',
       {
         emoji_status: 'RUNNING',
       },
@@ -153,6 +154,7 @@ export async function POST(request: NextRequest) {
     // 更新数据库记录
     await ImageEditService.updateStatus(
       requestData.imageId,
+      'SUCCEEDED',
       {
         emoji_result_url: uploadedVideoUrl || videoUrl, // 表情视频结果URL
         emoji_status: 'SUCCEEDED', // 表情视频生成状态
@@ -179,6 +181,7 @@ export async function POST(request: NextRequest) {
           const supabase = await createClient();
           await ImageEditService.updateStatus(
             requestData.imageId,
+            'SUCCEEDED',
             {
               emoji_status: 'FAILED',
             },

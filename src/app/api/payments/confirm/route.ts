@@ -1,10 +1,11 @@
-import type { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { confirmPayment } from '@/lib/stripe-server';
 import { createClient } from '@/lib/supabase/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const { paymentIntentId } = await request.json();
+    const { paymentIntentId }: any = await request.json();
 
     // 验证用户身份
     const supabase = await createClient();

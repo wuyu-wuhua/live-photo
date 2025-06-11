@@ -33,7 +33,6 @@ export async function GET(request: NextRequest) {
             p_reference_id: `oauth_signup_${data.user.id}`,
             p_metadata: { source: 'oauth_new_user_registration' },
           });
-          console.log('OAuth新用户注册积分赠送成功');
         }
       } catch (creditError) {
         console.error('OAuth新用户积分赠送失败:', creditError);

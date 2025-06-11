@@ -428,7 +428,27 @@
     },
     "pagination": {
       "total": "Total {total} records, page {current} / {totalPages}"
-    }
+    },
+    "filters": {
+      "allStatus": "All Status",
+      "succeeded": "Succeeded",
+      "processing": "Processing",
+      "waiting": "Waiting",
+      "failed": "Failed",
+      "allTypes": "All Types",
+      "image": "Image",
+      "video": "Video"
+    },
+    "errorLoadingResults": "Error Loading Results",
+    "noResults": "No Results",
+    "noResultsDescription": "No Results Description",
+    "emojiReady": "Emoji Ready",
+    "emojiGenerating": "Emoji Generating",
+    "emojiFailed": "Emoji Failed",
+    "emojiAvailable": "Emoji Available",
+    "lipsyncReady": "Lipsync Ready",
+    "lipsyncAvailable": "Lipsync Generating",
+    "video": "Video"
   },
   "profile": {
     "title": "Profile",

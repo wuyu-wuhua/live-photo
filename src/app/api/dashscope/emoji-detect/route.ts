@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 解析请求数据
-    const requestData = await request.json();
+    const requestData: any = await request.json();
 
     // 验证必要参数
     if (!requestData.imageId) {
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
       requestData.imageId,
       imageEditResult.data.status, // 保持原状态不变
       {
-        emoji_compatible: isCompatible,
+        emoji_compatible: !isCompatible,
         emoji_detected_at: new Date().toISOString(),
         emoji_message: detectResult.output.message || null,
         emoji_face_bbox: isCompatible ? JSON.stringify(detectResult.output.bbox_face) : null,

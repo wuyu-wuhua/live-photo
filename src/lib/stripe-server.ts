@@ -8,7 +8,6 @@ if (!process.env.STRIPE_SECRET_KEY) {
  * Stripe服务端实例
  */
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2024-12-18.acacia',
   typescript: true,
 });
 

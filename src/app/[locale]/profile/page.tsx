@@ -15,7 +15,7 @@ type ImageEditResult = Tables<'image_edit_results'>;
 export default function ProfilePage() {
   const t = useTranslations();
   const { user } = useUser();
-  const { credits, loading, recentTransactions, fetchTransactions, refresh } = useCredits();
+  const { credits, loading, recentTransactions, refresh } = useCredits();
   const [activeTab, setActiveTab] = useState('overview');
   const [generationHistory, setGenerationHistory] = useState<ImageEditResult[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
@@ -124,8 +124,7 @@ export default function ProfilePage() {
   };
 
   // 支付成功处理
-  const handlePaymentSuccess = (credits: number) => {
-    console.log(`${t('profile.paymentSuccess')} ${credits} ${t('profile.credits')}`);
+  const handlePaymentSuccess = () => {
     // 刷新积分数据
     refresh();
     setShowStripePayment(false);
@@ -343,7 +342,7 @@ export default function ProfilePage() {
                       <TableCell>{getTransactionTypeLabel(transaction.type)}</TableCell>
                       <TableCell>
                         {transaction.description
-                        || (transaction.metadata?.feature_type ? getFeatureName(transaction.metadata) : '-')}
+                        || (typeof transaction.metadata === 'object' && transaction.metadata && 'feature_type' in transaction.metadata ? getFeatureName(transaction.metadata) : '-')}
                       </TableCell>
                       <TableCell>
                         <span className={transaction.amount > 0 ? 'text-success' : 'text-danger'}>

@@ -74,7 +74,7 @@ function CheckoutForm({ plan, onSuccess, onClose }: Omit<StripePaymentProps, 'is
           }),
         });
 
-        const data = await response.json();
+        const data: any = await response.json();
 
         if (data.error) {
           setError(data.error);
@@ -138,7 +138,7 @@ function CheckoutForm({ plan, onSuccess, onClose }: Omit<StripePaymentProps, 'is
           }),
         });
 
-        const confirmData = await confirmResponse.json();
+        const confirmData: any = await confirmResponse.json();
 
         if (confirmData.error) {
           setError(confirmData.error);

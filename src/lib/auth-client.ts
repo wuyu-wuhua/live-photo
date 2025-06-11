@@ -93,7 +93,7 @@ export async function signIn(email: string, password: string): Promise<AuthRespo
  */
 export async function signInWithGitHub(): Promise<AuthResponse> {
   try {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
@@ -101,8 +101,8 @@ export async function signInWithGitHub(): Promise<AuthResponse> {
     });
 
     return {
-      user: data.user,
-      session: data.session,
+      user: null,
+      session: null,
       error,
     };
   } catch (error) {
@@ -121,7 +121,7 @@ export async function signInWithGitHub(): Promise<AuthResponse> {
  */
 export async function signInWithGoogle(): Promise<AuthResponse> {
   try {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
@@ -129,8 +129,8 @@ export async function signInWithGoogle(): Promise<AuthResponse> {
     });
 
     return {
-      user: data.user,
-      session: data.session,
+      user: null,
+      session: null,
       error,
     };
   } catch (error) {
@@ -227,15 +227,15 @@ export async function twoFactor(
   code: string,
 ): Promise<AuthResponse> {
   try {
-    const { data, error } = await supabase.auth.mfa.verify({
+    const { error } = await supabase.auth.mfa.verify({
       factorId,
       challengeId,
       code,
     });
 
     return {
-      user: data.user,
-      session: data.session,
+      user: null,
+      session: null,
       error,
     };
   } catch (error) {

@@ -8,6 +8,7 @@ import type {
 } from '@/services/fileUploadService';
 import type { Upload } from '@/types/database';
 import { useCallback, useRef, useState } from 'react';
+import { useUser } from '@/hooks/useUser';
 import { useSupabase } from '@/provider/SupabaseProvider';
 import {
   DOCUMENT_UPLOAD_CONFIG,
@@ -44,6 +45,7 @@ export type FileStatsState = {
  * 文件上传Hook
  */
 export function useFileUpload(config?: FileUploadConfig) {
+  const { user, loading: isLoading } = useUser();
   const [uploadState, setUploadState] = useState<UploadState>({
     isUploading: false,
     progress: 0,
@@ -75,7 +77,7 @@ export function useFileUpload(config?: FileUploadConfig) {
       let attempts = 0;
       const maxAttempts = 50; // 5秒，每次等待100ms
 
-      while (user === null && attempts < maxAttempts) {
+      while (attempts < maxAttempts) {
         await new Promise(resolve => setTimeout(resolve, 100));
         attempts++;
       }
@@ -129,7 +131,7 @@ export function useFileUpload(config?: FileUploadConfig) {
       }));
       return { success: false, error: errorMessage };
     }
-  }, [user?.id, config, isLoading]);
+  }, [isLoading, user, config]);
 
   // 批量上传文件
   const uploadFiles = useCallback(async (
@@ -143,7 +145,7 @@ export function useFileUpload(config?: FileUploadConfig) {
       let attempts = 0;
       const maxAttempts = 50; // 5秒，每次等待100ms
 
-      while (user === null && attempts < maxAttempts) {
+      while (attempts < maxAttempts) {
         await new Promise(resolve => setTimeout(resolve, 100));
         attempts++;
       }

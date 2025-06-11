@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const { amount, planId, planName } = await request.json();
+    const { amount, planId, planName }: any = await request.json();
 
     // 验证用户身份
     const supabase = await createClient();
