@@ -1,6 +1,6 @@
 'use client';
 
-import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Navbar as HeroUINavbar, Link, link as linkStyles, NavbarBrand, NavbarContent, NavbarItem, NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from '@heroui/react';
+import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger, Navbar as HeroUINavbar, Link, link as linkStyles, NavbarBrand, NavbarContent, NavbarItem, NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from '@heroui/react';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import NextLink from 'next/link';
@@ -31,6 +31,13 @@ export const Navbar = () => {
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" fill="#4F46E5" />
+              <circle cx="12" cy="12" r="7" fill="#818CF8" />
+              <circle cx="12" cy="12" r="4" fill="#C4B5FD" />
+              <circle cx="15" cy="9" r="1.5" fill="#FFFFFF" />
+              <path d="M7 14L10 11L13 14L17 10" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
             <p className="font-bold text-inherit">{tCommon('appName')}</p>
           </NextLink>
         </NavbarBrand>
@@ -100,19 +107,30 @@ export const Navbar = () => {
                       />
                     </DropdownTrigger>
                     <DropdownMenu aria-label={t('login')} variant="flat">
+
                       <DropdownItem key="profile" className="h-14 gap-2">
                         <p className="font-semibold">{t('login')}</p>
                         <p className="font-semibold">{user.email}</p>
                       </DropdownItem>
-                      <DropdownItem key="dashboard" as={NextLink} href="/dashboard">
-                        {t('dashboard')}
-                      </DropdownItem>
-                      <DropdownItem key="settings" as={NextLink} href="/settings">
+                      <DropdownSection showDivider title="Actions">
+                        <DropdownItem key="profile1" as={NextLink} href="/profile" startContent={<Icon icon="solar:user-bold-duotone" className="text-lg text-blue-500" />}>
+                          {t('profile')}
+                        </DropdownItem>
+                        <DropdownItem key="Generate" as={NextLink} href="/generate" startContent={<Icon icon="solar:magic-stick-3-bold-duotone" className="text-lg text-purple-500" />}>
+                          Generate
+                        </DropdownItem>
+                        <DropdownItem key="gallery" as={NextLink} href="/gallery" startContent={<Icon icon="solar:gallery-bold-duotone" className="text-lg text-green-500" />}>
+                          Gallery
+                        </DropdownItem>
+                      </DropdownSection>
+                      {/* <DropdownItem key="settings" as={NextLink} href="/settings">
                         {tCommon('edit')}
-                      </DropdownItem>
-                      <DropdownItem key="logout" color="danger" onClick={handleSignOut}>
-                        {t('logout')}
-                      </DropdownItem>
+                      </DropdownItem> */}
+                      <DropdownSection>
+                        <DropdownItem key="logout" color="danger" onClick={handleSignOut} startContent={<Icon icon="solar:logout-2-bold-duotone" className="text-lg text-red-500" />}>
+                          {t('logout')}
+                        </DropdownItem>
+                      </DropdownSection>
                     </DropdownMenu>
                   </Dropdown>
                 )
@@ -165,6 +183,9 @@ export const Navbar = () => {
                     <DropdownItem key="profile" className="h-14 gap-2">
                       <p className="font-semibold">{t('login')}</p>
                       <p className="font-semibold">{user.email}</p>
+                    </DropdownItem>
+                    <DropdownItem key="profile" as={NextLink} href="/profile">
+                      {t('profile')}
                     </DropdownItem>
                     <DropdownItem key="dashboard" as={NextLink} href="/dashboard">
                       {t('dashboard')}

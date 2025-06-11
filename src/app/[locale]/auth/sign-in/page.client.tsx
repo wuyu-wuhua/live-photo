@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { SEO_CONFIG, SYSTEM_CONFIG } from '@/app';
 import { GitHubIcon } from '@/components/icons/github';
 import { GoogleIcon } from '@/components/icons/google';
+import { Label } from '@/components/ui/label';
 import { signIn, signInWithGitHub, signInWithGoogle } from '@/lib/auth-client';
 
 export function SignInPageClient() {
@@ -119,7 +120,7 @@ export function SignInPageClient() {
                 }}
               >
                 <div className="grid gap-2">
-                  <label htmlFor="email" className="text-sm font-medium">Email</label>
+                  <Label htmlFor="email" className="text-sm font-medium">Email</Label>
                   <Input
                     id="email"
                     onChange={(e) => {
@@ -133,7 +134,7 @@ export function SignInPageClient() {
                 </div>
                 <div className="grid gap-2">
                   <div className="flex items-center justify-between">
-                    <label htmlFor="password" className="text-sm font-medium">Password</label>
+                    <Label htmlFor="password" className="text-sm font-medium">Password</Label>
                     <Link
                       className="text-sm text-muted-foreground hover:underline"
                       href="#"

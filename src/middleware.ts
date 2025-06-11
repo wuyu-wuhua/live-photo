@@ -1,7 +1,30 @@
+import type { NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/i18nConfig';
+import { updateSession } from './lib/supabase/middleware';
 
-export default createMiddleware(routing);
+const intlMiddleware = createMiddleware(routing);
+
+export default async function middleware(request: NextRequest) {
+  // 需要登录保护的路径
+  const protectedPaths = ['/generate', '/gallery'];
+
+  // 检查当前路径是否需要登录保护
+  const isProtectedPath = protectedPaths.some(path =>
+    request.nextUrl.pathname.includes(path),
+  );
+  if (isProtectedPath) {
+    // 对于受保护的路径，先执行认证检查
+    const authResponse = await updateSession(request);
+    if (authResponse.status === 307 || authResponse.status === 302) {
+      // 如果是重定向响应（未登录），直接返回
+      return authResponse;
+    }
+  }
+
+  // 执行国际化中间件
+  return intlMiddleware(request);
+}
 
 export const config = {
   matcher: [

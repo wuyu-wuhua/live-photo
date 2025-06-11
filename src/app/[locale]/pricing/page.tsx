@@ -1,82 +1,108 @@
 'use client';
 
-import { Button, Card, CardBody, CardFooter, CardHeader } from '@heroui/react';
-import { Check } from 'lucide-react';
+import { Button, Card, CardBody, CardFooter, CardHeader, Chip } from '@heroui/react';
+import { Check, CreditCard } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
+import StripePayment from '@/components/payments/StripePayment';
+import { useCredits } from '@/hooks/useCredits';
+import { useUser } from '@/hooks/useUser';
 
 export default function PricingPage() {
   const t = useTranslations();
-  const [selectedPlan, setSelectedPlan] = useState('pro'); // 默认选中Pro计划
+  const { user } = useUser();
+  const { credits, refresh } = useCredits();
+  const [selectedPlan, setSelectedPlan] = useState<any>(null);
+  const [showStripePayment, setShowStripePayment] = useState(false);
 
-  // 定价计划数据
-  const plans = [
+  // 积分套餐数据 - 基于profile页面的creditPlans
+  const creditPlans = [
     {
-      cta: t('pricing.free.cta'),
-      description: t(
-        'pricing.free.description',
-      ),
-      features: [
-        t('pricing.free.features.watermarked'),
-        t('pricing.free.features.resolution'),
-        t('pricing.free.features.previews'),
-        t('pricing.free.features.filters'),
-      ],
-      id: 'free',
-      name: t('pricing.free.name'),
+      id: 'basic',
+      name: t('common.plans.basic.name'),
+      description: t('common.plans.basic.description'),
+      credits: 100,
+      price: 19,
       popular: false,
-      price: {
-        monthly: t('pricing.free.price.monthly'),
-        yearly: t('pricing.free.price.yearly'),
-      },
+      stripe_price_id: 'price_basic',
+      features: [
+        t('pricing.features.credits', { count: 100 }),
+        t('pricing.features.imageEdit'),
+        t('pricing.features.videoAnimation'),
+        t('pricing.features.highRes'),
+        t('pricing.features.noWatermark'),
+      ],
+      cta: t('pricing.cta.basic'),
     },
     {
-      cta: t('pricing.pro.cta'),
-      description: t(
-        'pricing.pro.description',
-      ),
-      features: [
-        t('pricing.pro.features.credits'),
-        t(
-          'pricing.pro.features.highRes',
-        ),
-        t('pricing.pro.features.noWatermark'),
-        t('pricing.pro.features.rollover'),
-        t('pricing.pro.features.filters'),
-      ],
-      id: 'pro',
-      name: t('pricing.pro.name'),
+      id: 'standard',
+      name: t('common.plans.standard.name'),
+      description: t('common.plans.standard.description'),
+      credits: 500,
+      price: 79,
       popular: true,
-      price: {
-        monthly: t('pricing.pro.price.monthly'),
-        yearly: t('pricing.pro.price.yearly'),
-      },
-      savingLabel: t('pricing.pro.savingLabel'),
+      stripe_price_id: 'price_standard',
+      features: [
+        t('pricing.features.credits', { count: 500 }),
+        t('pricing.features.imageEdit'),
+        t('pricing.features.videoAnimation'),
+        t('pricing.features.highRes'),
+        t('pricing.features.noWatermark'),
+        t('pricing.features.priority'),
+      ],
+      cta: t('pricing.cta.standard'),
+      savingLabel: t('pricing.popular'),
     },
     {
-      cta: t('pricing.onetime.cta'),
-      description: t(
-        'pricing.onetime.description',
-      ),
-      features: [
-        t('pricing.onetime.features.credits'),
-        t(
-          'pricing.onetime.features.highRes',
-        ),
-        t('pricing.onetime.features.noWatermark'),
-        t('pricing.onetime.features.validity'),
-        t('pricing.onetime.features.filters'),
-      ],
-      id: 'onetime',
-      name: t('pricing.onetime.name'),
+      id: 'premium',
+      name: t('common.plans.premium.name'),
+      description: t('common.plans.premium.description'),
+      credits: 1200,
+      price: 159,
       popular: false,
-      price: {
-        monthly: t('pricing.onetime.price.value'),
-        yearly: null,
-      },
-      priceDetail: t('pricing.onetime.priceDetail'),
+      stripe_price_id: 'price_premium',
+      features: [
+        t('pricing.features.credits', { count: 1200 }),
+        t('pricing.features.imageEdit'),
+        t('pricing.features.videoAnimation'),
+        t('pricing.features.highRes'),
+        t('pricing.features.noWatermark'),
+        t('pricing.features.priority'),
+        t('pricing.features.support'),
+      ],
+      cta: t('pricing.cta.premium'),
     },
   ];
+
+  // 处理购买
+  const handlePurchase = (planId: string) => {
+    if (!user) {
+      // 如果用户未登录，跳转到登录页面
+      window.location.href = '/auth/sign-in';
+      return;
+    }
+
+    const plan = creditPlans.find(p => p.id === planId);
+    if (plan) {
+      setSelectedPlan(plan);
+      setShowStripePayment(true);
+    }
+  };
+
+  // 支付成功处理
+  const handlePaymentSuccess = (credits: number) => {
+    console.warn(`${t('pricing.paymentSuccess')} ${credits} ${t('pricing.credits')}`);
+    // 刷新积分数据
+    refresh();
+    setShowStripePayment(false);
+    setSelectedPlan(null);
+  };
+
+  // 关闭支付弹窗
+  const handleClosePayment = () => {
+    setShowStripePayment(false);
+    setSelectedPlan(null);
+  };
 
   return (
     <div
@@ -96,10 +122,22 @@ export default function PricingPage() {
           {t('pricing.title')}
         </h1>
         <p className="text-default-500 mt-6 text-lg">
-          {t(
-            'pricing.subtitle',
-          )}
+          {t('pricing.subtitle')}
         </p>
+
+        {/* 当前积分显示 */}
+        {user && (
+          <div className="mt-6 flex justify-center">
+            <div className="flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full">
+              <CreditCard className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium">
+                {t('pricing.currentCredits')}
+                :
+                {credits?.balance || 0}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
 
       <div
@@ -108,19 +146,25 @@ export default function PricingPage() {
           md:grid-cols-3
         `}
       >
-        {plans.map(plan => (
+        {creditPlans.map(plan => (
           <Card
             key={plan.id}
             className={`
-                relative cursor-pointer transition-all duration-200
-                ${selectedPlan === plan.id
-            ? 'border-primary shadow-lg shadow-primary/10'
+                relative transition-all duration-200
+                ${plan.popular
+            ? 'border-primary shadow-lg shadow-primary/10 z-10 scale-105 md:scale-105'
             : 'hover:border-primary/50 hover:shadow-md'
           }
               `}
-            isPressable
-            onPress={() => setSelectedPlan(plan.id)}
           >
+            {plan.popular && (
+              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-20">
+                <Chip color="primary" size="sm" className="font-semibold">
+                  {plan.savingLabel}
+                </Chip>
+              </div>
+            )}
+
             <CardHeader
               className={`
                   ${plan.popular ? 'pt-8' : 'pt-6'}
@@ -129,51 +173,36 @@ export default function PricingPage() {
               <h3 className="text-2xl font-semibold">{plan.name}</h3>
               <p className="text-default-500 pt-1.5">{plan.description}</p>
             </CardHeader>
+
             <CardBody className="flex-grow">
               <div className="mb-6 flex items-baseline">
-                <span className="text-4xl font-bold">{plan.price.monthly}</span>
-                {plan.price.yearly && (
-                  <span className="text-default-500 ml-1">
-                    /
-                    {t('pricing.month')}
-                  </span>
-                )}
+                <span className="text-4xl font-bold">
+                  ¥
+                  {plan.price}
+                </span>
+                <span className="text-default-500 ml-1">
+                  /
+                  {' '}
+                  {plan.credits}
+                  {' '}
+                  {t('pricing.credits')}
+                </span>
               </div>
-              {plan.price.yearly && (
-                <div className="mb-6 flex items-center gap-2">
-                  <div className="text-default-500 text-sm">
-                    {t('pricing.billedAnnually')}
-                    {' '}
-                    <span className="font-medium">{plan.price.yearly}</span>
-                  </div>
-                  {plan.savingLabel && (
-                    <div
-                      className={`
-                        rounded-full bg-primary/10 px-2 py-0.5 text-xs
-                        font-medium text-primary
-                      `}
-                    >
-                      {plan.savingLabel}
-                    </div>
-                  )}
+
+              <div className="mb-6">
+                <div className="text-sm text-default-500">
+                  {t('pricing.pricePerCredit')}
+                  : ¥
+                  {(plan.price / plan.credits).toFixed(2)}
                 </div>
-              )}
-              {plan.priceDetail && (
-                <div className="text-default-500 mb-6 text-sm">
-                  {plan.priceDetail}
-                </div>
-              )}
+              </div>
+
               <ul className="space-y-3">
                 {plan.features.map((feature, i) => (
                   <li className="flex items-center gap-2" key={i}>
                     <Check
                       className={`
-                        h-4 w-4
-                        ${
-                  selectedPlan === plan.id
-                    ? 'text-primary'
-                    : `text-default-500`
-                  }
+                        h-4 w-4 text-primary
                       `}
                     />
                     <span className="text-sm">{feature}</span>
@@ -181,11 +210,13 @@ export default function PricingPage() {
                 ))}
               </ul>
             </CardBody>
+
             <CardFooter className="mt-6">
               <Button
                 className="w-full"
-                color={selectedPlan === plan.id ? 'primary' : 'default'}
-                variant={selectedPlan === plan.id ? 'solid' : 'bordered'}
+                color={plan.popular ? 'primary' : 'default'}
+                variant={plan.popular ? 'solid' : 'bordered'}
+                onPress={() => handlePurchase(plan.id)}
               >
                 {plan.cta}
               </Button>
@@ -209,9 +240,7 @@ export default function PricingPage() {
               {t('pricing.faq.question1')}
             </h3>
             <p className="text-default-500 mt-2 text-sm">
-              {t(
-                'pricing.faq.answer1',
-              )}
+              {t('pricing.faq.answer1')}
             </p>
           </div>
           <div>
@@ -219,37 +248,37 @@ export default function PricingPage() {
               {t('pricing.faq.question2')}
             </h3>
             <p className="text-default-500 mt-2 text-sm">
-              {t(
-                'pricing.faq.answer2',
-              )}
+              {t('pricing.faq.answer2')}
             </p>
           </div>
           <div>
             <h3 className="font-semibold">
-              {t(
-                'pricing.faq.question3',
-              )}
+              {t('pricing.faq.question3')}
             </h3>
             <p className="text-default-500 mt-2 text-sm">
-              {t(
-                'pricing.faq.answer3',
-              )}
+              {t('pricing.faq.answer3')}
             </p>
           </div>
           <div>
             <h3 className="font-semibold">
-              {t(
-                'pricing.faq.question4',
-              )}
+              {t('pricing.faq.question4')}
             </h3>
             <p className="text-default-500 mt-2 text-sm">
-              {t(
-                'pricing.faq.answer4',
-              )}
+              {t('pricing.faq.answer4')}
             </p>
           </div>
         </div>
       </div>
+
+      {/* Stripe 支付弹窗 */}
+      {showStripePayment && selectedPlan && (
+        <StripePayment
+          isOpen={showStripePayment}
+          onClose={handleClosePayment}
+          plan={selectedPlan}
+          onSuccess={handlePaymentSuccess}
+        />
+      )}
     </div>
   );
 }

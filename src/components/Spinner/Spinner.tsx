@@ -1,5 +1,5 @@
-import type { VariantProps } from 'class-variance-authority';
-import { cva } from 'class-variance-authority';
+import { cva, type VariantProps } from 'class-variance-authority';
+import React from 'react';
 import { cn } from '@/lib/utils';
 
 const spinnerStyles = cva('animate-spin', {

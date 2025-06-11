@@ -5,6 +5,7 @@ import { getMessages } from 'next-intl/server';
 import React from 'react';
 import { Footer } from '@/components/footer';
 import Navbar from '@/components/Navigation';
+import { Toaster } from '@/components/ui/sonner';
 import { fontSans } from '@/config/fonts';
 import { RootProvider } from '@/provider/RootProvider';
 import '@/styles/globals.css';
@@ -39,6 +40,7 @@ export default async function RootLayout({ children }: Props) {
               <main className="flex-1">{children}</main>
               <Footer />
             </div>
+            <Toaster />
           </RootProvider>
         </NextIntlClientProvider>
       </body>

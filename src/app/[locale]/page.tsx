@@ -42,6 +42,9 @@ export default function Home() {
   //       <Link href="/pathnames" className="text-blue-500 hover:underline">
   //         Pathnames
   //       </Link>
+  //       <Link href="/about" className="text-blue-500 hover:underline">
+  //         About
+  //       </Link>
   //     </div>
 
   //     <LanguageSwitcher />

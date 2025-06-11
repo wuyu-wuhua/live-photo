@@ -44,7 +44,6 @@ export type FileStatsState = {
  * 文件上传Hook
  */
 export function useFileUpload(config?: FileUploadConfig) {
-  const { user, isLoading } = useSupabase();
   const [uploadState, setUploadState] = useState<UploadState>({
     isUploading: false,
     progress: 0,
@@ -76,13 +75,13 @@ export function useFileUpload(config?: FileUploadConfig) {
       let attempts = 0;
       const maxAttempts = 50; // 5秒，每次等待100ms
 
-      while (isLoading && attempts < maxAttempts) {
+      while (user === null && attempts < maxAttempts) {
         await new Promise(resolve => setTimeout(resolve, 100));
         attempts++;
       }
 
       // 如果超时仍在加载，返回错误
-      if (isLoading) {
+      if (user === null) {
         const error = '用户状态加载超时，请刷新页面重试';
         setUploadState(prev => ({ ...prev, error }));
         return { success: false, error };
@@ -144,13 +143,13 @@ export function useFileUpload(config?: FileUploadConfig) {
       let attempts = 0;
       const maxAttempts = 50; // 5秒，每次等待100ms
 
-      while (isLoading && attempts < maxAttempts) {
+      while (user === null && attempts < maxAttempts) {
         await new Promise(resolve => setTimeout(resolve, 100));
         attempts++;
       }
 
       // 如果超时仍在加载，返回错误
-      if (isLoading) {
+      if (user === null) {
         const error = '用户状态加载超时，请刷新页面重试';
         setUploadState(prev => ({ ...prev, error }));
         return { success: false, results: [], successCount: 0, failureCount: files.length };

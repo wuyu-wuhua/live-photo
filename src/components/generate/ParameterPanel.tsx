@@ -12,184 +12,182 @@ import {
   Slider,
   Switch,
   Textarea,
+  Tooltip,
 } from '@heroui/react';
 import {
-  Brush,
   Building,
   Camera,
   Cherry,
+  Coins,
   Edit3,
   Eraser,
   Expand,
-  Eye,
   Film,
   Flower2,
   Heart,
   Leaf,
-  PaintBucket,
   Palette,
-  PenTool,
   Rainbow,
   Settings,
   Snowflake,
-  Sparkles,
   Sunrise,
   Wand2,
   Zap,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { PictureCardForm } from '@/components/upload/picture-card-form';
+import { useCredits } from '@/hooks/useCredits';
 import { Label } from '../ui/label';
 
-const FUNCTION_OPTIONS: { value: DashscopeImageEditFunction; label: string; icon: React.ReactNode; description: string; color: string }[] = [
+const getFunctionOptions = (t: any) => [
   {
-    value: 'colorization',
-    label: '图像上色',
+    value: 'colorization' as DashscopeImageEditFunction,
+    label: t('parameterPanel.functions.colorization.label'),
     icon: <Palette className="w-5 h-5" />,
-    description: '为黑白图像添加自然色彩',
+    description: t('parameterPanel.functions.colorization.description'),
     color: 'text-pink-500',
   },
+  // {
+  //   value: 'control_cartoon_feature',
+  //   label: '卡通形象垫图',
+  //   icon: <Eye className="w-5 h-5" />,
+  //   description: '生成卡通风格图像',
+  //   color: 'text-purple-500',
+  // },
   {
-    value: 'control_cartoon_feature',
-    label: '卡通形象垫图',
-    icon: <Eye className="w-5 h-5" />,
-    description: '生成卡通风格图像',
-    color: 'text-purple-500',
-  },
-  {
-    value: 'description_edit',
-    label: '指令编辑',
+    value: 'description_edit' as DashscopeImageEditFunction,
+    label: t('parameterPanel.functions.description_edit.label'),
     icon: <Edit3 className="w-5 h-5" />,
-    description: '根据文字描述编辑图像',
+    description: t('parameterPanel.functions.description_edit.description'),
     color: 'text-blue-500',
   },
+  // {
+  //   value: 'description_edit_with_mask',
+  //   label: '局部重绘',
+  //   icon: <PaintBucket className="w-5 h-5" />,
+  //   description: '指定区域重新绘制',
+  //   color: 'text-orange-500',
+  // },
+  // {
+  //   value: 'doodle',
+  //   label: '线稿生图',
+  //   icon: <PenTool className="w-5 h-5" />,
+  //   description: '将线稿转换为完整图像',
+  //   color: 'text-green-500',
+  // },
   {
-    value: 'description_edit_with_mask',
-    label: '局部重绘',
-    icon: <PaintBucket className="w-5 h-5" />,
-    description: '指定区域重新绘制',
-    color: 'text-orange-500',
-  },
-  {
-    value: 'doodle',
-    label: '线稿生图',
-    icon: <PenTool className="w-5 h-5" />,
-    description: '将线稿转换为完整图像',
-    color: 'text-green-500',
-  },
-  {
-    value: 'expand',
-    label: '扩图',
+    value: 'expand' as DashscopeImageEditFunction,
+    label: t('parameterPanel.functions.expand.label'),
     icon: <Expand className="w-5 h-5" />,
-    description: '扩展图像边界',
+    description: t('parameterPanel.functions.expand.description'),
     color: 'text-indigo-500',
   },
   {
-    value: 'remove_watermark',
-    label: '去文字水印',
+    value: 'remove_watermark' as DashscopeImageEditFunction,
+    label: t('parameterPanel.functions.remove_watermark.label'),
     icon: <Eraser className="w-5 h-5" />,
-    description: '移除图像中的文字水印',
+    description: t('parameterPanel.functions.remove_watermark.description'),
     color: 'text-red-500',
   },
+  // {
+  //   value: 'stylization_all',
+  //   label: '全局风格化',
+  //   icon: <Sparkles className="w-5 h-5" />,
+  //   description: '改变整体图像风格',
+  //   color: 'text-yellow-500',
+  // },
+  // {
+  //   value: 'stylization_local',
+  //   label: '局部风格化',
+  //   icon: <Brush className="w-5 h-5" />,
+  //   description: '局部区域风格转换',
+  //   color: 'text-teal-500',
+  // },
   {
-    value: 'stylization_all',
-    label: '全局风格化',
-    icon: <Sparkles className="w-5 h-5" />,
-    description: '改变整体图像风格',
-    color: 'text-yellow-500',
-  },
-  {
-    value: 'stylization_local',
-    label: '局部风格化',
-    icon: <Brush className="w-5 h-5" />,
-    description: '局部区域风格转换',
-    color: 'text-teal-500',
-  },
-  {
-    value: 'super_resolution',
-    label: '图像超分',
+    value: 'super_resolution' as DashscopeImageEditFunction,
+    label: t('parameterPanel.functions.super_resolution.label'),
     icon: <Zap className="w-5 h-5" />,
-    description: '提升图像分辨率和清晰度',
+    description: t('parameterPanel.functions.super_resolution.description'),
     color: 'text-cyan-500',
   },
 ];
 
-// 图像上色预设滤镜
-const COLORIZATION_PRESETS = [
+const getColorizationPresets = (t: any) => [
   {
     value: '',
-    label: '自定义',
+    label: t('parameterPanel.presets.custom.label'),
     icon: <Settings className="w-5 h-5" />,
-    description: '手动输入提示词',
+    description: t('parameterPanel.presets.custom.description'),
     color: 'text-gray-500',
   },
   {
-    value: '自然真实的色彩，保持原有的光影效果',
-    label: '自然色彩',
+    value: t('parameterPanel.presets.natural.value'),
+    label: t('parameterPanel.presets.natural.label'),
     icon: <Leaf className="w-5 h-5" />,
-    description: '真实自然的色彩还原',
+    description: t('parameterPanel.presets.natural.description'),
     color: 'text-green-500',
   },
   {
-    value: '温暖的色调，增强黄色和橙色，营造温馨氛围',
-    label: '温暖色调',
+    value: t('parameterPanel.presets.warm.value'),
+    label: t('parameterPanel.presets.warm.label'),
     icon: <Sunrise className="w-5 h-5" />,
-    description: '温馨舒适的暖色调',
+    description: t('parameterPanel.presets.warm.description'),
     color: 'text-orange-500',
   },
   {
-    value: '冷色调为主，增强蓝色和青色，营造清冷氛围',
-    label: '冷色调',
+    value: t('parameterPanel.presets.cool.value'),
+    label: t('parameterPanel.presets.cool.label'),
     icon: <Snowflake className="w-5 h-5" />,
-    description: '清冷优雅的冷色调',
+    description: t('parameterPanel.presets.cool.description'),
     color: 'text-blue-500',
   },
   {
-    value: '复古怀旧的色彩风格，略微泛黄的色调',
-    label: '复古怀旧',
+    value: t('parameterPanel.presets.vintage.value'),
+    label: t('parameterPanel.presets.vintage.label'),
     icon: <Camera className="w-5 h-5" />,
-    description: '怀旧复古的色彩风格',
+    description: t('parameterPanel.presets.vintage.description'),
     color: 'text-amber-600',
   },
   {
-    value: '鲜艳饱和的色彩，高对比度，充满活力',
-    label: '鲜艳活力',
+    value: t('parameterPanel.presets.vibrant.value'),
+    label: t('parameterPanel.presets.vibrant.label'),
     icon: <Rainbow className="w-5 h-5" />,
-    description: '充满活力的鲜艳色彩',
+    description: t('parameterPanel.presets.vibrant.description'),
     color: 'text-rainbow bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500 bg-clip-text text-transparent',
   },
   {
-    value: '柔和淡雅的色彩，低饱和度，文艺清新',
-    label: '柔和淡雅',
+    value: t('parameterPanel.presets.soft.value'),
+    label: t('parameterPanel.presets.soft.label'),
     icon: <Flower2 className="w-5 h-5" />,
-    description: '文艺清新的淡雅色调',
+    description: t('parameterPanel.presets.soft.description'),
     color: 'text-pink-400',
   },
   {
-    value: '电影级调色，专业的色彩分级效果',
-    label: '电影级调色',
+    value: t('parameterPanel.presets.cinematic.value'),
+    label: t('parameterPanel.presets.cinematic.label'),
     icon: <Film className="w-5 h-5" />,
-    description: '专业电影级色彩效果',
+    description: t('parameterPanel.presets.cinematic.description'),
     color: 'text-purple-600',
   },
   {
-    value: '日系小清新色彩，明亮通透，略微过曝的效果',
-    label: '日系清新',
+    value: t('parameterPanel.presets.japanese.value'),
+    label: t('parameterPanel.presets.japanese.label'),
     icon: <Cherry className="w-5 h-5" />,
-    description: '明亮通透的日系风格',
+    description: t('parameterPanel.presets.japanese.description'),
     color: 'text-rose-400',
   },
   {
-    value: '韩系色彩风格，偏粉色调，柔美浪漫',
-    label: '韩系浪漫',
+    value: t('parameterPanel.presets.korean.value'),
+    label: t('parameterPanel.presets.korean.label'),
     icon: <Heart className="w-5 h-5" />,
-    description: '柔美浪漫的韩系色调',
+    description: t('parameterPanel.presets.korean.description'),
     color: 'text-pink-500',
   },
   {
-    value: '黑白照片上色，还原历史照片的真实色彩',
-    label: '历史还原',
+    value: t('parameterPanel.presets.historical.value'),
+    label: t('parameterPanel.presets.historical.label'),
     icon: <Building className="w-5 h-5" />,
-    description: '还原历史照片真实色彩',
+    description: t('parameterPanel.presets.historical.description'),
     color: 'text-stone-600',
   },
 ];
@@ -211,6 +209,12 @@ export function ParameterPanel({
   onBaseImageChange,
   onGenerate,
 }: ParameterPanelProps) {
+  const { credits, getFeatureCost, hasEnoughCredits } = useCredits();
+  const t = useTranslations();
+
+  const FUNCTION_OPTIONS = getFunctionOptions(t);
+  const COLORIZATION_PRESETS = getColorizationPresets(t);
+
   const handleInputChange = (field: keyof DashscopeImageEditRequest, value: any) => {
     onFormDataChange({ ...formData, [field]: value });
   };
@@ -231,12 +235,37 @@ export function ParameterPanel({
   const isStylization = formData.function === 'stylization_all' || formData.function === 'description_edit';
   const isColorization = formData.function === 'colorization';
 
+  // 计算当前选择功能所需积分
+  const creditCost = formData.function ? getFeatureCost(formData.function) : 0;
+  const hasEnoughCreditForGeneration = hasEnoughCredits(creditCost);
+
+  // 判断按钮是否禁用
+  const isButtonDisabled
+    = baseImageFiles.length === 0
+      || !formData.prompt
+      || !hasEnoughCreditForGeneration
+      || isGenerating;
+
+  // 按钮提示文本
+  const getButtonTooltip = () => {
+    if (baseImageFiles.length === 0) {
+      return '请上传参考图片';
+    }
+    if (!formData.prompt) {
+      return '请输入提示词';
+    }
+    if (!hasEnoughCreditForGeneration) {
+      return `积分不足，需要${creditCost}积分，当前余额${credits?.balance || 0}积分`;
+    }
+    return '';
+  };
+
   return (
     <div className="h-fit">
       {/* 基础图像上传 */}
       <div className="space-y-2">
         <Label htmlFor="preset-filter" className="text-sm font-medium text-foreground">
-          参考图片
+          {t('parameterPanel.referenceImage')}
           <span className="text-danger ml-1">*</span>
         </Label>
         <PictureCardForm
@@ -246,7 +275,12 @@ export function ParameterPanel({
           className="w-full"
           onUploadComplete={(result) => {
             if (result.success) {
-              formData.base_image_url = result.file?.url!;
+              if (result.file?.url) {
+                onFormDataChange({
+                  ...formData,
+                  base_image_url: result.file.url,
+                });
+              }
             }
           }}
           onUploadError={(error, file) => {
@@ -254,15 +288,15 @@ export function ParameterPanel({
           }}
         />
         <p className="text-xs text-default-500">
-          支持JPG、PNG、WEBP等格式，大小不超过10MB
+          {t('parameterPanel.referenceImageDescription')}
         </p>
       </div>
 
       {/* 功能选择 */}
       <Select
-        label="编辑功能"
+        label={t('parameterPanel.editFunction')}
         labelPlacement="outside"
-        placeholder="选择图像编辑功能"
+        placeholder={t('parameterPanel.selectEditFunction')}
         selectedKeys={[formData.function]}
         onSelectionChange={(keys) => {
           const selectedFunction = Array.from(keys)[0] as DashscopeImageEditFunction;
@@ -299,12 +333,12 @@ export function ParameterPanel({
       {/* 蒙版图像URL - 仅局部重绘需要 */}
       {needsMask && (
         <Input
-          label="蒙版图像URL"
-          placeholder="请输入蒙版图像URL"
+          label={t('parameterPanel.maskImageUrl')}
+          placeholder={t('parameterPanel.maskImagePlaceholder')}
           value={formData.mask_image_url || ''}
           onChange={e => handleInputChange('mask_image_url', e.target.value)}
           isRequired
-          description="白色区域表示需要编辑的部分，黑色区域表示保持不变"
+          description={t('parameterPanel.maskImageDescription')}
         />
       )}
 
@@ -312,10 +346,10 @@ export function ParameterPanel({
       {isColorization && (
         <div className="space-y-2">
           <Label htmlFor="preset-filter" className="text-sm font-medium text-foreground">
-            预设滤镜
+            {t('parameterPanel.presetFilter')}
           </Label>
           <Select
-            placeholder="选择预设滤镜或自定义"
+            placeholder={t('parameterPanel.selectPresetFilter')}
             selectedKeys={COLORIZATION_PRESETS.find(preset => preset.value === formData.prompt)?.value ? [COLORIZATION_PRESETS.find(preset => preset.value === formData.prompt)!.value] : ['']}
             onSelectionChange={(keys) => {
               const selectedPreset = Array.from(keys)[0] as string;
@@ -350,31 +384,32 @@ export function ParameterPanel({
             ))}
           </Select>
           <p className="text-xs text-default-500">
-            选择预设滤镜可快速应用常用的上色风格，也可以选择自定义后手动输入提示词
+            {t('parameterPanel.presetFilterDescription')}
           </p>
         </div>
       )}
 
       {/* 提示词 */}
       <Textarea
-        label="提示词"
+        label={t('parameterPanel.prompt')}
         labelPlacement="outside"
-        placeholder={isColorization ? '选择预设滤镜或描述您想要的上色风格...' : '描述您想要生成或编辑的内容...'}
+        placeholder={isColorization ? t('parameterPanel.promptPlaceholderColorization') : t('parameterPanel.promptPlaceholder')}
         value={formData.prompt}
         onChange={e => handleInputChange('prompt', e.target.value)}
         isRequired
         maxRows={4}
-        description={isColorization ? '描述您想要的上色风格和色彩效果，支持中英文，最多800个字符' : '支持中英文，最多800个字符'}
+        description={isColorization ? t('parameterPanel.promptDescriptionColorization') : t('parameterPanel.promptDescription')}
       />
 
       {/* 高级参数 */}
       <Accordion variant="splitted" selectionMode="multiple" defaultExpandedKeys={['advanced-params']}>
-        <AccordionItem key="advanced-params" aria-label="高级参数" title="高级参数" className="px-0">
+        <AccordionItem key="advanced-params" aria-label={t('parameterPanel.advancedParams')} title={t('parameterPanel.advancedParams')} className="px-0">
           <div className="space-y-4">
             {/* 生成数量 */}
             <div>
               <label className="block text-sm font-medium mb-2">
-                生成数量:
+                {t('parameterPanel.generateCount')}
+                :
                 {formData.parameters?.n}
               </label>
               <Slider
@@ -392,7 +427,8 @@ export function ParameterPanel({
             {isStylization && (
               <div>
                 <Label className="block text-sm font-medium mb-2">
-                  修改强度:
+                  {t('parameterPanel.modifyStrength')}
+                  :
                   {' '}
                   {formData.parameters?.strength?.toFixed(2)}
                 </Label>
@@ -406,7 +442,7 @@ export function ParameterPanel({
                   className="max-w-md"
                 />
                 <p className="text-xs text-default-500 mt-1">
-                  值越接近0越接近原图，值越接近1修改幅度越大
+                  {t('parameterPanel.modifyStrengthDescription')}
                 </p>
               </div>
             )}
@@ -415,7 +451,8 @@ export function ParameterPanel({
             {isSuperResolution && (
               <div>
                 <Label className="block text-sm font-medium mb-2">
-                  超分倍数:
+                  {t('parameterPanel.upscaleFactor')}
+                  :
                   {' '}
                   {formData.parameters?.upscale_factor}
                   x
@@ -430,7 +467,7 @@ export function ParameterPanel({
                   className="max-w-md"
                 />
                 <p className="text-xs text-default-500 mt-1">
-                  选择图像放大的倍数，倍数越高图像越清晰但处理时间越长
+                  {t('parameterPanel.upscaleFactorDescription')}
                 </p>
               </div>
             )}
@@ -438,11 +475,12 @@ export function ParameterPanel({
             {/* 扩图参数 - 仅扩图功能需要 */}
             {isExpand && (
               <div className="space-y-4">
-                <p className="text-sm font-medium text-foreground">扩图方向设置</p>
+                <p className="text-sm font-medium text-foreground">{t('parameterPanel.expandDirection')}</p>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label className="block text-sm font-medium mb-2">
-                      向上扩展:
+                      {t('parameterPanel.expandUp')}
+                      :
                       {' '}
                       {formData.parameters?.top_scale?.toFixed(1)}
                     </Label>
@@ -457,7 +495,8 @@ export function ParameterPanel({
                   </div>
                   <div>
                     <Label className="block text-sm font-medium mb-2">
-                      向下扩展:
+                      {t('parameterPanel.expandDown')}
+                      :
                       {' '}
                       {formData.parameters?.bottom_scale?.toFixed(1)}
                     </Label>
@@ -472,7 +511,8 @@ export function ParameterPanel({
                   </div>
                   <div>
                     <Label className="block text-sm font-medium mb-2">
-                      向左扩展:
+                      {t('parameterPanel.expandLeft')}
+                      :
                       {' '}
                       {formData.parameters?.left_scale?.toFixed(1)}
                     </Label>
@@ -487,7 +527,8 @@ export function ParameterPanel({
                   </div>
                   <div>
                     <Label className="block text-sm font-medium mb-2">
-                      向右扩展:
+                      {t('parameterPanel.expandRight')}
+                      :
                       {' '}
                       {formData.parameters?.right_scale?.toFixed(1)}
                     </Label>
@@ -510,24 +551,32 @@ export function ParameterPanel({
                 isSelected={formData.parameters?.is_sketch || false}
                 onValueChange={value => handleParameterChange('is_sketch', value)}
               >
-                输入图像为线稿图像
+                {t('parameterPanel.isSketch')}
               </Switch>
             )}
           </div>
         </AccordionItem>
       </Accordion>
 
-      <Button
-        color="primary"
-        size="lg"
-        startContent={<Wand2 className="w-4 h-4" />}
-        className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-        onPress={onGenerate}
-        isLoading={isGenerating}
-        isDisabled={baseImageFiles.length === 0 || !formData.prompt}
-      >
-        {isGenerating ? '生成中...' : '开始生成'}
-      </Button>
+      <Tooltip content={getButtonTooltip()} isDisabled={!isButtonDisabled || isGenerating}>
+        <Button
+          color="primary"
+          size="lg"
+          startContent={<Wand2 className="w-4 h-4" />}
+          endContent={(
+            <div className="flex items-center">
+              <Coins className="w-4 h-4 mr-1" />
+              {creditCost}
+            </div>
+          )}
+          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+          onPress={onGenerate}
+          isLoading={isGenerating}
+          isDisabled={isButtonDisabled}
+        >
+          {isGenerating ? t('parameterPanel.generating') : t('parameterPanel.startGenerate')}
+        </Button>
+      </Tooltip>
     </div>
   );
 }

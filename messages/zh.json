@@ -5,6 +5,8 @@
   },
   "nav": {
     "home": "首页",
+    "generate": "AI生成",
+    "gallery": "我的作品",
     "products": "产品",
     "dashboard": "仪表盘",
     "admin": "管理",
@@ -12,7 +14,162 @@
     "login": "登录",
     "signup": "注册",
     "logout": "退出",
-    "pricing": "价格"
+    "pricing": "价格",
+    "profile": "个人中心"
+  },
+  "generate": {
+    "title": "AI 图像编辑",
+    "subtitle": "智能图像处理与生成平台",
+    "generateFailed": "生成失败",
+    "videoGenerationFailed": "视频生成请求失败",
+    "pleaseLogin": "请先登录",
+    "insufficientCredits": "积分不足",
+    "selectCreditPackage": "请选择积分套餐进行充值",
+    "topUp": "充值",
+    "recommended": "推荐",
+    "paymentSuccess": "支付成功！您已获得{credits}积分"
+  },
+  "generatePage": {
+    "title": "AI 图像生成",
+    "subtitle": "使用先进的 AI 技术生成高质量图像",
+    "generateFailed": "生成失败，请重试",
+    "generateVideoError": "视频生成请求失败"
+  },
+  "resultPanel": {
+    "title": "生成结果",
+    "subtitle": "AI 图像生成结果展示",
+    "generating": "AI 正在创作中...",
+    "generatingDescription": "请稍候，我们正在为您生成精美的图像",
+    "originalImage": "原图",
+    "generatedResult": "生成结果",
+    "download": "下载",
+    "makeItMove": "让它动起来",
+    "allResults": "所有生成结果",
+    "result": "结果",
+    "waitingGenerate": "等待生成",
+    "waitingDescription": "配置参数后点击右上角的生成按钮开始创作",
+    "loginRequired": "请先登录",
+    "generateFailed": "生成失败",
+    "generateVideoError": "视频生成失败",
+    "generateVideoTitle": "生成{type}",
+    "emojiVideo": "表情视频",
+    "lipsyncVideo": "对口型视频",
+    "configureParameters": "配置生成参数",
+    "cancel": "取消",
+    "startGenerate": "开始生成"
+  },
+  "parameterPanel": {
+    "referenceImage": "参考图片",
+    "referenceImageDescription": "支持JPG、PNG、WEBP等格式，大小不超过10MB",
+    "editFunction": "编辑功能",
+    "selectEditFunction": "选择图像编辑功能",
+    "maskImageUrl": "蒙版图像URL",
+    "maskImagePlaceholder": "请输入蒙版图像URL",
+    "maskImageDescription": "白色区域表示需要编辑的部分，黑色区域表示保持不变",
+    "presetFilter": "预设滤镜",
+    "selectPresetFilter": "选择预设滤镜或自定义",
+    "presetFilterDescription": "选择预设滤镜可快速应用常用的上色风格，也可以选择自定义后手动输入提示词",
+    "prompt": "提示词",
+    "promptPlaceholder": "描述您想要生成或编辑的内容...",
+    "promptPlaceholderColorization": "选择预设滤镜或描述您想要的上色风格...",
+    "promptDescription": "支持中英文，最多800个字符",
+    "promptDescriptionColorization": "描述您想要的上色风格和色彩效果，支持中英文，最多800个字符",
+    "advancedParams": "高级参数",
+    "generateCount": "生成数量",
+    "modifyStrength": "修改强度",
+    "modifyStrengthDescription": "值越接近0越接近原图，值越接近1修改幅度越大",
+    "upscaleFactor": "超分倍数",
+    "upscaleFactorDescription": "选择图像放大的倍数，倍数越高图像越清晰但处理时间越长",
+    "expandDirection": "扩图方向设置",
+    "expandUp": "向上扩展",
+    "expandDown": "向下扩展",
+    "expandLeft": "向左扩展",
+    "expandRight": "向右扩展",
+    "isSketch": "输入图像为线稿图像",
+    "generating": "生成中...",
+    "startGenerate": "开始生成",
+    "uploadFailed": "上传失败:",
+    "tooltipUploadImage": "请上传参考图片",
+    "tooltipEnterPrompt": "请输入提示词",
+    "tooltipInsufficientCredits": "积分不足，需要{cost}积分，当前余额{balance}积分",
+    "functions": {
+      "colorization": {
+        "label": "图像上色",
+        "description": "为黑白图像添加自然色彩"
+      },
+      "description_edit": {
+        "label": "指令编辑",
+        "description": "根据文字描述编辑图像"
+      },
+      "expand": {
+        "label": "扩图",
+        "description": "扩展图像边界"
+      },
+      "remove_watermark": {
+        "label": "去文字水印",
+        "description": "移除图像中的文字水印"
+      },
+      "super_resolution": {
+        "label": "图像超分",
+        "description": "提升图像分辨率和清晰度"
+      }
+    },
+    "presets": {
+      "custom": {
+        "label": "自定义",
+        "description": "手动输入提示词"
+      },
+      "natural": {
+        "label": "自然色彩",
+        "description": "真实自然的色彩还原",
+        "value": "自然真实的色彩，保持原有的光影效果"
+      },
+      "warm": {
+        "label": "温暖色调",
+        "description": "温馨舒适的暖色调",
+        "value": "温暖的色调，增强黄色和橙色，营造温馨氛围"
+      },
+      "cool": {
+        "label": "冷色调",
+        "description": "清冷优雅的冷色调",
+        "value": "冷色调为主，增强蓝色和青色，营造清冷氛围"
+      },
+      "vintage": {
+        "label": "复古怀旧",
+        "description": "怀旧复古的色彩风格",
+        "value": "复古怀旧的色彩风格，略微泛黄的色调"
+      },
+      "vibrant": {
+        "label": "鲜艳活力",
+        "description": "充满活力的鲜艳色彩",
+        "value": "鲜艳饱和的色彩，高对比度，充满活力"
+      },
+      "soft": {
+        "label": "柔和淡雅",
+        "description": "文艺清新的淡雅色调",
+        "value": "柔和淡雅的色彩，低饱和度，文艺清新"
+      },
+      "cinematic": {
+        "label": "电影级调色",
+        "description": "专业电影级色彩效果",
+        "value": "电影级调色，专业的色彩分级效果"
+      },
+      "japanese": {
+        "label": "日系清新",
+        "description": "明亮通透的日系风格",
+        "value": "日系小清新色彩，明亮通透，略微过曝的效果"
+      },
+      "korean": {
+        "label": "韩系浪漫",
+        "description": "柔美浪漫的韩系色调",
+        "value": "韩系色彩风格，偏粉色调，柔美浪漫"
+      },
+      "historical": {
+        "label": "历史还原",
+        "description": "还原历史照片真实色彩",
+        "value": "黑白照片上色，还原历史照片的真实色彩"
+      }
+    }
   },
   "NotFound": {
     "description": "抱歉，您访问的页面不存在。",
@@ -41,6 +198,27 @@
     "open": "打开",
     "submit": "提交",
     "retry": "重试",
+    "noData": "暂无数据",
+    "completed": "已完成",
+    "failed": "失败",
+    "pending": "处理中",
+    "image": "图片",
+    "result": "结果",
+    "generationHistory": "生成记录",
+    "plans": {
+      "basic": {
+        "name": "基础套餐",
+        "description": "适合轻度使用"
+      },
+      "standard": {
+        "name": "标准套餐",
+        "description": "适合中度使用"
+      },
+      "premium": {
+        "name": "高级套餐",
+        "description": "适合重度使用"
+      }
+    },
     "selectLanguage": "选择语言",
     "search": "搜索",
     "textToSpeech": "文本转语音",
@@ -141,6 +319,211 @@
       "answer3": "是的，您可以随时取消订阅。您的权益将持续到您的计费周期结束。",
       "question4": "我可以为多少照片上色有限制吗？",
       "answer4": "免费计划允许无限制上色，但带有水印。对于高分辨率、无水印的图像，您受到计划中积分数量的限制。"
+    },
+    "features": {
+      "credits": "{count}积分",
+      "imageEdit": "图像编辑",
+      "videoAnimation": "视频动画",
+      "highRes": "高分辨率输出",
+      "noWatermark": "无水印",
+      "priority": "优先处理",
+      "support": "优先客服"
+    },
+    "cta": {
+      "basic": "选择基础套餐",
+      "standard": "选择标准套餐",
+      "premium": "选择高级套餐"
+    },
+    "popular": "最受欢迎",
+    "currentCredits": "当前积分",
+    "pricePerCredit": "单价",
+    "credits": "积分",
+    "paymentSuccess": "支付成功！您已获得",
+    "pleaseLogin": "请先登录"
+  },
+  "gallery": {
+    "title": "我的作品",
+    "subtitle": "查看所有AI图像编辑结果",
+    "realtimeUpdate": "实时更新",
+    "imageDetails": "图像编辑详情",
+    "createTime": "创建时间",
+    "originalImage": "原始图片",
+    "generatedResult": "生成结果",
+    "noResultVideo": "暂无结果视频",
+    "noResultImage": "暂无结果图",
+    "otherResults": "其他生成结果",
+    "emojiVideoResult": "表情视频结果",
+    "lipsyncVideoResult": "对口型视频结果",
+    "editFunction": "编辑功能",
+    "prompt": "提示词",
+    "taskId": "任务ID",
+    "unknownFunction": "未知功能",
+    "generateEmojiVideo": "生成表情视频",
+    "generateLipsyncVideo": "生成对口型视频",
+    "close": "关闭",
+    "retry": "重试",
+    "myGeneratedContent": "我的生成内容",
+    "viewAllResults": "查看所有AI图像编辑结果",
+    "realTimeUpdates": "实时更新",
+    "loadFailed": "加载失败",
+    "noContent": "暂无内容",
+    "noContentDescription": "您还没有生成任何内容",
+    "makeItMove": "让它动起来",
+    "lipsyncCompleted": "对口型完成",
+    "lipsyncGenerating": "对口型生成中",
+    "lipsyncFailed": "对口型失败",
+    "generateVideoTitle": "生成{type}视频",
+    "emoji": "表情",
+    "lipsync": "对口型",
+    "configureAndGenerate": "配置参数并生成视频",
+    "cancel": "取消",
+    "generating": "生成中...",
+    "startGenerate": "开始生成",
+    "status": {
+      "waiting": "等待中",
+      "processing": "处理中",
+      "generating": "生成中",
+      "completed": "已完成",
+      "succeeded": "已完成",
+      "failed": "失败",
+      "running": "生成中",
+      "unknown": "未知"
+    },
+    "messages": {
+      "generatingEmoji": "正在生成表情视频...",
+      "emojiGenerationFailed": "表情视频生成失败",
+      "emojiNotStarted": "表情视频未开始生成",
+      "generatingLipsync": "正在生成对口型视频...",
+      "lipsyncGenerationFailed": "对口型视频生成失败",
+      "lipsyncNotStarted": "对口型视频未开始生成",
+      "retryEmojiGeneration": "重试表情视频生成",
+      "retryLipsyncGeneration": "重试对口型视频生成"
+    },
+    "videoGeneration": {
+      "generateEmoji": "生成表情视频",
+      "generateLiveportrait": "生成对口型视频",
+      "configureParameters": "配置参数并生成视频",
+      "cancel": "取消",
+      "startGeneration": "开始生成",
+      "generating": "生成中..."
+    },
+    "empty": {
+      "title": "暂无内容",
+      "description": "您还没有生成任何内容"
+    },
+    "error": {
+      "title": "加载失败",
+      "retry": "重试"
+    },
+    "pagination": {
+      "total": "共 {total} 条记录，第 {current} / {totalPages} 页"
+    }
+  },
+  "profile": {
+    "title": "个人中心",
+    "subtitle": "管理您的账户信息和偏好设置",
+    "credits": {
+      "title": "我的积分",
+      "current": "当前积分",
+      "history": "积分历史",
+      "package": "积分套餐",
+      "buyMore": "购买更多",
+      "transactions": "交易记录",
+      "date": "日期",
+      "type": "类型",
+      "amount": "数量",
+      "balance": "余额",
+      "description": "描述",
+      "noTransactions": "暂无交易记录",
+      "loadMore": "加载更多",
+      "purchase": "购买",
+      "usage": "使用",
+      "refund": "退款",
+      "bonus": "奖励",
+      "expired": "过期",
+      "pending": "待处理",
+      "completed": "已完成",
+      "failed": "失败",
+      "cancelled": "已取消"
+    },
+    "description": "管理您的积分、查看生成记录和消费历史",
+    "user": "用户",
+    "creditsOverview": "积分概览",
+    "currentCredits": "当前积分",
+    "totalEarned": "累计获得",
+    "totalSpent": "累计消费",
+    "recentTransactions": "最近交易",
+    "generationHistory": "生成记录",
+    "creditPackages": "积分套餐",
+    "purchaseCredits": "购买积分",
+    "transactionHistory": "交易记录",
+    "type": "类型",
+    "amount": "金额",
+    "date": "日期",
+    "status": "状态",
+    "view": "查看",
+    "purchase": "购买",
+    "subscription": "订阅",
+    "referral": "推荐",
+    "bonus": "奖励",
+    "adminAdjustment": "管理员调整",
+    "imageGeneration": "图片生成",
+    "videoGeneration": "视频生成",
+    "refund": "退款",
+    "expiration": "积分过期",
+    "promotional": "促销赠送",
+    "credits": "积分",
+    "balance": "余额",
+    "noTransactions": "暂无交易记录",
+    "noGenerations": "暂无生成记录",
+    "recommended": "推荐",
+    "video": "视频",
+    "waiting": "等待中",
+    "noResult": "无结果",
+    "createdAt": "创建时间",
+    "actions": "操作",
+    "paymentSuccess": "支付成功，获得",
+    "image": "图片",
+    "completed": "已完成",
+    "failed": "失败",
+    "pending": "处理中",
+    "result": "结果",
+    "transactionTypes": {
+      "purchase": "购买积分",
+      "subscription": "订阅获得",
+      "referral": "推荐奖励",
+      "bonus": "奖励积分",
+      "adminAdjustment": "管理员调整",
+      "imageGeneration": "图片生成",
+      "videoGeneration": "视频生成",
+      "refund": "退款",
+      "expiration": "积分过期",
+      "promotional": "促销赠送"
+    },
+    "features": {
+      "unknown": "未知功能",
+      "stylizationAll": "全图风格化",
+      "stylizationLocal": "局部风格化",
+      "descriptionEdit": "描述编辑",
+      "descriptionEditWithMask": "蒙版描述编辑",
+      "removeWatermark": "去水印",
+      "expand": "图片扩展",
+      "superResolution": "超分辨率",
+      "colorization": "上色",
+      "doodle": "涂鸦",
+      "controlCartoonFeature": "卡通控制",
+      "liveportraitAnimation": "人像动画",
+      "emojiAnimation": "表情动画"
+    },
+    "payment": {
+      "createFailed": "创建支付失败，请重试",
+      "formNotLoaded": "支付表单未正确加载",
+      "failed": "支付失败",
+      "processingFailed": "支付处理失败，请重试",
+      "cardInfo": "银行卡信息",
+      "processing": "处理中...",
+      "pay": "支付",
+      "securePayment": "安全支付"
     }
   }
 }

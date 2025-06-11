@@ -14,6 +14,7 @@ import type {
   UploadUpdate,
 } from '@/types/database';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { useUser } from '@/hooks/useUser';
 import {
   CustomerService,
@@ -55,10 +56,14 @@ export function useUploads(params?: QueryParams) {
         setUploads(response.data);
         setPagination(response.pagination);
       } else {
-        setState({ loading: false, error: response.error || '获取上传文件失败' });
+        const errorMsg = response.error || '获取上传文件失败';
+        setState({ loading: false, error: errorMsg });
+        toast.error(errorMsg);
       }
     } catch (error) {
-      setState({ loading: false, error: '获取上传文件失败' });
+      const errorMsg = '获取上传文件失败';
+      setState({ loading: false, error: errorMsg });
+      toast.error(errorMsg);
     } finally {
       setState(prev => ({ ...prev, loading: false }));
     }
@@ -75,6 +80,7 @@ export function useUploads(params?: QueryParams) {
     } catch (error) {
       const errorMsg = '创建上传记录失败';
       setState({ loading: false, error: errorMsg });
+      toast.error(errorMsg);
       return { success: false, data: undefined as any, error: errorMsg };
     } finally {
       setState(prev => ({ ...prev, loading: false }));
@@ -92,6 +98,7 @@ export function useUploads(params?: QueryParams) {
     } catch (error) {
       const errorMsg = '更新上传记录失败';
       setState({ loading: false, error: errorMsg });
+      toast.error(errorMsg);
       return { success: false, data: undefined as any, error: errorMsg };
     } finally {
       setState(prev => ({ ...prev, loading: false }));
@@ -109,6 +116,7 @@ export function useUploads(params?: QueryParams) {
     } catch (error) {
       const errorMsg = '删除上传记录失败';
       setState({ loading: false, error: errorMsg });
+      toast.error(errorMsg);
       return { success: false, data: undefined as any, error: errorMsg };
     } finally {
       setState(prev => ({ ...prev, loading: false }));
@@ -157,14 +165,18 @@ export function useImageEditResults(params?: QueryParams) {
         setResults(response.data);
         setPagination(response.pagination);
       } else {
-        setState({ loading: false, error: response.error || '获取编辑结果失败' });
+        const errorMsg = response.error || '获取编辑结果失败';
+        setState({ loading: false, error: errorMsg });
+        toast.error(errorMsg);
       }
     } catch (error) {
-      setState({ loading: false, error: '获取编辑结果失败' });
+      const errorMsg = '获取编辑结果失败';
+      setState({ loading: false, error: errorMsg });
+      toast.error(errorMsg);
     } finally {
       setState(prev => ({ ...prev, loading: false }));
     }
-  }, [user?.id, params]);
+  }, [user?.id, JSON.stringify(params)]);
 
   const createEditResult = useCallback(async (editResult: ImageEditResultInsert): Promise<ApiResponse<ImageEditResult>> => {
     setState({ loading: true, error: null });
@@ -177,6 +189,7 @@ export function useImageEditResults(params?: QueryParams) {
     } catch (error) {
       const errorMsg = '创建编辑任务失败';
       setState({ loading: false, error: errorMsg });
+      toast.error(errorMsg);
       return { success: false, data: undefined as any, error: errorMsg };
     } finally {
       setState(prev => ({ ...prev, loading: false }));
@@ -198,6 +211,7 @@ export function useImageEditResults(params?: QueryParams) {
     } catch (error) {
       const errorMsg = '更新状态失败';
       setState({ loading: false, error: errorMsg });
+      toast.error(errorMsg);
       return { success: false, data: undefined as any, error: errorMsg };
     } finally {
       setState(prev => ({ ...prev, loading: false }));
@@ -237,10 +251,14 @@ export function useImageEditResult(id: string) {
       if (response.success) {
         setResult(response.data);
       } else {
-        setState({ loading: false, error: response.error || '获取编辑结果失败' });
+        const errorMsg = response.error || '获取编辑结果失败';
+        setState({ loading: false, error: errorMsg });
+        toast.error(errorMsg);
       }
     } catch (error) {
-      setState({ loading: false, error: '获取编辑结果失败' });
+      const errorMsg = '获取编辑结果失败';
+      setState({ loading: false, error: errorMsg });
+      toast.error(errorMsg);
     } finally {
       setState(prev => ({ ...prev, loading: false }));
     }
@@ -279,10 +297,14 @@ export function useCustomers(params?: QueryParams) {
         setCustomers(response.data);
         setPagination(response.pagination);
       } else {
-        setState({ loading: false, error: response.error || '获取客户列表失败' });
+        const errorMsg = response.error || '获取客户列表失败';
+        setState({ loading: false, error: errorMsg });
+        toast.error(errorMsg);
       }
     } catch (error) {
-      setState({ loading: false, error: '获取客户列表失败' });
+      const errorMsg = '获取客户列表失败';
+      setState({ loading: false, error: errorMsg });
+      toast.error(errorMsg);
     } finally {
       setState(prev => ({ ...prev, loading: false }));
     }
@@ -299,6 +321,7 @@ export function useCustomers(params?: QueryParams) {
     } catch (error) {
       const errorMsg = '创建客户失败';
       setState({ loading: false, error: errorMsg });
+      toast.error(errorMsg);
       return { success: false, data: undefined as any, error: errorMsg };
     } finally {
       setState(prev => ({ ...prev, loading: false }));
@@ -316,6 +339,7 @@ export function useCustomers(params?: QueryParams) {
     } catch (error) {
       const errorMsg = '更新客户信息失败';
       setState({ loading: false, error: errorMsg });
+      toast.error(errorMsg);
       return { success: false, data: undefined as any, error: errorMsg };
     } finally {
       setState(prev => ({ ...prev, loading: false }));
@@ -358,10 +382,14 @@ export function useCustomer(id?: string, email?: string) {
       if (response.success) {
         setCustomer(response.data);
       } else {
-        setState({ loading: false, error: response.error || '获取客户信息失败' });
+        const errorMsg = response.error || '获取客户信息失败';
+        setState({ loading: false, error: errorMsg });
+        toast.error(errorMsg);
       }
-    } catch (error) {
-      setState({ loading: false, error: '获取客户信息失败' });
+    } catch (_error) {
+      const errorMsg = '获取客户信息失败';
+      setState({ loading: false, error: errorMsg });
+      toast.error(errorMsg);
     } finally {
       setState(prev => ({ ...prev, loading: false }));
     }
@@ -400,8 +428,11 @@ export function useDatabaseStats() {
       }
 
       setStats(statsData);
-    } catch (error) {
-      setState({ loading: false, error: '获取统计信息失败' });
+    // eslint-disable-next-line unused-imports/no-unused-vars
+    } catch (_error) {
+      const errorMsg = '获取统计信息失败';
+      setState({ loading: false, error: errorMsg });
+      toast.error(errorMsg);
     } finally {
       setState(prev => ({ ...prev, loading: false }));
     }
@@ -440,10 +471,14 @@ export function useTaskMonitor(status: TaskStatus, params?: QueryParams) {
         setTasks(response.data);
         setPagination(response.pagination);
       } else {
-        setState({ loading: false, error: response.error || '获取任务列表失败' });
+        const errorMsg = response.error || '获取任务列表失败';
+        setState({ loading: false, error: errorMsg });
+        toast.error(errorMsg);
       }
-    } catch (error) {
-      setState({ loading: false, error: '获取任务列表失败' });
+    } catch (_error) {
+      const errorMsg = '获取任务列表失败';
+      setState({ loading: false, error: errorMsg });
+      toast.error(errorMsg);
     } finally {
       setState(prev => ({ ...prev, loading: false }));
     }

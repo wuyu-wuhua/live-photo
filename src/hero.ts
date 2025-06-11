@@ -2,6 +2,9 @@
 import { heroui } from '@heroui/react';
 
 export default heroui({
+  prefix: 'heroui',
+  defaultTheme: 'dark', // default theme from the themes object
+  defaultExtendTheme: 'dark', // default theme to extend on custom themes
   themes: {
     light: {
       colors: {
@@ -20,18 +23,18 @@ export default heroui({
           DEFAULT: '#d4d4d8',
         },
         primary: {
-          50: '#dfedfd',
-          100: '#b3d4fa',
-          200: '#86bbf7',
-          300: '#59a1f4',
-          400: '#2d88f1',
-          500: '#006fee',
-          600: '#005cc4',
-          700: '#00489b',
-          800: '#003571',
-          900: '#002147',
-          foreground: '#fff',
-          DEFAULT: '#006fee',
+          50: '#fefefe',
+          100: '#fdfdfd',
+          200: '#fbfbfb',
+          300: '#fafafa',
+          400: '#f8f8f8',
+          500: '#f7f7f7',
+          600: '#cccccc',
+          700: '#a1a1a1',
+          800: '#757575',
+          900: '#4a4a4a',
+          foreground: '#000',
+          DEFAULT: '#f7f7f7',
         },
         secondary: {
           50: '#eee4f8',
@@ -128,18 +131,18 @@ export default heroui({
           DEFAULT: '#3f3f46',
         },
         primary: {
-          50: '#002147',
-          100: '#003571',
-          200: '#00489b',
-          300: '#005cc4',
-          400: '#006fee',
-          500: '#2d88f1',
-          600: '#59a1f4',
-          700: '#86bbf7',
-          800: '#b3d4fa',
-          900: '#dfedfd',
-          foreground: '#fff',
-          DEFAULT: '#006fee',
+          50: '#4a4a4a',
+          100: '#757575',
+          200: '#a1a1a1',
+          300: '#cccccc',
+          400: '#f7f7f7',
+          500: '#f8f8f8',
+          600: '#fafafa',
+          700: '#fbfbfb',
+          800: '#fdfdfd',
+          900: '#fefefe',
+          foreground: '#000',
+          DEFAULT: '#f7f7f7',
         },
         secondary: {
           50: '#240c3c',
@@ -218,6 +221,14 @@ export default heroui({
         focus: '#006FEE',
         overlay: '#ffffff',
       },
+    },
+  },
+  layout: {
+    disabledOpacity: '0.5',
+    radius: {
+      small: '4px',
+      medium: '6px',
+      large: '8px',
     },
   },
 });

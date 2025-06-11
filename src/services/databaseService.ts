@@ -154,9 +154,10 @@ export class UploadService {
 
 // 图片编辑结果服务
 export class ImageEditService {
-  static async create(editResult: ImageEditResultInsert): Promise<ApiResponse<ImageEditResult>> {
+  static async create(editResult: ImageEditResultInsert, customClient?: any): Promise<ApiResponse<ImageEditResult>> {
     try {
-      const { data, error } = await supabase
+      const client = customClient || supabase;
+      const { data, error } = await client
         .from('image_edit_results')
         .insert(editResult)
         .select()
@@ -180,9 +181,10 @@ export class ImageEditService {
     }
   }
 
-  static async getById(id: string): Promise<ApiResponse<ImageEditResult>> {
+  static async getById(id: string, customClient?: any): Promise<ApiResponse<ImageEditResult>> {
     try {
-      const { data, error } = await supabase
+      const client = customClient || supabase;
+      const { data, error } = await client
         .from('image_edit_results')
         .select('*')
         .eq('id', id)
@@ -205,9 +207,10 @@ export class ImageEditService {
     }
   }
 
-  static async getByUserId(userId: string, params?: QueryParams): Promise<PaginatedResponse<ImageEditResult>> {
+  static async getByUserId(userId: string, params?: QueryParams, customClient?: any): Promise<PaginatedResponse<ImageEditResult>> {
     try {
-      let query = supabase
+      const client = customClient || supabase;
+      let query = client
         .from('image_edit_results')
         .select('*', { count: 'exact' })
         .eq('user_id', userId);
@@ -266,13 +269,23 @@ export class ImageEditService {
 
   static async updateStatus(
     id: string,
-    status: TaskStatus,
+    statusOrUpdates: TaskStatus | Partial<ImageEditResultUpdate>,
     updates?: Partial<ImageEditResultUpdate>,
+    customClient?: any,
   ): Promise<ApiResponse<ImageEditResult>> {
     try {
-      const { data, error } = await supabase
+      const client = customClient || supabase;
+      // 如果第二个参数是字符串，则为旧的调用方式（包含status）
+      // 如果第二个参数是对象，则为新的调用方式（只有updates）
+      let updateData: any;
+      if (typeof statusOrUpdates === 'string') {
+        updateData = { status: statusOrUpdates, ...updates };
+      } else {
+        updateData = statusOrUpdates;
+      }
+      const { data, error } = await client
         .from('image_edit_results')
-        .update({ status, ...updates })
+        .update(updateData)
         .eq('id', id)
         .select()
         .single();
@@ -295,9 +308,10 @@ export class ImageEditService {
     }
   }
 
-  static async getByStatus(status: TaskStatus, params?: QueryParams): Promise<PaginatedResponse<ImageEditResult>> {
+  static async getByStatus(status: TaskStatus, params?: QueryParams, customClient?: any): Promise<PaginatedResponse<ImageEditResult>> {
     try {
-      let query = supabase
+      const client = customClient || supabase;
+      let query = client
         .from('image_edit_results')
         .select('*', { count: 'exact' })
         .eq('status', status);

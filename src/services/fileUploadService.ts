@@ -60,8 +60,7 @@ const DEFAULT_CONFIG: FileUploadConfig = {
 export const IMAGE_UPLOAD_CONFIG: FileUploadConfig = {
   maxFileSize: 5 * 1024 * 1024, // 5MB
   allowedTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
-  bucket: 'images',
-  folder: 'user-uploads',
+  bucket: 'live-photos',
 };
 
 // 文档专用配置
@@ -80,7 +79,11 @@ export const DOCUMENT_UPLOAD_CONFIG: FileUploadConfig = {
 };
 
 export class FileUploadService {
-  private supabase = createSupabaseClient();
+  private supabase;
+
+  constructor(customClient?: any) {
+    this.supabase = customClient || createSupabaseClient();
+  }
 
   /**
    * 验证文件

@@ -1,9 +1,9 @@
 export const SEO_CONFIG = {
   description:
-    'LivePhoto是一个基于Next.js和Supabase构建的AI图像处理平台，提供图像编辑和LivePortrait动态照片功能，让静态照片焕发生机。',
-  fullName: 'LivePhoto AI图像处理平台',
+    'LivePhoto is an AI image processing platform built with Next.js and Supabase, providing image editing and LivePortrait dynamic photo features to bring static photos to life.',
+  fullName: 'LivePhoto AI Image Processing Platform',
   name: 'LivePhoto',
-  slogan: '让照片动起来',
+  slogan: 'Bring Your Photos to Life',
 };
 
 export const SYSTEM_CONFIG = {

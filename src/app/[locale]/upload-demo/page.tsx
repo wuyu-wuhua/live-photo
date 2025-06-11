@@ -4,6 +4,7 @@ import type { FileUploadResult } from '@/services/fileUploadService';
 import { Button, Card, CardBody, CardHeader, Divider } from '@heroui/react';
 import { useState } from 'react';
 import { type FormUploadFile, PictureCardForm } from '@/components/upload/picture-card-form';
+import { toast } from 'sonner';
 
 export default function UploadDemoPage() {
   const [singleFile, setSingleFile] = useState<FormUploadFile[]>([]);
@@ -16,6 +17,7 @@ export default function UploadDemoPage() {
         ...prev,
         `上传成功: ${result.file!.name} (${result.file!.url})`,
       ]);
+      toast.success(`上传成功: ${result.file!.name}`);
     }
   };
 
@@ -24,6 +26,7 @@ export default function UploadDemoPage() {
       ...prev,
       `上传失败: ${file.name} - ${error}`,
     ]);
+    toast.error(`上传失败: ${file.name} - ${error}`);
   };
 
   const handleRemove = (file: FormUploadFile) => {
@@ -31,6 +34,7 @@ export default function UploadDemoPage() {
       ...prev,
       `删除文件: ${file.name}`,
     ]);
+    toast.info(`删除文件: ${file.name}`);
   };
 
   const clearResults = () => {

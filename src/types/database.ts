@@ -66,6 +66,223 @@ export type Database = {
         };
         Relationships: [];
       };
+      user_credits: {
+        Row: {
+          id: string;
+          user_id: string;
+          balance: number;
+          lifetime_earned: number;
+          lifetime_spent: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          balance: number;
+          lifetime_earned?: number;
+          lifetime_spent?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          balance?: number;
+          lifetime_earned?: number;
+          lifetime_spent?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'user_credits_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: true;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      credit_transactions: {
+        Row: {
+          id: string;
+          user_id: string;
+          amount: number;
+          balance_after: number;
+          type: Database['public']['Enums']['credit_transaction_type'];
+          status: Database['public']['Enums']['transaction_status'];
+          description: string | null;
+          metadata: Json | null;
+          reference_id: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          amount: number;
+          balance_after: number;
+          type: Database['public']['Enums']['credit_transaction_type'];
+          status?: Database['public']['Enums']['transaction_status'];
+          description?: string | null;
+          metadata?: Json | null;
+          reference_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          amount?: number;
+          balance_after?: number;
+          type?: Database['public']['Enums']['credit_transaction_type'];
+          status?: Database['public']['Enums']['transaction_status'];
+          description?: string | null;
+          metadata?: Json | null;
+          reference_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'credit_transactions_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      credit_plans: {
+        Row: {
+          id: string;
+          name: string;
+          description: string | null;
+          credits: number;
+          price: number;
+          currency: string;
+          is_subscription: boolean;
+          billing_period: Database['public']['Enums']['billing_period'] | null;
+          stripe_price_id: string | null;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          description?: string | null;
+          credits: number;
+          price: number;
+          currency: string;
+          is_subscription: boolean;
+          billing_period?: Database['public']['Enums']['billing_period'] | null;
+          stripe_price_id?: string | null;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          description?: string | null;
+          credits?: number;
+          price?: number;
+          currency?: string;
+          is_subscription?: boolean;
+          billing_period?: Database['public']['Enums']['billing_period'] | null;
+          stripe_price_id?: string | null;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      credit_subscriptions: {
+        Row: {
+          id: string;
+          user_id: string;
+          plan_id: string;
+          status: Database['public']['Enums']['subscription_status'];
+          stripe_subscription_id: string | null;
+          current_period_start: string;
+          current_period_end: string;
+          cancel_at_period_end: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          plan_id: string;
+          status?: Database['public']['Enums']['subscription_status'];
+          stripe_subscription_id?: string | null;
+          current_period_start: string;
+          current_period_end: string;
+          cancel_at_period_end?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          plan_id?: string;
+          status?: Database['public']['Enums']['subscription_status'];
+          stripe_subscription_id?: string | null;
+          current_period_start?: string;
+          current_period_end?: string;
+          cancel_at_period_end?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'credit_subscriptions_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'credit_subscriptions_plan_id_fkey';
+            columns: ['plan_id'];
+            isOneToOne: false;
+            referencedRelation: 'credit_plans';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      feature_costs: {
+        Row: {
+          id: string;
+          feature_id: string;
+          feature_name: string;
+          credits_cost: number;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          feature_id: string;
+          feature_name: string;
+          credits_cost: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          feature_id?: string;
+          feature_name?: string;
+          credits_cost?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       image_edit_results: {
         Row: {
           created_at: string;
@@ -74,11 +291,22 @@ export type Database = {
           liveportrait_detected_at: string | null;
           liveportrait_message: string | null;
           liveportrait_request_id: string | null;
+          liveportrait_result_url: string | null;
+          liveportrait_status: Database['public']['Enums']['task_status'] | null;
           request_parameters: Json | null;
           result_image_url: string[];
+          result_type: string; // 'image' 或 'video'
           source_image_url: string;
           status: Database['public']['Enums']['task_status'];
           user_id: string;
+          emoji_compatible: boolean | null;
+          emoji_detected_at: string | null;
+          emoji_message: string | null;
+          emoji_face_bbox: string | null;
+          emoji_ext_bbox: string | null;
+          emoji_request_id: string | null;
+          emoji_result_url: string | null;
+          emoji_status: Database['public']['Enums']['task_status'] | null;
         };
         Insert: {
           created_at?: string;
@@ -87,11 +315,22 @@ export type Database = {
           liveportrait_detected_at?: string | null;
           liveportrait_message?: string | null;
           liveportrait_request_id?: string | null;
+          liveportrait_result_url?: string[] | null;
+          liveportrait_status?: Database['public']['Enums']['task_status'] | null;
           request_parameters?: Json | null;
           result_image_url: string[];
+          result_type?: string; // 'image' 或 'video'
           source_image_url: string;
           status?: Database['public']['Enums']['task_status'];
           user_id: string;
+          emoji_compatible?: boolean | null;
+          emoji_detected_at?: string | null;
+          emoji_message?: string | null;
+          emoji_face_bbox?: string | null;
+          emoji_ext_bbox?: string | null;
+          emoji_request_id?: string | null;
+          emoji_result_url?: string | null;
+          emoji_status?: Database['public']['Enums']['task_status'] | null;
         };
         Update: {
           created_at?: string;
@@ -100,11 +339,22 @@ export type Database = {
           liveportrait_detected_at?: string | null;
           liveportrait_message?: string | null;
           liveportrait_request_id?: string | null;
+          liveportrait_result_url?: string | null;
+          liveportrait_status?: Database['public']['Enums']['task_status'] | null;
           request_parameters?: Json | null;
           result_image_url?: string[];
+          result_type?: string; // 'image' 或 'video'
           source_image_url?: string;
           status?: Database['public']['Enums']['task_status'];
           user_id?: string;
+          emoji_compatible?: boolean | null;
+          emoji_detected_at?: string | null;
+          emoji_message?: string | null;
+          emoji_face_bbox?: string | null;
+          emoji_ext_bbox?: string | null;
+          emoji_request_id?: string | null;
+          emoji_result_url?: string | null;
+          emoji_status?: Database['public']['Enums']['task_status'] | null;
         };
         Relationships: [];
       };
@@ -293,7 +543,60 @@ export type Database = {
       [_ in never]: never
     };
     Functions: {
-      [_ in never]: never
+      get_user_credits: {
+        Args: {
+          p_user_id: string;
+        };
+        Returns: {
+          balance: number;
+          lifetime_earned: number;
+          lifetime_spent: number;
+        };
+      };
+      add_user_credits: {
+        Args: {
+          p_user_id: string;
+          p_amount: number;
+          p_type: Database['public']['Enums']['credit_transaction_type'];
+          p_description: string;
+          p_reference_id?: string;
+          p_metadata?: Json;
+        };
+        Returns: {
+          success: boolean;
+          message: string;
+          transaction_id: string;
+          new_balance: number;
+        };
+      };
+      deduct_user_credits: {
+        Args: {
+          p_user_id: string;
+          p_amount: number;
+          p_type: Database['public']['Enums']['credit_transaction_type'];
+          p_description: string;
+          p_reference_id?: string;
+          p_metadata?: Json;
+        };
+        Returns: {
+          success: boolean;
+          message: string;
+          transaction_id: string;
+          new_balance: number;
+        };
+      };
+      refund_user_credits: {
+        Args: {
+          p_transaction_id: string;
+          p_reason: string;
+        };
+        Returns: {
+          success: boolean;
+          message: string;
+          refund_transaction_id: string;
+          new_balance: number;
+        };
+      };
     };
     Enums: {
       image_edit_function:
@@ -308,6 +611,33 @@ export type Database = {
         | 'doodle'
         | 'control_cartoon_feature';
       task_status: 'PENDING' | 'RUNNING' | 'SUCCEEDED' | 'FAILED';
+      credit_transaction_type:
+        | 'PURCHASE' // 购买积分
+        | 'SUBSCRIPTION' // 订阅获得
+        | 'REFERRAL' // 推荐奖励
+        | 'BONUS' // 奖励积分
+        | 'ADMIN_ADJUSTMENT' // 管理员调整
+        | 'IMAGE_GENERATION' // 图片生成消费
+        | 'VIDEO_GENERATION' // 视频生成消费
+        | 'REFUND' // 退款
+        | 'EXPIRATION' // 积分过期
+        | 'PROMOTIONAL'; // 促销赠送
+      transaction_status:
+        | 'COMPLETED'
+        | 'PENDING'
+        | 'FAILED'
+        | 'REFUNDED';
+      subscription_status:
+        | 'ACTIVE'
+        | 'PAST_DUE'
+        | 'CANCELED'
+        | 'INCOMPLETE'
+        | 'INCOMPLETE_EXPIRED'
+        | 'TRIALING';
+      billing_period:
+        | 'MONTHLY'
+        | 'QUARTERLY'
+        | 'YEARLY';
     };
     CompositeTypes: {
       [_ in never]: never
@@ -543,4 +873,77 @@ export type ImageEditResponse = {
   status: TaskStatus;
   resultImageUrls?: string[];
   message?: string;
+  emojiResultUrls?: string[];
+  emojiStatus?: TaskStatus;
+  liveportraitResultUrls?: string[];
+  liveportraitStatus?: TaskStatus;
+};
+
+// 添加积分系统相关类型别名
+export type UserCredits = Tables<'user_credits'>;
+export type UserCreditsInsert = TablesInsert<'user_credits'>;
+export type UserCreditsUpdate = TablesUpdate<'user_credits'>;
+
+export type CreditTransaction = Tables<'credit_transactions'>;
+export type CreditTransactionInsert = TablesInsert<'credit_transactions'>;
+export type CreditTransactionUpdate = TablesUpdate<'credit_transactions'>;
+
+export type CreditPlan = Tables<'credit_plans'>;
+export type CreditPlanInsert = TablesInsert<'credit_plans'>;
+export type CreditPlanUpdate = TablesUpdate<'credit_plans'>;
+
+export type CreditSubscription = Tables<'credit_subscriptions'>;
+export type CreditSubscriptionInsert = TablesInsert<'credit_subscriptions'>;
+export type CreditSubscriptionUpdate = TablesUpdate<'credit_subscriptions'>;
+
+export type FeatureCost = Tables<'feature_costs'>;
+export type FeatureCostInsert = TablesInsert<'feature_costs'>;
+export type FeatureCostUpdate = TablesUpdate<'feature_costs'>;
+
+// 枚举类型别名
+export type CreditTransactionType = Enums<'credit_transaction_type'>;
+export type TransactionStatus = Enums<'transaction_status'>;
+export type SubscriptionStatus = Enums<'subscription_status'>;
+export type BillingPeriod = Enums<'billing_period'>;
+
+// 积分系统API接口类型
+export type GetUserCreditsResponse = ApiResponse<{
+  balance: number;
+  lifetimeEarned: number;
+  lifetimeSpent: number;
+}>;
+
+export type AddCreditsRequest = {
+  userId: string;
+  amount: number;
+  type: CreditTransactionType;
+  description?: string;
+  referenceId?: string;
+  metadata?: Record<string, any>;
+};
+
+export type DeductCreditsRequest = {
+  userId: string;
+  amount: number;
+  type: CreditTransactionType;
+  description?: string;
+  referenceId?: string;
+  metadata?: Record<string, any>;
+};
+
+export type RefundCreditsRequest = {
+  transactionId: string;
+  reason: string;
+};
+
+export type CreditTransactionResponse = ApiResponse<{
+  transactionId: string;
+  newBalance: number;
+}>;
+
+export type FeatureCreditCost = {
+  [key in ImageEditFunction]: number;
+} & {
+  liveportrait_animation: number;
+  emoji_animation: number;
 };

@@ -27,6 +27,10 @@ export default function Navigation() {
 
   const menuItems = [
     { href: '/', label: t('home'), icon: 'heroicons:home' },
+    { href: '/generate', label: t('generate'), icon: 'heroicons:sparkles' },
+    { href: '/gallery', label: t('gallery'), icon: 'heroicons:photo' },
+    { href: '/about', label: t('about'), icon: 'heroicons:information-circle' },
+    { href: '/pricing', label: t('pricing'), icon: 'heroicons:currency-dollar' },
     { href: '/pathnames', label: t('pathnames'), icon: 'heroicons:link' },
     { href: '/todos', label: t('todos'), icon: 'heroicons:list-bullet' },
     { href: '/database', label: t('database'), icon: 'heroicons:circle-stack' },

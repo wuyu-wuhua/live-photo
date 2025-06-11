@@ -5,6 +5,8 @@
   },
   "nav": {
     "home": "Home",
+    "generate": "AI Generate",
+    "gallery": "My Gallery",
     "products": "Products",
     "dashboard": "Dashboard",
     "admin": "Admin",
@@ -12,7 +14,174 @@
     "login": "Login",
     "signup": "Sign Up",
     "logout": "Logout",
+    "pricing": "Pricing",
+    "profile": "Profile"
+  },
+  "Navigation": {
+    "home": "Home",
+    "generate": "AI Generate",
+    "gallery": "My Gallery",
+    "auth": "Sign In",
+    "pathnames": "Pathnames",
+    "todos": "Todos",
+    "database": "Database",
+    "fileUpload": "File Upload",
+    "about": "About Us",
     "pricing": "Pricing"
+  },
+  "generate": {
+    "title": "AI Image Editing",
+    "subtitle": "Intelligent Image Processing and Generation Platform",
+    "generateFailed": "Generation failed",
+    "videoGenerationFailed": "Video generation request failed",
+    "pleaseLogin": "Please login first",
+    "insufficientCredits": "Insufficient credits",
+    "selectCreditPackage": "Please select a credit package to top up",
+    "topUp": "Top Up",
+    "recommended": "Recommended",
+    "paymentSuccess": "Payment successful! You have received {credits} credits"
+  },
+  "generatePage": {
+    "title": "AI Image Generation",
+    "subtitle": "Generate high-quality images using advanced AI technology",
+    "generateFailed": "Generation failed, please try again",
+    "generateVideoError": "Video generation request failed"
+  },
+  "resultPanel": {
+    "title": "Generation Results",
+    "subtitle": "AI image generation results display",
+    "generating": "AI is creating...",
+    "generatingDescription": "Please wait, we are generating beautiful images for you",
+    "originalImage": "Original Image",
+    "generatedResult": "Generated Result",
+    "download": "Download",
+    "makeItMove": "Make It Move",
+    "allResults": "All Results",
+    "result": "Result",
+    "waitingGenerate": "Waiting for Generation",
+    "waitingDescription": "Configure parameters and click the generate button in the top right to start creating",
+    "loginRequired": "Please login first",
+    "generateFailed": "Generation failed",
+    "generateVideoError": "Video generation failed",
+    "generateVideoTitle": "Generate {type}",
+    "emojiVideo": "Emoji Video",
+    "lipsyncVideo": "Lipsync Video",
+    "configureParameters": "Configure generation parameters",
+    "cancel": "Cancel",
+    "startGenerate": "Start Generation"
+  },
+  "parameterPanel": {
+    "referenceImage": "Reference Image",
+    "referenceImageDescription": "Supports JPG, PNG, WEBP formats, max size 10MB",
+    "editFunction": "Edit Function",
+    "selectEditFunction": "Select image editing function",
+    "maskImageUrl": "Mask Image URL",
+    "maskImagePlaceholder": "Please enter mask image URL",
+    "maskImageDescription": "White areas indicate parts to be edited, black areas remain unchanged",
+    "presetFilter": "Preset Filter",
+    "selectPresetFilter": "Select preset filter or custom",
+    "presetFilterDescription": "Select preset filters to quickly apply common colorization styles, or choose custom to manually enter prompts",
+    "prompt": "Prompt",
+    "promptPlaceholder": "Describe what you want to generate or edit...",
+    "promptPlaceholderColorization": "Select preset filter or describe your desired colorization style...",
+    "promptDescription": "Supports Chinese and English, max 800 characters",
+    "promptDescriptionColorization": "Describe your desired colorization style and color effects, supports Chinese and English, max 800 characters",
+    "advancedParams": "Advanced Parameters",
+    "generateCount": "Generation Count",
+    "modifyStrength": "Modify Strength",
+    "modifyStrengthDescription": "Values closer to 0 stay closer to original, values closer to 1 have greater modification",
+    "upscaleFactor": "Upscale Factor",
+    "upscaleFactorDescription": "Choose image enlargement factor, higher values produce clearer images but take longer to process",
+    "expandDirection": "Expand Direction Settings",
+    "expandUp": "Expand Up",
+    "expandDown": "Expand Down",
+    "expandLeft": "Expand Left",
+    "expandRight": "Expand Right",
+    "isSketch": "Input image is a sketch",
+    "generating": "Generating...",
+    "startGenerate": "Start Generation",
+    "uploadFailed": "Upload failed:",
+    "tooltipUploadImage": "Please upload reference image",
+    "tooltipEnterPrompt": "Please enter prompt",
+    "tooltipInsufficientCredits": "Insufficient credits, need {cost} credits, current balance {balance} credits",
+    "functions": {
+      "colorization": {
+        "label": "Image Colorization",
+        "description": "Add natural colors to black and white images"
+      },
+      "description_edit": {
+        "label": "Description Edit",
+        "description": "Edit images based on text descriptions"
+      },
+      "expand": {
+        "label": "Image Expansion",
+        "description": "Expand image boundaries"
+      },
+      "remove_watermark": {
+        "label": "Remove Text Watermark",
+        "description": "Remove text watermarks from images"
+      },
+      "super_resolution": {
+        "label": "Super Resolution",
+        "description": "Enhance image resolution and clarity"
+      }
+    },
+    "presets": {
+      "custom": {
+        "label": "Custom",
+        "description": "Manually enter prompts"
+      },
+      "natural": {
+        "label": "Natural Colors",
+        "description": "Realistic natural color restoration",
+        "value": "Natural realistic colors, maintaining original lighting effects"
+      },
+      "warm": {
+        "label": "Warm Tones",
+        "description": "Cozy and comfortable warm tones",
+        "value": "Warm tones, enhanced yellows and oranges, creating a cozy atmosphere"
+      },
+      "cool": {
+        "label": "Cool Tones",
+        "description": "Cool and elegant cold tones",
+        "value": "Cool tones dominated, enhanced blues and cyans, creating a cool atmosphere"
+      },
+      "vintage": {
+        "label": "Vintage Nostalgic",
+        "description": "Nostalgic retro color style",
+        "value": "Vintage nostalgic color style, slightly yellowed tones"
+      },
+      "vibrant": {
+        "label": "Vibrant Energy",
+        "description": "Energetic vibrant colors",
+        "value": "Vibrant saturated colors, high contrast, full of energy"
+      },
+      "soft": {
+        "label": "Soft Elegant",
+        "description": "Artistic fresh elegant tones",
+        "value": "Soft elegant colors, low saturation, artistic and fresh"
+      },
+      "cinematic": {
+        "label": "Cinematic Grading",
+        "description": "Professional cinematic color effects",
+        "value": "Cinematic grading, professional color grading effects"
+      },
+      "japanese": {
+        "label": "Japanese Fresh",
+        "description": "Bright and transparent Japanese style",
+        "value": "Japanese fresh colors, bright and transparent, slightly overexposed effects"
+      },
+      "korean": {
+        "label": "Korean Romantic",
+        "description": "Soft and romantic Korean tones",
+        "value": "Korean color style, pink-toned, soft and romantic"
+      },
+      "historical": {
+        "label": "Historical Restoration",
+        "description": "Restore realistic colors of historical photos",
+        "value": "Black and white photo colorization, restoring realistic colors of historical photos"
+      }
+    }
   },
   "NotFound": {
     "description": "Sorry, the page you are looking for does not exist.",
@@ -41,6 +210,12 @@
     "open": "Open",
     "submit": "Submit",
     "retry": "Retry",
+    "completed": "Completed",
+    "failed": "Failed",
+    "pending": "Processing",
+    "image": "Image",
+    "result": "Result",
+    "generationHistory": "Generation History",
     "selectLanguage": "Select Language",
     "search": "Search",
     "textToSpeech": "Text to Speech",
@@ -75,7 +250,21 @@
     "yearsOfResearch": "Years of research led to Palette. Only available here and by our partners.",
     "millionPhotosColorized": "54 Million Photos Already Colorized",
     "getStartNow": "Get Start Now",
-    "filtersLabel": "21+ Color filters"
+    "filtersLabel": "21+ Color filters",
+    "plans": {
+      "basic": {
+        "name": "Basic Plan",
+        "description": "Perfect for light usage"
+      },
+      "standard": {
+        "name": "Standard Plan",
+        "description": "Perfect for moderate usage"
+      },
+      "premium": {
+        "name": "Premium Plan",
+        "description": "Perfect for heavy usage"
+      }
+    }
   },
   "pricing": {
     "title": "Simple, transparent pricing",
@@ -141,6 +330,192 @@
       "answer3": "Yes, you can cancel your subscription at any time. Your benefits will continue until the end of your billing period.",
       "question4": "Is there a limit to how many photos I can colorize?",
       "answer4": "The free plan allows unlimited colorizations with watermarks. For high-resolution, watermark-free images, you're limited by the number of credits in your plan."
+    },
+    "features": {
+      "credits": "{count} credits",
+      "imageEdit": "Image editing",
+      "videoAnimation": "Video animation",
+      "highRes": "High resolution output",
+      "noWatermark": "No watermarks",
+      "priority": "Priority processing",
+      "support": "Priority support"
+    },
+    "cta": {
+      "basic": "Get Basic",
+      "standard": "Get Standard",
+      "premium": "Get Premium"
+    },
+    "popular": "Most Popular",
+    "currentCredits": "Current Credits",
+    "pricePerCredit": "Price per credit",
+    "credits": "credits",
+    "paymentSuccess": "Payment successful! You have received",
+    "pleaseLogin": "Please login first"
+  },
+  "gallery": {
+    "title": "My Gallery",
+    "subtitle": "View all AI image editing results",
+    "realtimeUpdate": "Real-time updates",
+    "imageDetails": "Image Edit Details",
+    "createTime": "Created Time",
+    "originalImage": "Original Image",
+    "generatedResult": "Generated Result",
+    "noResultVideo": "No result video",
+    "noResultImage": "No result image",
+    "otherResults": "Other Generated Results",
+    "emojiVideoResult": "Emoji Video Result",
+    "lipsyncVideoResult": "Lipsync Video Result",
+    "editFunction": "Edit Function",
+    "prompt": "Prompt",
+    "taskId": "Task ID",
+    "unknownFunction": "Unknown Function",
+    "generateEmojiVideo": "Generate Emoji Video",
+    "generateLipsyncVideo": "Generate Lipsync Video",
+    "close": "Close",
+    "retry": "Retry",
+    "myGeneratedContent": "My Generated Content",
+    "viewAllResults": "View all AI image editing results",
+    "realTimeUpdates": "Real-time updates",
+    "loadFailed": "Loading Failed",
+    "noContent": "No Content",
+    "noContentDescription": "You haven't generated any content yet",
+    "makeItMove": "Make It Move",
+    "lipsyncCompleted": "Lipsync Completed",
+    "lipsyncGenerating": "Lipsync Generating",
+    "lipsyncFailed": "Lipsync Failed",
+    "generateVideoTitle": "Generate {type} Video",
+    "emoji": "Emoji",
+    "lipsync": "Lipsync",
+    "configureAndGenerate": "Configure parameters and generate video",
+    "cancel": "Cancel",
+    "generating": "Generating...",
+    "startGenerate": "Start Generate",
+    "status": {
+      "waiting": "Waiting",
+      "processing": "Processing",
+      "generating": "Generating",
+      "completed": "Completed",
+      "succeeded": "Succeeded",
+      "failed": "Failed",
+      "running": "Running",
+      "unknown": "Unknown"
+    },
+    "messages": {
+      "generatingEmoji": "Generating emoji video...",
+      "emojiGenerationFailed": "Emoji video generation failed",
+      "emojiNotStarted": "Emoji video generation not started",
+      "generatingLipsync": "Generating lipsync video...",
+      "lipsyncGenerationFailed": "Lipsync video generation failed",
+      "lipsyncNotStarted": "Lipsync video generation not started",
+      "retryEmojiGeneration": "Retry emoji video generation",
+      "retryLipsyncGeneration": "Retry lipsync video generation"
+    },
+    "videoGeneration": {
+      "generateEmoji": "Generate Emoji Video",
+      "generateLiveportrait": "Generate Liveportrait Video",
+      "configureParameters": "Configure parameters and generate video",
+      "cancel": "Cancel",
+      "startGeneration": "Start Generation",
+      "generating": "Generating..."
+    },
+    "empty": {
+      "title": "No Content",
+      "description": "You haven't generated any content yet"
+    },
+    "error": {
+      "title": "Loading Failed",
+      "retry": "Retry"
+    },
+    "pagination": {
+      "total": "Total {total} records, page {current} / {totalPages}"
     }
+  },
+  "profile": {
+    "title": "Profile",
+    "description": "Manage your credits, view generation history and spending records",
+    "user": "User",
+    "creditsOverview": "Credits Overview",
+    "currentCredits": "Current Credits",
+    "totalEarned": "Total Earned",
+    "totalSpent": "Total Spent",
+    "recentTransactions": "Recent Transactions",
+    "generationHistory": "Generation History",
+    "creditPackages": "Credit Packages",
+    "purchaseCredits": "Purchase Credits",
+    "transactionHistory": "Transaction History",
+    "type": "Type",
+    "amount": "Amount",
+    "date": "Date",
+    "status": "Status",
+    "view": "View",
+    "purchase": "Purchase",
+    "subscription": "Subscription",
+    "referral": "Referral",
+    "bonus": "Bonus",
+    "adminAdjustment": "Admin Adjustment",
+    "imageGeneration": "Image Generation",
+    "videoGeneration": "Video Generation",
+    "refund": "Refund",
+    "expiration": "Credit Expiration",
+    "promotional": "Promotional Gift",
+    "credits": "Credits",
+    "balance": "Balance",
+    "noTransactions": "No transactions yet",
+    "noGenerations": "No generations yet",
+    "recommended": "Recommended",
+    "video": "Video",
+    "waiting": "Waiting",
+    "noResult": "No Result",
+    "createdAt": "Created At",
+    "actions": "Actions",
+    "paymentSuccess": "Payment successful, earned",
+    "image": "Image",
+    "completed": "Completed",
+    "failed": "Failed",
+    "pending": "Pending",
+    "result": "Result",
+    "transactionTypes": {
+      "IMAGE_GENERATION": "Image Generation",
+      "purchase": "Purchase Credits",
+      "subscription": "Subscription Earned",
+      "referral": "Referral Reward",
+      "BONUS": "Bonus Credits",
+      "adminAdjustment": "Admin Adjustment",
+      "imageGeneration": "Image Generation",
+      "videoGeneration": "Video Generation",
+      "refund": "Refund",
+      "expiration": "Credit Expiration",
+      "promotional": "Promotional Gift"
+    },
+    "features": {
+      "unknown": "Unknown Feature",
+      "stylizationAll": "Full Stylization",
+      "stylizationLocal": "Local Stylization",
+      "descriptionEdit": "Description Edit",
+      "descriptionEditWithMask": "Masked Description Edit",
+      "removeWatermark": "Remove Watermark",
+      "expand": "Image Expansion",
+      "superResolution": "Super Resolution",
+      "colorization": "Colorization",
+      "doodle": "Doodle",
+      "controlCartoonFeature": "Cartoon Control",
+      "liveportraitAnimation": "Portrait Animation",
+      "emojiAnimation": "Emoji Animation"
+    },
+    "payment": {
+      "createFailed": "Failed to create payment, please try again",
+      "formNotLoaded": "Payment form not loaded correctly",
+      "failed": "Payment failed",
+      "processingFailed": "Payment processing failed, please try again",
+      "cardInfo": "Card Information",
+      "processing": "Processing...",
+      "pay": "Pay",
+      "securePayment": "Secure Payment"
+    },
+    "viewAll": "View All",
+    "usage": "Usage",
+    "download": "Download",
+    "loadMore": "Load More",
+    "noData": "No data"
   }
 }

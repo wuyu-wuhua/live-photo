@@ -2,6 +2,7 @@
 
 import { Button, Card, CardBody, Divider, Image, Input } from '@heroui/react';
 
+import { Label } from '@radix-ui/react-label';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -9,13 +10,6 @@ import { SEO_CONFIG } from '@/app';
 import { GitHubIcon } from '@/components/icons/github';
 import { GoogleIcon } from '@/components/icons/google';
 import { signInWithGitHub, signInWithGoogle, signUp } from '@/lib/auth-client';
-
-// Simple Label component for form labels
-const Label = ({ htmlFor, children }: { htmlFor: string; children: React.ReactNode }) => (
-  <label htmlFor={htmlFor} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-    {children}
-  </label>
-);
 
 export function SignUpPageClient() {
   const router = useRouter();

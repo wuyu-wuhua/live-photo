@@ -1,4 +1,4 @@
-import type { DashscopeImageEditRequest, DashscopeImageEditResponse, DashscopeTaskQueryResponse, EmojiVideoRequest, EmojiVideoResponse, EmojiVideoTaskResult, FaceDetectRequest, FaceDetectResponse, LivePortraitDetectRequest, LivePortraitDetectResponse, VideoRetalkRequest, VideoRetalkResponse, VideoRetalkTaskResult } from '@/types/dashscope';
+import type { DashscopeImageEditRequest, DashscopeImageEditResponse, DashscopeTaskQueryOutput, DashscopeTaskQueryResponse, EmojiVideoRequest, EmojiVideoResponse, EmojiVideoTaskResult, FaceDetectRequest, FaceDetectResponse, LivePortraitDetectRequest, LivePortraitDetectResponse, LivePortraitRequest, LivePortraitResponse, LivePortraitTaskResult, LivePortraitTemplateId, VideoRetalkRequest, VideoRetalkResponse, VideoRetalkTaskResult } from '@/types/dashscope';
 
 export class DashscopeImageService {
   private apiKey: string;
@@ -19,6 +19,9 @@ export class DashscopeImageService {
   // LivePortrait图像检测API（复用face-detect地址，通过model区分）
   private livePortraitDetectUrl = 'https://dashscope.aliyuncs.com/api/v1/services/aigc/image2video/face-detect';
 
+  // LivePortrait视频生成API
+  private livePortraitUrl = 'https://dashscope.aliyuncs.com/api/v1/services/aigc/image2video/video-synthesis/';
+
   constructor() {
     this.apiKey = process.env.DASHSCOPE_API_KEY!;
     if (!this.apiKey) {
@@ -32,21 +35,76 @@ export class DashscopeImageService {
   async createEditTask(
     request: DashscopeImageEditRequest,
   ): Promise<DashscopeImageEditResponse> {
+    // 构建请求体
+    const requestBody: any = {
+      input: {
+        base_image_url: request.base_image_url,
+        function: request.function,
+        prompt: request.prompt,
+      },
+      model: 'wanx2.1-imageedit',
+      parameters: {},
+    };
+
+    // 根据功能类型添加特定参数
+    if (request.mask_image_url && request.function === 'description_edit_with_mask') {
+      requestBody.input.mask_image_url = request.mask_image_url;
+    }
+
+    // 添加参数
+    if (request.parameters) {
+      // 根据功能类型过滤参数
+      switch (request.function) {
+        case 'expand':
+          // 扩图功能需要的参数
+          if (request.parameters.top_scale !== undefined) {
+            requestBody.parameters.top_scale = request.parameters.top_scale;
+          }
+          if (request.parameters.bottom_scale !== undefined) {
+            requestBody.parameters.bottom_scale = request.parameters.bottom_scale;
+          }
+          if (request.parameters.left_scale !== undefined) {
+            requestBody.parameters.left_scale = request.parameters.left_scale;
+          }
+          if (request.parameters.right_scale !== undefined) {
+            requestBody.parameters.right_scale = request.parameters.right_scale;
+          }
+          break;
+        case 'super_resolution':
+          // 超分功能需要的参数
+          if (request.parameters.upscale_factor !== undefined) {
+            requestBody.parameters.upscale_factor = request.parameters.upscale_factor;
+          }
+          break;
+        case 'doodle':
+          // 线稿生图功能需要的参数
+          if (request.parameters.is_sketch !== undefined) {
+            requestBody.parameters.is_sketch = request.parameters.is_sketch;
+          }
+          break;
+        case 'stylization_all':
+        case 'description_edit':
+          // 风格化和指令编辑功能需要的参数
+          if (request.parameters.strength !== undefined) {
+            requestBody.parameters.strength = request.parameters.strength;
+          }
+          break;
+      }
+
+      // 通用参数
+      if (request.parameters.n !== undefined) {
+        requestBody.parameters.n = request.parameters.n;
+      }
+      if (request.parameters.seed !== undefined) {
+        requestBody.parameters.seed = request.parameters.seed;
+      }
+      if (request.parameters.watermark !== undefined) {
+        requestBody.parameters.watermark = request.parameters.watermark;
+      }
+    }
+
     const response = await fetch(this.baseUrl, {
-      body: JSON.stringify({
-        input: {
-          base_image_url: request.base_image_url,
-          function: request.function,
-          prompt: request.prompt,
-          ...(request.mask_image_url && {
-            mask_image_url: request.mask_image_url,
-          }),
-        },
-        model: 'wanx2.1-imageedit',
-        parameters: {
-          ...request.parameters,
-        },
-      }),
+      body: JSON.stringify(requestBody),
       headers: {
         'Authorization': `Bearer ${this.apiKey}`,
         'Content-Type': 'application/json',
@@ -66,7 +124,7 @@ export class DashscopeImageService {
   /**
    * 一键式图像编辑（创建任务并等待完成）
    */
-  async editImage(request: DashscopeImageEditRequest): Promise<DashscopeTaskQueryResponse['output']> {
+  async editImage(request: DashscopeImageEditRequest): Promise<DashscopeTaskQueryOutput> {
     // 创建任务
     const createResponse = await this.createEditTask(request);
     const taskId = createResponse.output.task_id;
@@ -164,9 +222,9 @@ export class DashscopeImageService {
     const result = await response.json() as FaceDetectResponse;
 
     // 如果检测失败，抛出错误
-    if (result.output.code) {
-      throw new Error(`face detect failed: ${result.output.code} - ${result.output.message}`);
-    }
+    // if (result.output.code) {
+    //   throw new Error(`face detect failed: ${result.output.code} - ${result.output.message}`);
+    // }
 
     return result;
   }
@@ -296,8 +354,8 @@ export class DashscopeImageService {
     const result = await this.waitForEmojiVideoTaskCompletion(taskId);
 
     // 返回生成的视频URL
-    if (result.output.result?.video_url) {
-      return result.output.result.video_url;
+    if (result.output.video_url) {
+      return result.output.video_url;
     } else {
       throw new Error('No video URL in the task result');
     }
@@ -506,5 +564,229 @@ export class DashscopeImageService {
   async isValidLivePortraitImage(imageUrl: string): Promise<boolean> {
     const result = await this.detectLivePortraitImage(imageUrl);
     return result.output.pass;
+  }
+
+  /**
+   * 创建LivePortrait视频生成任务
+   * @param imageUrl 已通过检测的人物肖像图片URL
+   * @param audioUrl 音频URL
+   * @param options 可选参数
+   * @param options.templateId 模板ID
+   * @param options.eyeMoveFreq 眼睛移动频率
+   * @param options.videoFps 视频帧率
+   * @param options.mouthMoveStrength 嘴部移动强度
+   * @param options.pasteBack 是否贴回背景
+   * @param options.headMoveStrength 头部移动强度
+   * @returns 任务响应
+   */
+  async createLivePortraitTask(
+    imageUrl: string,
+    audioUrl: string,
+    options?: {
+      templateId?: LivePortraitTemplateId;
+      eyeMoveFreq?: number;
+      videoFps?: number;
+      mouthMoveStrength?: number;
+      pasteBack?: boolean;
+      headMoveStrength?: number;
+    },
+  ): Promise<LivePortraitResponse> {
+    const request: LivePortraitRequest = {
+      model: 'liveportrait',
+      input: {
+        image_url: imageUrl,
+        audio_url: audioUrl,
+      },
+      parameters: {},
+    };
+
+    // 添加可选参数
+    if (options) {
+      if (options.templateId) {
+        request.parameters!.template_id = options.templateId;
+      }
+
+      if (options.eyeMoveFreq !== undefined) {
+        request.parameters!.eye_move_freq = options.eyeMoveFreq;
+      }
+
+      if (options.videoFps !== undefined) {
+        request.parameters!.video_fps = options.videoFps;
+      }
+
+      if (options.mouthMoveStrength !== undefined) {
+        request.parameters!.mouth_move_strength = options.mouthMoveStrength;
+      }
+
+      if (options.pasteBack !== undefined) {
+        request.parameters!.paste_back = options.pasteBack;
+      }
+
+      if (options.headMoveStrength !== undefined) {
+        request.parameters!.head_move_strength = options.headMoveStrength;
+      }
+    }
+
+    // 如果parameters为空对象，则删除该字段
+    if (Object.keys(request.parameters!).length === 0) {
+      delete request.parameters;
+    }
+
+    const response = await fetch(this.livePortraitUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${this.apiKey}`,
+        'Content-Type': 'application/json',
+        'X-DashScope-Async': 'enable', // 启用异步模式
+      },
+      body: JSON.stringify(request),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`live portrait create error: ${response.status} - ${errorText}`);
+    }
+
+    return await response.json() as LivePortraitResponse;
+  }
+
+  /**
+   * 查询LivePortrait视频生成任务结果
+   * @param taskId 任务ID
+   * @returns 任务查询结果
+   */
+  async queryLivePortraitTask(taskId: string): Promise<LivePortraitTaskResult> {
+    const response = await fetch(`${this.taskQueryUrl}/${taskId}`, {
+      headers: {
+        Authorization: `Bearer ${this.apiKey}`,
+      },
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`live portrait task query error: ${response.status} - ${errorText}`);
+    }
+
+    return await response.json() as LivePortraitTaskResult;
+  }
+
+  /**
+   * 轮询等待LivePortrait视频生成任务完成
+   * @param taskId 任务ID
+   * @param maxWaitTime 最大等待时间（毫秒），默认10分钟
+   * @param pollInterval 轮询间隔（毫秒），默认5秒
+   * @returns 任务查询结果
+   */
+  async waitForLivePortraitTaskCompletion(
+    taskId: string,
+    maxWaitTime = 600000, // 10分钟
+    pollInterval = 5000, // 5秒
+  ): Promise<LivePortraitTaskResult> {
+    const startTime = Date.now();
+
+    while (Date.now() - startTime < maxWaitTime) {
+      const result = await this.queryLivePortraitTask(taskId);
+
+      if (result.output.task_status === 'SUCCEEDED') {
+        return result;
+      }
+
+      if (result.output.task_status === 'FAILED') {
+        throw new Error(
+          `live portrait task failed: ${result.output.message || 'unknown error'}`,
+        );
+      }
+
+      // 等待后继续轮询
+      await new Promise(resolve => setTimeout(resolve, pollInterval));
+    }
+
+    throw new Error('live portrait task timeout');
+  }
+
+  /**
+   * 一键式LivePortrait视频生成（创建任务并等待完成）
+   * @param imageUrl 已通过检测的人物肖像图片URL
+   * @param audioUrl 音频URL
+   * @param options 可选参数
+   * @param options.templateId 模板ID
+   * @param options.eyeMoveFreq 眼睛移动频率
+   * @param options.videoFps 视频帧率
+   * @param options.mouthMoveStrength 嘴部移动强度
+   * @param options.pasteBack 是否贴回背景
+   * @param options.headMoveStrength 头部移动强度
+   * @returns 生成的视频URL
+   */
+  async generateLivePortrait(
+    imageUrl: string,
+    audioUrl: string,
+    options?: {
+      templateId?: LivePortraitTemplateId;
+      eyeMoveFreq?: number;
+      videoFps?: number;
+      mouthMoveStrength?: number;
+      pasteBack?: boolean;
+      headMoveStrength?: number;
+    },
+  ): Promise<string> {
+    // 创建任务
+    const createResponse = await this.createLivePortraitTask(
+      imageUrl,
+      audioUrl,
+      options,
+    );
+
+    const taskId = createResponse.output.task_id;
+
+    // 等待任务完成
+    const result = await this.waitForLivePortraitTaskCompletion(taskId);
+
+    // 返回生成的视频URL
+    if (result.output.results?.video_url) {
+      return result.output.results.video_url;
+    } else {
+      throw new Error('No video URL in the task result');
+    }
+  }
+
+  /**
+   * 一键式LivePortrait生成流程：从检测到生成视频
+   * @param imageUrl 人物肖像图片URL
+   * @param audioUrl 音频URL
+   * @param options 可选参数
+   * @param options.templateId 模板ID
+   * @param options.eyeMoveFreq 眼睛移动频率
+   * @param options.videoFps 视频帧率
+   * @param options.mouthMoveStrength 嘴部移动强度
+   * @param options.pasteBack 是否贴回背景
+   * @param options.headMoveStrength 头部移动强度
+   * @returns 生成的视频URL
+   */
+  async createLivePortraitFromImage(
+    imageUrl: string,
+    audioUrl: string,
+    options?: {
+      templateId?: LivePortraitTemplateId;
+      eyeMoveFreq?: number;
+      videoFps?: number;
+      mouthMoveStrength?: number;
+      pasteBack?: boolean;
+      headMoveStrength?: number;
+    },
+  ): Promise<string> {
+    // 1. 先进行图像检测
+    const detectResult = await this.detectLivePortraitImage(imageUrl);
+
+    if (!detectResult.output.pass) {
+      throw new Error(`Image detection failed: ${detectResult.output.message}`);
+    }
+
+    // 2. 生成LivePortrait视频
+    return await this.generateLivePortrait(
+      imageUrl,
+      audioUrl,
+      options,
+    );
   }
 }

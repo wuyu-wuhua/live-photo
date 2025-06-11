@@ -27,6 +27,23 @@ export async function signUp(email: string, password: string): Promise<AuthRespo
       },
     });
 
+    // 如果注册成功且用户存在，给新用户赠送10点积分
+    if (data.user && !error) {
+      try {
+        await supabase.rpc('add_user_credits', {
+          p_user_id: data.user.id,
+          p_amount: 10,
+          p_type: 'BONUS',
+          p_description: '新用户注册奖励',
+          p_reference_id: `signup_${data.user.id}`,
+          p_metadata: { source: 'new_user_registration' },
+        });
+      } catch (creditError) {
+        // 积分赠送失败不影响注册流程
+        console.error('新用户积分赠送失败:', creditError);
+      }
+    }
+
     return {
       user: data.user,
       session: data.session,

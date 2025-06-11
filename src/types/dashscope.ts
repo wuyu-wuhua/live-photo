@@ -118,7 +118,9 @@ export type DashscopeImageEditResponse = {
   message?: string;
   output: {
     results?: {
-      url: string;
+      url?: string;
+      code?: string;
+      message?: string;
     }[];
     /**
      * 任务ID。
@@ -141,72 +143,74 @@ export type DashscopeImageEditResponse = {
   request_id: string;
 };
 
+export type DashscopeTaskQueryOutput = {
+  /**
+   * 请求失败的错误码。请求成功时不会返回此参数
+   */
+  code?: string;
+  /**
+   * 任务完成时间。
+   */
+  end_time?: string;
+  /**
+   * 请求失败的详细信息。请求成功时不会返回此参数，
+   */
+  message?: string;
+  /**
+   * 任务结果列表，包括图像URL、部分任务执行失败报错信息等。
+   */
+  results?: {
+    code?: string;
+    message?: string;
+    url?: string;
+  }[];
+  /**
+   * 任务执行时间。
+   */
+  scheduled_time?: string;
+  /**
+   * 任务提交时间。
+   */
+  submit_time: string;
+  /**
+   * 任务ID。
+   */
+  task_id: string;
+  /**
+   * 任务消息。
+   */
+  task_message?: boolean;
+  /**
+   * 任务结果统计。
+   * TOTAL integer总的任务数。
+   * SUCCEEDED integer
+   * 任务状态为成功的任务数。
+   * FAILED integer
+   * 任务状态为失败的任务数。
+   */
+  task_metrics?: {
+    FAILED?: number;
+    SUCCEEDED?: number;
+    TOTAL?: number;
+  };
+  /**
+   * 任务状态。
+   * 枚举值
+   * PENDING：任务排队中
+   * RUNNING：任务处理中SUCCEEDED：任务执行成功
+   * FAILED：任务执行失败
+   * CANCELED：任务取消成功
+   * UNKNOWN：任务不存在或状态未知
+   */
+  task_status: 'FAILED' | 'PENDING' | 'RUNNING' | 'SUCCEEDED';
+};
+
 // 任务查询响应
 export type DashscopeTaskQueryResponse = {
   /**
    * 任务输出信息。
    */
-  output: {
-    /**
-     * 请求失败的错误码。请求成功时不会返回此参数
-     */
-    code?: string;
-    /**
-     * 任务完成时间。
-     */
-    end_time?: string;
-    /**
-     * 请求失败的详细信息。请求成功时不会返回此参数，
-     */
-    message?: string;
-    /**
-     * 任务结果列表，包括图像URL、部分任务执行失败报错信息等。
-     */
-    results?: {
-      code?: string;
-      message?: string;
-      url?: string;
-    }[];
-    /**
-     * 任务执行时间。
-     */
-    scheduled_time?: string;
-    /**
-     * 任务提交时间。
-     */
-    submit_time: string;
-    /**
-     * 任务ID。
-     */
-    task_id: string;
-    /**
-     * 任务消息。
-     */
-    task_message?: boolean;
-    /**
-     * 任务结果统计。
-     * TOTAL integer总的任务数。
-     * SUCCEEDED integer
-     * 任务状态为成功的任务数。
-     * FAILED integer
-     * 任务状态为失败的任务数。
-     */
-    task_metrics?: {
-      FAILED?: number;
-      SUCCEEDED?: number;
-      TOTAL?: number;
-    };
-    /**
-     * 任务状态。
-     * 枚举值
-     * PENDING：任务排队中
-     * RUNNING：任务处理中SUCCEEDED：任务执行成功
-     * FAILED：任务执行失败
-     * CANCELED：任务取消成功
-     * UNKNOWN：任务不存在或状态未知
-     */
-    task_status: 'FAILED' | 'PENDING' | 'RUNNING' | 'SUCCEEDED';
-  };
+  output: DashscopeTaskQueryOutput;
   /**
    * 请求唯一标识。可用于请求明细溯源和问题排查。
    */
@@ -373,12 +377,10 @@ export type EmojiVideoTaskResult = {
     /**
      * 结果信息（仅成功时有）
      */
-    result?: {
-      /**
-       * 生成的视频URL
-       */
-      video_url: string;
-    };
+    /**
+     * 生成的视频URL
+     */
+    video_url: string;
   };
   /**
    * 使用统计（仅成功时有）
@@ -612,4 +614,156 @@ export type LivePortraitDetectResponse = {
    * 本次请求的系统唯一码
    */
   request_id: string;
+};
+
+/**
+ * LivePortrait视频生成API模型类型
+ */
+export type LivePortraitModel = 'liveportrait';
+
+/**
+ * LivePortrait动作模板类型
+ */
+export type LivePortraitTemplateId = 'normal' | 'calm' | 'active';
+
+/**
+ * LivePortrait视频生成API请求参数
+ */
+export type LivePortraitRequest = {
+  /**
+   * 调用的模型，固定为liveportrait
+   */
+  model: LivePortraitModel;
+  /**
+   * 输入参数
+   */
+  input: {
+    /**
+     * 用户上传的图片URL，该图应先通过LivePortrait图像检测API检测
+     * 图像文件<10M，宽高比≤2，最大边长≤4096
+     * 格式支持：jpeg、jpg、png、bmp、webp
+     */
+    image_url: string;
+    /**
+     * 用户上传的音频文件URL
+     * 音频文件＜15M，1s＜时长＜5min
+     * 格式支持：wav、mp3
+     */
+    audio_url: string;
+  };
+  /**
+   * 可选参数
+   */
+  parameters?: {
+    /**
+     * 模板ID，可按模板控制人物头部的运动姿态和幅度
+     * 当前支持3种模板：normal、calm、active
+     * 默认为normal
+     */
+    template_id?: LivePortraitTemplateId;
+    /**
+     * 每秒眨眼次数，可设值为0-1，值越大眨眼频率越高
+     * 默认值为0.5
+     */
+    eye_move_freq?: number;
+    /**
+     * 输出视频帧率，可设值为15-30
+     * 默认值为24
+     */
+    video_fps?: number;
+    /**
+     * 嘴部动作的幅度大小，可设值为0-1.5，值越大嘴型越大
+     * 若设为0则嘴部无动作
+     * 默认值为1
+     */
+    mouth_move_strength?: number;
+    /**
+     * 生成的人脸是否贴回原图，可设值为true或false
+     * 若设为false则仅输出生成的人脸，忽略人物身体
+     * 默认值为true
+     */
+    paste_back?: boolean;
+    /**
+     * 头部动作幅度，可设值为0-1，值越大头部动作幅度越大
+     * 默认值为0.7
+     */
+    head_move_strength?: number;
+  };
+};
+
+/**
+ * LivePortrait视频生成任务提交响应
+ */
+export type LivePortraitResponse = {
+  /**
+   * 输出结果
+   */
+  output: {
+    /**
+     * 提交异步任务的作业id，实际作业结果需要通过异步任务查询接口获取
+     */
+    task_id: string;
+    /**
+     * 提交异步任务后的作业状态
+     */
+    task_status: 'PENDING' | 'RUNNING' | 'SUCCEEDED' | 'FAILED';
+  };
+  /**
+   * 本次请求的系统唯一码
+   */
+  request_id: string;
+};
+
+/**
+ * LivePortrait视频生成任务查询结果
+ */
+export type LivePortraitTaskResult = {
+  /**
+   * 请求唯一标识
+   */
+  request_id: string;
+  /**
+   * 输出信息
+   */
+  output: {
+    /**
+     * 查询作业的task_id
+     */
+    task_id: string;
+    /**
+     * 任务状态
+     */
+    task_status: 'PENDING' | 'RUNNING' | 'SUCCEEDED' | 'FAILED';
+    /**
+     * 错误码（仅失败时有）
+     */
+    code?: string;
+    /**
+     * 错误信息（仅失败时有）
+     */
+    message?: string;
+    /**
+     * 结果信息（仅成功时有）
+     */
+    results?: {
+      /**
+       * 生成的视频URL
+       * 视频URL有效期为作业完成后24小时
+       */
+      video_url: string;
+    };
+  };
+  /**
+   * 使用统计（仅成功时有）
+   */
+  usage?: {
+    /**
+     * 视频时长（秒）
+     */
+    video_duration: number;
+    /**
+     * 视频比例，该值为standard
+     */
+    video_ratio: string;
+  };
 };
