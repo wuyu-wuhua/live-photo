@@ -181,8 +181,8 @@ export default function GalleryPage() {
               768: 2,
               640: 1,
             }}
-            className="masonry-grid"
-            columnClassName="masonry-grid_column"
+            className="my-masonry-grid"
+            columnClassName="my-masonry-grid_column"
           >
             {results.map(result => (
               <GalleryCard
