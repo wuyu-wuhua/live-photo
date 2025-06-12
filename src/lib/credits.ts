@@ -32,7 +32,6 @@ export async function consumeCreditsForImageEdit(
   userId: string,
   editFunction: ImageEditFunction,
   creditCost: number,
-  options?: { quality?: 'standard' | 'high' | 'ultra'; count?: number },
   referenceId?: string,
 ): Promise<{ success: boolean; message?: string; transactionId?: string }> {
   try {
@@ -50,8 +49,6 @@ export async function consumeCreditsForImageEdit(
       referenceId,
       metadata: {
         function: editFunction,
-        quality: options?.quality || 'standard',
-        count: options?.count || 1,
       },
     };
 

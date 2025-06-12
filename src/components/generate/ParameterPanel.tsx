@@ -342,7 +342,7 @@ export function ParameterPanel({
         </Select>
         {formData.function && (
           <div className="text-xs text-success-500 mt-1">
-            {t('parameterPanel.functions.' + formData.function + '.description')}
+            {t(`parameterPanel.functions.${formData.function}.description`)}
           </div>
         )}
       </div>
@@ -415,8 +415,8 @@ export function ParameterPanel({
         <Accordion variant="splitted" selectionMode="multiple" defaultExpandedKeys={['advanced-params']}>
           <AccordionItem key="advanced-params" aria-label={t('parameterPanel.advancedParams')} title={t('parameterPanel.advancedParams')} className="px-0">
             <div className="space-y-4">
-            {/* 生成数量 */}
-            {/* <div>
+              {/* 生成数量 */}
+              {/* <div>
               <label className="block text-sm font-medium mb-2">
                 {t('parameterPanel.generateCount')}
                 :
@@ -433,140 +433,140 @@ export function ParameterPanel({
               />
             </div> */}
 
-            {/* 修改强度 - 仅特定功能需要 */}
-            {isStylization && (
-              <div>
-                <Label className="block text-sm font-medium mb-2">
-                  {t('parameterPanel.modifyStrength')}
-                  :
-                  {' '}
-                  {formData.parameters?.strength?.toFixed(2)}
-                </Label>
-                <Slider
-                  size="sm"
-                  step={0.1}
-                  minValue={0}
-                  maxValue={1}
-                  value={formData.parameters?.strength || 0.5}
-                  onChange={value => handleParameterChange('strength', value)}
-                  className="max-w-md"
-                />
-                <p className="text-xs text-default-500 mt-1">
-                  {t('parameterPanel.modifyStrengthDescription')}
-                </p>
-              </div>
-            )}
+              {/* 修改强度 - 仅特定功能需要 */}
+              {isStylization && (
+                <div>
+                  <Label className="block text-sm font-medium mb-2">
+                    {t('parameterPanel.modifyStrength')}
+                    :
+                    {' '}
+                    {formData.parameters?.strength?.toFixed(2)}
+                  </Label>
+                  <Slider
+                    size="sm"
+                    step={0.1}
+                    minValue={0}
+                    maxValue={1}
+                    value={formData.parameters?.strength || 0.5}
+                    onChange={value => handleParameterChange('strength', value)}
+                    className="max-w-md"
+                  />
+                  <p className="text-xs text-default-500 mt-1">
+                    {t('parameterPanel.modifyStrengthDescription')}
+                  </p>
+                </div>
+              )}
 
-            {/* 超分倍数 - 仅图像超分需要 */}
-            {isSuperResolution && (
-              <div>
-                <Label className="block text-sm font-medium mb-2">
-                  {t('parameterPanel.upscaleFactor')}
-                  :
-                  {' '}
-                  {formData.parameters?.upscale_factor}
-                  x
-                </Label>
-                <Slider
-                  size="sm"
-                  step={1}
-                  minValue={1}
-                  maxValue={4}
-                  value={formData.parameters?.upscale_factor || 1}
-                  onChange={value => handleParameterChange('upscale_factor', value)}
-                  className="max-w-md"
-                />
-                <p className="text-xs text-default-500 mt-1">
-                  {t('parameterPanel.upscaleFactorDescription')}
-                </p>
-              </div>
-            )}
+              {/* 超分倍数 - 仅图像超分需要 */}
+              {isSuperResolution && (
+                <div>
+                  <Label className="block text-sm font-medium mb-2">
+                    {t('parameterPanel.upscaleFactor')}
+                    :
+                    {' '}
+                    {formData.parameters?.upscale_factor}
+                    x
+                  </Label>
+                  <Slider
+                    size="sm"
+                    step={1}
+                    minValue={1}
+                    maxValue={4}
+                    value={formData.parameters?.upscale_factor || 1}
+                    onChange={value => handleParameterChange('upscale_factor', value)}
+                    className="max-w-md"
+                  />
+                  <p className="text-xs text-default-500 mt-1">
+                    {t('parameterPanel.upscaleFactorDescription')}
+                  </p>
+                </div>
+              )}
 
-            {/* 扩图参数 - 仅扩图功能需要 */}
-            {isExpand && (
-              <div className="space-y-4">
-                <p className="text-sm font-medium text-foreground">{t('parameterPanel.expandDirection')}</p>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="block text-sm font-medium mb-2">
-                      {t('parameterPanel.expandUp')}
-                      :
-                      {' '}
-                      {formData.parameters?.top_scale?.toFixed(1)}
-                    </Label>
-                    <Slider
-                      size="sm"
-                      step={0.1}
-                      minValue={1.0}
-                      maxValue={2.0}
-                      value={formData.parameters?.top_scale || 1.0}
-                      onChange={value => handleParameterChange('top_scale', value)}
-                    />
-                  </div>
-                  <div>
-                    <Label className="block text-sm font-medium mb-2">
-                      {t('parameterPanel.expandDown')}
-                      :
-                      {' '}
-                      {formData.parameters?.bottom_scale?.toFixed(1)}
-                    </Label>
-                    <Slider
-                      size="sm"
-                      step={0.1}
-                      minValue={1.0}
-                      maxValue={2.0}
-                      value={formData.parameters?.bottom_scale || 1.0}
-                      onChange={value => handleParameterChange('bottom_scale', value)}
-                    />
-                  </div>
-                  <div>
-                    <Label className="block text-sm font-medium mb-2">
-                      {t('parameterPanel.expandLeft')}
-                      :
-                      {' '}
-                      {formData.parameters?.left_scale?.toFixed(1)}
-                    </Label>
-                    <Slider
-                      size="sm"
-                      step={0.1}
-                      minValue={1.0}
-                      maxValue={2.0}
-                      value={formData.parameters?.left_scale || 1.0}
-                      onChange={value => handleParameterChange('left_scale', value)}
-                    />
-                  </div>
-                  <div>
-                    <Label className="block text-sm font-medium mb-2">
-                      {t('parameterPanel.expandRight')}
-                      :
-                      {' '}
-                      {formData.parameters?.right_scale?.toFixed(1)}
-                    </Label>
-                    <Slider
-                      size="sm"
-                      step={0.1}
-                      minValue={1.0}
-                      maxValue={2.0}
-                      value={formData.parameters?.right_scale || 1.0}
-                      onChange={value => handleParameterChange('right_scale', value)}
-                    />
+              {/* 扩图参数 - 仅扩图功能需要 */}
+              {isExpand && (
+                <div className="space-y-4">
+                  <p className="text-sm font-medium text-foreground">{t('parameterPanel.expandDirection')}</p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label className="block text-sm font-medium mb-2">
+                        {t('parameterPanel.expandUp')}
+                        :
+                        {' '}
+                        {formData.parameters?.top_scale?.toFixed(1)}
+                      </Label>
+                      <Slider
+                        size="sm"
+                        step={0.1}
+                        minValue={1.0}
+                        maxValue={2.0}
+                        value={formData.parameters?.top_scale || 1.0}
+                        onChange={value => handleParameterChange('top_scale', value)}
+                      />
+                    </div>
+                    <div>
+                      <Label className="block text-sm font-medium mb-2">
+                        {t('parameterPanel.expandDown')}
+                        :
+                        {' '}
+                        {formData.parameters?.bottom_scale?.toFixed(1)}
+                      </Label>
+                      <Slider
+                        size="sm"
+                        step={0.1}
+                        minValue={1.0}
+                        maxValue={2.0}
+                        value={formData.parameters?.bottom_scale || 1.0}
+                        onChange={value => handleParameterChange('bottom_scale', value)}
+                      />
+                    </div>
+                    <div>
+                      <Label className="block text-sm font-medium mb-2">
+                        {t('parameterPanel.expandLeft')}
+                        :
+                        {' '}
+                        {formData.parameters?.left_scale?.toFixed(1)}
+                      </Label>
+                      <Slider
+                        size="sm"
+                        step={0.1}
+                        minValue={1.0}
+                        maxValue={2.0}
+                        value={formData.parameters?.left_scale || 1.0}
+                        onChange={value => handleParameterChange('left_scale', value)}
+                      />
+                    </div>
+                    <div>
+                      <Label className="block text-sm font-medium mb-2">
+                        {t('parameterPanel.expandRight')}
+                        :
+                        {' '}
+                        {formData.parameters?.right_scale?.toFixed(1)}
+                      </Label>
+                      <Slider
+                        size="sm"
+                        step={0.1}
+                        minValue={1.0}
+                        maxValue={2.0}
+                        value={formData.parameters?.right_scale || 1.0}
+                        onChange={value => handleParameterChange('right_scale', value)}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* 线稿选项 - 仅线稿生图需要 */}
-            {isDoodle && (
-              <Switch
-                isSelected={formData.parameters?.is_sketch || false}
-                onValueChange={value => handleParameterChange('is_sketch', value)}
-              >
-                {t('parameterPanel.isSketch')}
-              </Switch>
-            )}
-          </div>
-        </AccordionItem>
-      </Accordion>
+              {/* 线稿选项 - 仅线稿生图需要 */}
+              {isDoodle && (
+                <Switch
+                  isSelected={formData.parameters?.is_sketch || false}
+                  onValueChange={value => handleParameterChange('is_sketch', value)}
+                >
+                  {t('parameterPanel.isSketch')}
+                </Switch>
+              )}
+            </div>
+          </AccordionItem>
+        </Accordion>
       </div>
 
       <div className="mt-6">

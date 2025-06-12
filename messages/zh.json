@@ -443,7 +443,18 @@
       "configureParameters": "配置参数并生成视频",
       "cancel": "取消",
       "startGeneration": "开始生成",
-      "generating": "生成中..."
+      "generating": "生成中...",
+      "videoType": "视频类型",
+      "emojiDescription": "从您的肖像生成富有表现力的表情动画",
+      "selectEmojiTemplate": "表情模板",
+      "selectEmojiTemplatePlaceholder": "选择表情模板",
+      "lipsyncDescription": "使用音频从您的肖像生成口型同步视频",
+      "audioFile": "音频文件",
+      "audioFileDescription": "支持MP3、WAV、M4A格式，最大10MB，最长30秒",
+      "creditConsumptionNotice": "本次生成消耗积分",
+      "noCompatibilityNotice": "此图片不兼容任何视频生成",
+      "emojiNotCompatibleNotice": "此图片不兼容表情视频生成",
+      "lipsyncNotCompatibleNotice": "此图片不兼容对口型视频生成"
     },
     "empty": {
       "title": "暂无内容",

@@ -427,7 +427,18 @@
       "configureParameters": "Configure parameters and generate video",
       "cancel": "Cancel",
       "startGeneration": "Start Generation",
-      "generating": "Generating..."
+      "generating": "Generating...",
+      "videoType": "Video Type",
+      "emojiDescription": "Generate expressive emoji animations from your portrait",
+      "selectEmojiTemplate": "Emoji Template",
+      "selectEmojiTemplatePlaceholder": "Select an emoji template",
+      "lipsyncDescription": "Generate lip-synced video from your portrait with audio",
+      "audioFile": "Audio File",
+      "audioFileDescription": "Supports MP3, WAV, M4A formats, max size 10MB, max duration 30 seconds",
+      "creditConsumptionNotice": "Credit consumption for this generation",
+      "noCompatibilityNotice": "This image is not compatible with any video generation",
+      "emojiNotCompatibleNotice": "This image is not compatible with emoji video generation",
+      "lipsyncNotCompatibleNotice": "This image is not compatible with lipsync video generation"
     },
     "empty": {
       "title": "No Content",

@@ -609,7 +609,9 @@ export type Database = {
         | 'super_resolution'
         | 'colorization'
         | 'doodle'
-        | 'control_cartoon_feature';
+        | 'control_cartoon_feature'
+        | 'emoji_video'
+        | 'liveportrait_video';
       task_status: 'PENDING' | 'RUNNING' | 'SUCCEEDED' | 'FAILED';
       credit_transaction_type:
         | 'PURCHASE' // 购买积分

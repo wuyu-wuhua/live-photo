@@ -10,6 +10,7 @@ type VideoResultPanelProps = {
   videoUrl: string;
   imageUrl: string;
   videoType: 'emoji' | 'liveportrait';
+  creditsConsumed?: number;
   onGenerate: () => void;
 };
 
@@ -18,12 +19,13 @@ export function VideoResultPanel({
   videoUrl,
   imageUrl,
   videoType,
+  creditsConsumed,
   onGenerate,
 }: VideoResultPanelProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // 处理视频播放/暂停
+  // Handle video play/pause
   const togglePlay = () => {
     if (!videoRef.current) {
       return;
@@ -38,7 +40,7 @@ export function VideoResultPanel({
     }
   };
 
-  // 处理视频下载
+  // Handle video download
   const handleDownload = () => {
     if (!videoUrl) {
       return;
@@ -52,7 +54,7 @@ export function VideoResultPanel({
     document.body.removeChild(a);
   };
 
-  // 处理视频分享
+  // Handle video sharing
   const handleShare = async () => {
     if (!videoUrl) {
       return;
@@ -61,31 +63,31 @@ export function VideoResultPanel({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'AI生成视频',
-          text: '查看我用AI生成的视频',
+          title: 'AI Generated Video',
+          text: 'Check out my AI generated video',
           url: videoUrl,
         });
       } catch (err) {
-        console.error('分享失败:', err);
+        console.error('Share failed:', err);
       }
     } else {
-      // 复制链接到剪贴板
+      // Copy link to clipboard
       navigator.clipboard.writeText(videoUrl)
-        .then(() => toast.success('视频链接已复制到剪贴板'))
-        .catch(err => console.error('复制失败:', err));
+        .then(() => toast.success('Video link copied to clipboard'))
+        .catch(err => console.error('Copy failed:', err));
     }
   };
 
   return (
     <div className="h-full flex flex-col">
-      {/* 视频展示区域 */}
+      {/* Video display area */}
       <div className="flex-1 flex items-center justify-center bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden relative">
         {isGenerating
           ? (
               <div className="text-center space-y-4">
                 <Spinner size="lg" color="primary" />
                 <p className="text-gray-600 dark:text-gray-400">
-                  {videoType === 'emoji' ? '正在生成表情视频...' : '正在生成对口型视频...'}
+                  {videoType === 'emoji' ? 'Generating emoji video...' : 'Generating lipsync video...'}
                 </p>
               </div>
             )
@@ -115,7 +117,7 @@ export function VideoResultPanel({
                       onPlay={() => setIsPlaying(true)}
                       onPause={() => setIsPlaying(false)}
                     >
-                      <track kind="captions" src="" label="字幕" />
+                      <track kind="captions" src="" label="Captions" />
                     </video>
                     {!isPlaying && (
                       <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-lg">
@@ -133,11 +135,11 @@ export function VideoResultPanel({
                     <div className="relative w-64 h-64 mx-auto overflow-hidden rounded-lg">
                       <Image
                         src={imageUrl}
-                        alt="参考图片"
+                        alt="Reference image"
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                        <p className="text-white text-lg font-medium">等待生成视频</p>
+                        <p className="text-white text-lg font-medium">Waiting for video generation</p>
                       </div>
                     </div>
                     <Button
@@ -148,37 +150,44 @@ export function VideoResultPanel({
                       onClick={onGenerate}
                       className="mt-4"
                     >
-                      开始生成
+                      Start Generation
                     </Button>
                   </div>
                 )
               : (
                   <div className="text-center p-8">
                     <p className="text-gray-500 dark:text-gray-400">
-                      请先选择图像并设置参数
+                      Please select an image and set parameters first
                     </p>
                   </div>
                 )}
       </div>
 
-      {/* 操作按钮区域 */}
+      {/* Action buttons area */}
       {videoUrl && (
         <Card className="mt-4">
           <CardHeader className="pb-0">
-            <h3 className="text-lg font-semibold">
-              {videoType === 'emoji' ? '表情视频' : '对口型视频'}
-            </h3>
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-semibold">
+                {videoType === 'emoji' ? 'Emoji Video' : 'Lipsync Video'}
+              </h3>
+              {creditsConsumed !== undefined && (
+                <div className="text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full">
+                  Consumed {creditsConsumed} credits
+                </div>
+              )}
+            </div>
           </CardHeader>
           <CardBody>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               {videoType === 'emoji'
-                ? '根据选择的表情模板生成的动态表情视频'
-                : '根据上传的音频生成的对口型视频'}
+                ? 'Dynamic emoji video generated based on the selected emoji template'
+                : 'Lipsync video generated based on the uploaded audio'}
             </p>
           </CardBody>
           <CardFooter className="flex justify-between">
             <div className="flex gap-2">
-              <Tooltip content="下载视频">
+              <Tooltip content="Download video">
                 <Button
                   isIconOnly
                   variant="flat"
@@ -187,7 +196,7 @@ export function VideoResultPanel({
                   <Download className="w-4 h-4" />
                 </Button>
               </Tooltip>
-              <Tooltip content="分享视频">
+              <Tooltip content="Share video">
                 <Button
                   isIconOnly
                   variant="flat"
@@ -197,15 +206,15 @@ export function VideoResultPanel({
                 </Button>
               </Tooltip>
             </div>
-            <Tooltip content="重新生成">
+            <Tooltip content="Regenerate">
               <Button
-                variant="light"
+                isIconOnly
+                variant="flat"
                 color="primary"
-                startContent={<RefreshCw className="w-4 h-4" />}
                 onClick={onGenerate}
                 isDisabled={isGenerating}
               >
-                重新生成
+                <RefreshCw className="w-4 h-4" />
               </Button>
             </Tooltip>
           </CardFooter>

@@ -1,6 +1,7 @@
 'use client';
 
 import type { ImageEditResult } from '@/types/database';
+import { Button, Modal, ModalBody, ModalContent, ModalHeader } from '@heroui/react';
 import { VideoIcon } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -8,11 +9,15 @@ import { toast } from 'sonner';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { VideoParameterPanel } from '@/components/video-generate/VideoParameterPanel';
 import { VideoResultPanel } from '@/components/video-generate/VideoResultPanel';
+import { useCredits } from '@/hooks/useCredits';
+import { useUser } from '@/hooks/useUser';
 import { ImageEditService } from '@/services/databaseService';
 
 export default function VideoGeneratePage() {
   const searchParams = useSearchParams();
   const imageId = searchParams.get('imageId');
+  const { user } = useUser();
+  const { credits, loading: creditsLoading, refresh: refreshCredits, hasEnoughCredits } = useCredits();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -22,13 +27,16 @@ export default function VideoGeneratePage() {
   const [videoType, setVideoType] = useState<'emoji' | 'liveportrait'>('emoji');
   const [audioUrl, setAudioUrl] = useState<string>('');
   const [drivenId, setDrivenId] = useState<string>('mengwa_kaixin');
+  const [showCreditModal, setShowCreditModal] = useState(false);
+  const [requiredCredits, setRequiredCredits] = useState(0);
+  const [creditsConsumed, setCreditsConsumed] = useState<number | undefined>(undefined);
 
-  // 获取图像数据
+  // Get image data
   useEffect(() => {
     async function fetchImageData() {
       if (!imageId) {
-        setError('缺少图像ID参数');
-        toast.error('缺少图像ID参数');
+        setError('Missing image ID parameter');
+        toast.error('Missing image ID parameter');
         setIsLoading(false);
         return;
       }
@@ -38,12 +46,12 @@ export default function VideoGeneratePage() {
         if (response.success && response.data) {
           setImageData(response.data);
         } else {
-          setError('获取图像数据失败');
-          toast.error('获取图像数据失败');
+          setError('Failed to get image data');
+          toast.error('Failed to get image data');
         }
       } catch (err) {
-        setError('获取图像数据时出错');
-        toast.error('获取图像数据时出错');
+        setError('Error while retrieving image data');
+        toast.error('Error while retrieving image data');
         console.error(err);
       } finally {
         setIsLoading(false);
@@ -53,24 +61,60 @@ export default function VideoGeneratePage() {
     fetchImageData();
   }, [imageId]);
 
-  // 处理视频类型变更
+  // Handle video type change
   const handleVideoTypeChange = (type: 'emoji' | 'liveportrait') => {
     setVideoType(type);
+    // Update required credits - fixed at 3 credits for all video types
+    setRequiredCredits(3);
   };
 
-  // 处理音频URL变更
+  // Handle audio URL change
   const handleAudioUrlChange = (url: string) => {
     setAudioUrl(url);
   };
 
-  // 处理表情模板ID变更
+  // Handle emoji template ID change
   const handleDrivenIdChange = (id: string) => {
     setDrivenId(id);
   };
 
-  // 生成视频
+  // Check if credits are sufficient
+  const checkCredits = () => {
+    if (!user) {
+      toast.error('Please login first');
+      return false;
+    }
+
+    // Fixed cost at 3 credits for all video types
+    const cost = 3;
+    setRequiredCredits(cost);
+
+    if (!hasEnoughCredits(cost)) {
+      setShowCreditModal(true);
+      return false;
+    }
+
+    return true;
+  };
+
+  // Check if current video type has enough credits
+  const currentHasEnoughCredits = () => {
+    if (!user) {
+      return false;
+    }
+    // Fixed cost at 3 credits for all video types
+    const cost = 3;
+    return hasEnoughCredits(cost);
+  };
+
+  // Generate video
   const handleGenerate = async () => {
     if (!imageData) {
+      return;
+    }
+
+    // Check if credits are sufficient
+    if (!checkCredits()) {
       return;
     }
 
@@ -81,7 +125,7 @@ export default function VideoGeneratePage() {
       let response;
 
       if (videoType === 'emoji') {
-        // 生成表情视频
+        // Generate emoji video
         response = await fetch('/api/dashscope/emoji-video-generate', {
           method: 'POST',
           headers: {
@@ -93,9 +137,9 @@ export default function VideoGeneratePage() {
           }),
         });
       } else {
-        // 生成对口型视频
+        // Generate lipsync video
         if (!audioUrl) {
-          throw new Error('请先上传音频文件');
+          throw new Error('Please upload an audio file first');
         }
 
         response = await fetch('/api/dashscope/liveportrait-generate', {
@@ -110,18 +154,30 @@ export default function VideoGeneratePage() {
         });
       }
 
-      const { success, data, error } = (await response.json()) as { success: boolean; data: { videoUrl: string }; error: any };
+      if (response.status === 402) {
+        throw new Error('Insufficient credits, please recharge and try again');
+      }
+
+      const { success, data, error, credits_consumed } = await response.json() as {
+        success: boolean;
+        data: { videoUrl: string };
+        error: any;
+        credits_consumed?: number;
+      };
 
       if (success && data?.videoUrl) {
         setGeneratedVideoUrl(data.videoUrl);
-        toast.success('视频生成成功');
+        setCreditsConsumed(credits_consumed);
+        toast.success(`Video generated successfully${credits_consumed ? `, consumed ${credits_consumed} credits` : ''}`);
+        // Refresh credits
+        refreshCredits();
       } else {
-        throw new Error(error || '生成失败');
+        throw new Error(error || 'Generation failed');
       }
     } catch (err) {
-      console.error('生成视频时出错:', err);
-      setError(err instanceof Error ? err.message : '未知错误');
-      toast.error(err instanceof Error ? err.message : '生成视频时出错');
+      console.error('Error generating video:', err);
+      setError(err instanceof Error ? err.message : 'Unknown error');
+      toast.error(err instanceof Error ? err.message : 'Error generating video');
     } finally {
       setIsGenerating(false);
     }
@@ -129,32 +185,46 @@ export default function VideoGeneratePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900">
-      {/* 标题区域 */}
+      {/* Title area */}
       <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200/50 dark:border-slate-700/50 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-3">
-          <div className="flex items-center gap-3">
-            <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500/20 to-indigo-500/20 backdrop-blur-sm">
-              <VideoIcon className="w-5 h-5 text-blue-500" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-500/20 to-indigo-500/20 backdrop-blur-sm">
+                <VideoIcon className="w-5 h-5 text-blue-500" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  AI Video Generation
+                </h1>
+                <p className="text-xs text-slate-600 dark:text-slate-400">
+                  Intelligent Video Processing and Generation Platform
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                AI 视频生成
-              </h1>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
-                智能视频处理与生成平台
-              </p>
-            </div>
+
+            {/* Credits display */}
+            {user && (
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-white/80 dark:bg-slate-800/80 rounded-lg backdrop-blur-sm shadow-sm border border-slate-200 dark:border-slate-700">
+                {/* <WalletModal className="w-4 h-4 text-slate-700 dark:text-slate-300" /> */}
+                <span className="text-sm font-medium">
+                  {creditsLoading ? '...' : credits?.balance || 0}
+                  {' '}
+                  Credits
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* 主要内容区域 */}
+      {/* Main content area */}
       <div className="max-w-7xl mx-auto p-4">
         <ResizablePanelGroup
           direction="horizontal"
           className="h-[calc(100vh-120px)] rounded-lg border"
         >
-          {/* 左侧参数面板 */}
+          {/* Left parameter panel */}
           <ResizablePanel defaultSize={30} minSize={20} maxSize={50}>
             <div className="h-full overflow-y-auto p-4">
               <VideoParameterPanel
@@ -165,6 +235,7 @@ export default function VideoGeneratePage() {
                 videoType={videoType}
                 audioUrl={audioUrl}
                 drivenId={drivenId}
+                hasEnoughCredits={currentHasEnoughCredits()}
                 onVideoTypeChange={handleVideoTypeChange}
                 onAudioUrlChange={handleAudioUrlChange}
                 onDrivenIdChange={handleDrivenIdChange}
@@ -173,10 +244,10 @@ export default function VideoGeneratePage() {
             </div>
           </ResizablePanel>
 
-          {/* 拖拽分割线 */}
+          {/* Drag divider */}
           <ResizableHandle withHandle />
 
-          {/* 右侧结果展示区域 */}
+          {/* Right result display area */}
           <ResizablePanel defaultSize={70}>
             <div className="h-full overflow-y-auto p-4">
               <VideoResultPanel
@@ -184,12 +255,67 @@ export default function VideoGeneratePage() {
                 videoUrl={generatedVideoUrl}
                 imageUrl={imageData?.source_image_url || ''}
                 videoType={videoType}
+                creditsConsumed={creditsConsumed}
                 onGenerate={handleGenerate}
               />
             </div>
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>
+
+      {/* Insufficient credits modal */}
+      <Modal isOpen={showCreditModal} onClose={() => setShowCreditModal(false)} size="md">
+        <ModalContent className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg">
+          <ModalHeader className="flex flex-col gap-1 border-b border-slate-200 dark:border-slate-800 pb-3">
+            <h3 className="text-lg font-semibold bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-400 dark:to-slate-200 bg-clip-text text-transparent">Insufficient Credits</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400">You don't have enough credits to generate the video</p>
+          </ModalHeader>
+          <ModalBody className="pb-6 pt-4">
+            <div className="space-y-4">
+              <p className="text-sm">
+                Current Balance:
+                {' '}
+                <span className="font-medium">
+                  {credits?.balance || 0}
+                  {' '}
+                  Credits
+                </span>
+              </p>
+              <p className="text-sm">
+                Required Credits:
+                {' '}
+                <span className="font-medium text-blue-600">
+                  {requiredCredits}
+                  {' '}
+                  Credits
+                </span>
+              </p>
+              <p className="text-sm">
+                Difference:
+                {' '}
+                <span className="font-medium text-red-500">
+                  {Math.max(0, requiredCredits - (credits?.balance || 0))}
+                  {' '}
+                  Credits
+                </span>
+              </p>
+              <div className="pt-2">
+                <Button
+                  color="primary"
+                  className="w-full"
+                  onPress={() => {
+                    setShowCreditModal(false);
+                    // Here can redirect to recharge page
+                    window.location.href = '/credits';
+                  }}
+                >
+                  Go to Recharge
+                </Button>
+              </div>
+            </div>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </div>
   );
 }
