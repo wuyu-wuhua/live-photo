@@ -4,6 +4,7 @@ import type { ImageEditResult } from '@/types/database';
 import { Button, Card, CardBody, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@heroui/react';
 import { CheckCircle, Clock, Download, Loader2, Mic, Smile, XCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/i18nConfig';
 
 type ImageDetailModalProps = {
   isOpen: boolean;
@@ -21,6 +22,7 @@ export default function ImageDetailModal({
   formatTime,
 }: ImageDetailModalProps) {
   const t = useTranslations('gallery');
+  const router = useRouter();
   if (!imageResult) {
     return null;
   }
@@ -205,7 +207,7 @@ export default function ImageDetailModal({
                                 color="default"
                                 variant="flat"
                                 radius="full"
-                                onClick={() => handleDownload(url)}
+                                onPress={() => handleDownload(url)}
                               >
                                 <Download size={20} />
                               </Button>
@@ -442,10 +444,10 @@ export default function ImageDetailModal({
                   color="primary"
                   variant="flat"
                   startContent={<Smile size={16} />}
-                  onClick={() => {
+                  onPress={() => {
                     onClose();
                     // 跳转到视频生成页面
-                    window.open(`/video-generate?imageId=${imageResult.id}&type=emoji`, '_blank');
+                    router.push(`/video-generate?imageId=${imageResult.id}&type=emoji`);
                   }}
                 >
                   {t('generateEmojiVideo')}
@@ -458,10 +460,10 @@ export default function ImageDetailModal({
                   color="secondary"
                   variant="flat"
                   startContent={<Mic size={16} />}
-                  onClick={() => {
+                  onPress={() => {
                     onClose();
                     // 跳转到视频生成页面
-                    window.open(`/video-generate?imageId=${imageResult.id}&type=liveportrait`, '_blank');
+                    router.push(`/video-generate?imageId=${imageResult.id}&type=liveportrait`);
                   }}
                 >
                   {t('generateLipsyncVideo')}

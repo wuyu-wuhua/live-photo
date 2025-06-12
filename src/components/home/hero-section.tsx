@@ -14,7 +14,7 @@ const sampleImages = [
 ];
 
 export function HeroSection() {
-  const t = useTranslations('common');
+  const t = useTranslations();
   const [activePhoto, setActivePhoto] = useState<number | null>(null);
 
   return (
@@ -194,7 +194,7 @@ export function HeroSection() {
               lg:text-5xl
             `}
           >
-            {t('heroTitle')}
+            {t('common.heroTitle')}
           </h1>
           <p
             className={`
@@ -203,7 +203,7 @@ export function HeroSection() {
               dark:text-gray-300
             `}
           >
-            {t('heroDescription')}
+            {t('common.heroDescription')}
           </p>
           <div className="my-1 flex items-center gap-2">
             <div className="flex text-yellow-400">
@@ -215,7 +215,7 @@ export function HeroSection() {
                 dark:text-gray-300
               `}
             >
-              {t('rating')}
+              {t('common.rating')}
             </span>
           </div>
           <Link href="/generate">
@@ -225,7 +225,7 @@ export function HeroSection() {
               radius="full"
               size="lg"
             >
-              {t('colorizePhoto')}
+              {t('common.colorizePhoto')}
             </Button>
           </Link>
           <p
@@ -235,7 +235,7 @@ export function HeroSection() {
             `}
           >
             {' '}
-            {t('sampleText')}
+            {t('common.sampleText')}
           </p>
           <div className="flex space-x-3">
             {sampleImages.map(item => (

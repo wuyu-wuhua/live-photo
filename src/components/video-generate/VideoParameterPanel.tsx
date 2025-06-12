@@ -168,6 +168,7 @@ export function VideoParameterPanel({
                   label="Emoji Video"
                   placeholder="Select an emoji template"
                   selectedKeys={[drivenId]}
+                  value={drivenId}
                   onSelectionChange={(keys) => {
                     const selectedId = Array.from(keys)[0] as string;
                     onDrivenIdChange(selectedId);
@@ -186,7 +187,7 @@ export function VideoParameterPanel({
                   }}
                 >
                   {EMOJI_TEMPLATE_OPTIONS.map(option => (
-                    <SelectItem key={option.value} description={option.description}>
+                    <SelectItem key={option.value} description={option.description} textValue={option.label}>
                       <div className="flex items-center gap-2">
                         <Icon icon={option.icon} width="20" height="20" />
                         {option.label}

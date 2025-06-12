@@ -77,7 +77,7 @@ export default function GalleryCard({
     if (result.liveportrait_result_url && result.liveportrait_result_url.length > 0) {
       return result.liveportrait_result_url;
     }
-    return result.source_image_url;
+    return result.result_image_url[0];
   };
 
   // 判断是否为视频
@@ -109,7 +109,6 @@ export default function GalleryCard({
           {isVideo && displayUrl
             ? (
                 <video
-                  src={displayUrl}
                   className="w-full h-auto object-cover rounded-t-lg"
                   muted
                   loop
@@ -117,6 +116,8 @@ export default function GalleryCard({
                   onMouseLeave={e => e.currentTarget.pause()}
                   onError={e => console.error('Video error:', e)}
                 >
+                  <source src={displayUrl} type="video/mp4; codecs=av01.0.04M.08" />
+                  <source src={displayUrl} type="video/mp4; codecs=hvc1" />
                   <source src={displayUrl} type="video/mp4" />
                 </video>
               )

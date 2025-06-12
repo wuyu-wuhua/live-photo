@@ -15,8 +15,7 @@ import { signOut } from '@/lib/auth-client';
 export const Navbar = () => {
   const { user, loading } = useUser();
   const router = useRouter();
-  const t = useTranslations('nav');
-  const tCommon = useTranslations('common');
+  const t = useTranslations();
 
   const handleSignOut = async () => {
     const { error } = await signOut();
@@ -38,7 +37,7 @@ export const Navbar = () => {
               <circle cx="15" cy="9" r="1.5" fill="#FFFFFF" />
               <path d="M7 14L10 11L13 14L17 10" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <p className="font-bold text-inherit">{tCommon('appName')}</p>
+            <p className="font-bold text-inherit">{t('common.appName')}</p>
           </NextLink>
         </NavbarBrand>
         <ul className="hidden lg:flex gap-4 justify-start ml-2">
@@ -107,15 +106,15 @@ export const Navbar = () => {
                         name={user.user_metadata?.full_name || user.email}
                       />
                     </DropdownTrigger>
-                    <DropdownMenu aria-label={t('login')} variant="flat">
+                    <DropdownMenu aria-label={t('common.login')} variant="flat">
 
                       <DropdownItem key="profile" className="h-14 gap-2">
-                        <p className="font-semibold">{t('login')}</p>
+                        <p className="font-semibold">{t('common.login')}</p>
                         <p className="font-semibold">{user.email}</p>
                       </DropdownItem>
                       <DropdownSection showDivider title="Actions">
                         <DropdownItem key="profile1" as={NextLink} href="/profile" startContent={<Icon icon="solar:user-bold-duotone" className="text-lg text-blue-500" />}>
-                          {t('profile')}
+                          {t('common.profile')}
                         </DropdownItem>
                         <DropdownItem key="Generate" as={NextLink} href="/generate" startContent={<Icon icon="solar:magic-stick-3-bold-duotone" className="text-lg text-purple-500" />}>
                           Generate
@@ -129,7 +128,7 @@ export const Navbar = () => {
                       </DropdownItem> */}
                       <DropdownSection>
                         <DropdownItem key="logout" color="danger" onClick={handleSignOut} startContent={<Icon icon="solar:logout-2-bold-duotone" className="text-lg text-red-500" />}>
-                          {t('logout')}
+                          {t('common.logout')}
                         </DropdownItem>
                       </DropdownSection>
                     </DropdownMenu>
@@ -143,7 +142,7 @@ export const Navbar = () => {
                       variant="ghost"
                       size="sm"
                     >
-                      {t('login')}
+                      {t('common.login')}
                     </Button>
                     <Button
                       as={NextLink}
@@ -151,7 +150,7 @@ export const Navbar = () => {
                       color="primary"
                       size="sm"
                     >
-                      {t('signup')}
+                      {t('common.signup')}
                     </Button>
                   </div>
                 )}
@@ -180,22 +179,22 @@ export const Navbar = () => {
                       name={user.user_metadata?.full_name || user.email}
                     />
                   </DropdownTrigger>
-                  <DropdownMenu aria-label={t('login')} variant="flat">
+                  <DropdownMenu aria-label={t('common.login')} variant="flat">
                     <DropdownItem key="profile" className="h-14 gap-2">
-                      <p className="font-semibold">{t('login')}</p>
+                      <p className="font-semibold">{t('common.login')}</p>
                       <p className="font-semibold">{user.email}</p>
                     </DropdownItem>
                     <DropdownItem key="profile" as={NextLink} href="/profile">
-                      {t('profile')}
+                      {t('common.profile')}
                     </DropdownItem>
                     <DropdownItem key="dashboard" as={NextLink} href="/dashboard">
-                      {t('dashboard')}
+                      {t('common.dashboard')}
                     </DropdownItem>
                     <DropdownItem key="settings" as={NextLink} href="/settings">
-                      {tCommon('edit')}
+                      {t('common.edit')}
                     </DropdownItem>
                     <DropdownItem key="logout" color="danger" onClick={handleSignOut}>
-                      {t('logout')}
+                      {t('common.logout')}
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
@@ -207,7 +206,7 @@ export const Navbar = () => {
                   variant="ghost"
                   size="sm"
                 >
-                  {t('login')}
+                  {t('common.login')}
                 </Button>
               )}
 
@@ -245,7 +244,7 @@ export const Navbar = () => {
                   variant="ghost"
                   className="w-full justify-start"
                 >
-                  {t('login')}
+                  {t('common.login')}
                 </Button>
               </NavbarMenuItem>
               <NavbarMenuItem>
@@ -255,7 +254,7 @@ export const Navbar = () => {
                   color="primary"
                   className="w-full justify-start"
                 >
-                  {t('signup')}
+                  {t('common.signup')}
                 </Button>
               </NavbarMenuItem>
             </>
