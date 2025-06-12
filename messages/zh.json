@@ -27,7 +27,8 @@
     "selectCreditPackage": "请选择积分套餐进行充值",
     "topUp": "充值",
     "recommended": "推荐",
-    "paymentSuccess": "支付成功！您已获得{credits}积分"
+    "paymentSuccess": "支付成功！您已获得{credits}积分",
+    "generateSuccess": "生成成功"
   },
   "generatePage": {
     "title": "AI 图像生成",
@@ -121,6 +122,11 @@
         "label": "卡通控制",
         "description": "将图像转换为卡通风格"
       }
+    },
+    "defaultPrompts": {
+      "expand": "保持原图风格，自然扩展图像边界",
+      "remove_watermark": "去除图像中的水印，保持图像自然",
+      "super_resolution": "提高图像清晰度和细节，保持自然效果"
     },
     "colorPresets": {
       "natural": "自然色彩",
@@ -240,7 +246,8 @@
     "muted": "已静音",
     "unmuted": "已取消静音",
     "bookmarked": "已收藏",
-    "unbookmarked": "已取消收藏"
+    "unbookmarked": "已取消收藏",
+    "dashboard": "工作台"
   },
   "pricing": {
     "title": "价格套餐",
@@ -555,5 +562,6 @@
       "pay": "支付",
       "securePayment": "安全支付"
     }
-  }
+  },
+  "credits": "积分"
 }

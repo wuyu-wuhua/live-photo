@@ -31,12 +31,15 @@ export function calculateCreditCost(
 export async function consumeCreditsForImageEdit(
   userId: string,
   editFunction: ImageEditFunction,
+  creditCost: number,
   options?: { quality?: 'standard' | 'high' | 'ultra'; count?: number },
   referenceId?: string,
 ): Promise<{ success: boolean; message?: string; transactionId?: string }> {
   try {
+    if (creditCost <= 0) {
+      throw new Error('积分值必须大于0');
+    }
     const supabase = createSupabaseClient();
-    const creditCost = calculateCreditCost(editFunction, options);
 
     // 准备扣除积分的请求
     const request: DeductCreditsRequest = {
@@ -63,6 +66,7 @@ export async function consumeCreditsForImageEdit(
     });
 
     if (error) {
+      console.error('扣除用户积分失败:', error);
       throw error;
     }
 

@@ -11,7 +11,6 @@ import {
   SelectItem,
   Slider,
   Switch,
-  Textarea,
   Tooltip,
 } from '@heroui/react';
 import {
@@ -19,7 +18,6 @@ import {
   Camera,
   Cherry,
   Coins,
-  Edit3,
   Eraser,
   Expand,
   Film,
@@ -39,78 +37,79 @@ import { PictureCardForm } from '@/components/upload/picture-card-form';
 import { useCredits } from '@/hooks/useCredits';
 import { Label } from '../ui/label';
 
-const getFunctionOptions = (t: any) => [
-  {
-    value: 'colorization' as DashscopeImageEditFunction,
-    label: t('parameterPanel.functions.colorization.label'),
-    icon: <Palette className="w-5 h-5" />,
-    description: t('parameterPanel.functions.colorization.description'),
-    color: 'text-pink-500',
-  },
-  // {
-  //   value: 'control_cartoon_feature',
-  //   label: '卡通形象垫图',
-  //   icon: <Eye className="w-5 h-5" />,
-  //   description: '生成卡通风格图像',
-  //   color: 'text-purple-500',
-  // },
-  {
-    value: 'description_edit' as DashscopeImageEditFunction,
-    label: t('parameterPanel.functions.description_edit.label'),
-    icon: <Edit3 className="w-5 h-5" />,
-    description: t('parameterPanel.functions.description_edit.description'),
-    color: 'text-blue-500',
-  },
-  // {
-  //   value: 'description_edit_with_mask',
-  //   label: '局部重绘',
-  //   icon: <PaintBucket className="w-5 h-5" />,
-  //   description: '指定区域重新绘制',
-  //   color: 'text-orange-500',
-  // },
-  // {
-  //   value: 'doodle',
-  //   label: '线稿生图',
-  //   icon: <PenTool className="w-5 h-5" />,
-  //   description: '将线稿转换为完整图像',
-  //   color: 'text-green-500',
-  // },
-  {
-    value: 'expand' as DashscopeImageEditFunction,
-    label: t('parameterPanel.functions.expand.label'),
-    icon: <Expand className="w-5 h-5" />,
-    description: t('parameterPanel.functions.expand.description'),
-    color: 'text-indigo-500',
-  },
-  {
-    value: 'remove_watermark' as DashscopeImageEditFunction,
-    label: t('parameterPanel.functions.remove_watermark.label'),
-    icon: <Eraser className="w-5 h-5" />,
-    description: t('parameterPanel.functions.remove_watermark.description'),
-    color: 'text-red-500',
-  },
-  // {
-  //   value: 'stylization_all',
-  //   label: '全局风格化',
-  //   icon: <Sparkles className="w-5 h-5" />,
-  //   description: '改变整体图像风格',
-  //   color: 'text-yellow-500',
-  // },
-  // {
-  //   value: 'stylization_local',
-  //   label: '局部风格化',
-  //   icon: <Brush className="w-5 h-5" />,
-  //   description: '局部区域风格转换',
-  //   color: 'text-teal-500',
-  // },
-  {
-    value: 'super_resolution' as DashscopeImageEditFunction,
-    label: t('parameterPanel.functions.super_resolution.label'),
-    icon: <Zap className="w-5 h-5" />,
-    description: t('parameterPanel.functions.super_resolution.description'),
-    color: 'text-cyan-500',
-  },
-];
+const getFunctionOptions = (t: any) => [{
+  value: 'colorization' as DashscopeImageEditFunction,
+  label: t('parameterPanel.functions.colorization.label'),
+  icon: <Palette className="w-5 h-5" />,
+  description: t('parameterPanel.functions.colorization.description'),
+  color: 'text-pink-500',
+  defaultPrompt: '', // 图像上色使用滤镜，默认为空
+},
+// {
+//   value: 'control_cartoon_feature',
+//   label: '卡通形象垫图',
+//   icon: <Eye className="w-5 h-5" />,
+//   description: '生成卡通风格图像',
+//   color: 'text-purple-500',
+// },
+// {
+//   value: 'description_edit' as DashscopeImageEditFunction,
+//   label: t('parameterPanel.functions.description_edit.label'),
+//   icon: <Edit3 className="w-5 h-5" />,
+//   description: t('parameterPanel.functions.description_edit.description'),
+//   color: 'text-blue-500',
+// },
+// {
+//   value: 'description_edit_with_mask',
+//   label: '局部重绘',
+//   icon: <PaintBucket className="w-5 h-5" />,
+//   description: '指定区域重新绘制',
+//   color: 'text-orange-500',
+// },
+// {
+//   value: 'doodle',
+//   label: '线稿生图',
+//   icon: <PenTool className="w-5 h-5" />,
+//   description: '将线稿转换为完整图像',
+//   color: 'text-green-500',
+// },
+{
+  value: 'expand' as DashscopeImageEditFunction,
+  label: t('parameterPanel.functions.expand.label'),
+  icon: <Expand className="w-5 h-5" />,
+  description: t('parameterPanel.functions.expand.description'),
+  color: 'text-indigo-500',
+  defaultPrompt: t('parameterPanel.defaultPrompts.expand'),
+}, {
+  value: 'remove_watermark' as DashscopeImageEditFunction,
+  label: t('parameterPanel.functions.remove_watermark.label'),
+  icon: <Eraser className="w-5 h-5" />,
+  description: t('parameterPanel.functions.remove_watermark.description'),
+  color: 'text-red-500',
+  defaultPrompt: t('parameterPanel.defaultPrompts.remove_watermark'),
+},
+// {
+//   value: 'stylization_all',
+//   label: '全局风格化',
+//   icon: <Sparkles className="w-5 h-5" />,
+//   description: '改变整体图像风格',
+//   color: 'text-yellow-500',
+// },
+// {
+//   value: 'stylization_local',
+//   label: '局部风格化',
+//   icon: <Brush className="w-5 h-5" />,
+//   description: '局部区域风格转换',
+//   color: 'text-teal-500',
+// },
+{
+  value: 'super_resolution' as DashscopeImageEditFunction,
+  label: t('parameterPanel.functions.super_resolution.label'),
+  icon: <Zap className="w-5 h-5" />,
+  description: t('parameterPanel.functions.super_resolution.description'),
+  color: 'text-cyan-500',
+  defaultPrompt: t('parameterPanel.defaultPrompts.super_resolution'),
+}];
 
 const getColorizationPresets = (t: any) => [
   {
@@ -228,6 +227,21 @@ export function ParameterPanel({
       },
     });
   };
+
+  // 当功能选择变化时，设置对应的默认提示词
+  const handleFunctionChange = (selectedFunction: DashscopeImageEditFunction) => {
+    const option = FUNCTION_OPTIONS.find(opt => opt.value === selectedFunction);
+    const newPrompt = option?.defaultPrompt || '';
+
+    // 设置功能和对应的默认提示词
+    handleInputChange('function', selectedFunction);
+
+    // 如果是图像上色功能，不自动设置提示词，保留滤镜选择
+    if (selectedFunction !== 'colorization') {
+      handleInputChange('prompt', newPrompt);
+    }
+  };
+
   const needsMask = formData.function === 'description_edit_with_mask';
   const isExpand = formData.function === 'expand';
   const isSuperResolution = formData.function === 'super_resolution';
@@ -242,26 +256,22 @@ export function ParameterPanel({
   // 判断按钮是否禁用
   const isButtonDisabled
     = baseImageFiles.length === 0
-      || !formData.prompt
       || !hasEnoughCreditForGeneration
       || isGenerating;
 
   // 按钮提示文本
   const getButtonTooltip = () => {
     if (baseImageFiles.length === 0) {
-      return '请上传参考图片';
-    }
-    if (!formData.prompt) {
-      return '请输入提示词';
+      return t('parameterPanel.tooltipUploadImage');
     }
     if (!hasEnoughCreditForGeneration) {
-      return `积分不足，需要${creditCost}积分，当前余额${credits?.balance || 0}积分`;
+      return t('parameterPanel.tooltipInsufficientCredits', { cost: creditCost, balance: credits?.balance || 0 });
     }
     return '';
   };
 
   return (
-    <div className="h-fit">
+    <div className="h-fit space-y-6">
       {/* 基础图像上传 */}
       <div className="space-y-2">
         <Label htmlFor="preset-filter" className="text-sm font-medium text-foreground">
@@ -293,52 +303,62 @@ export function ParameterPanel({
       </div>
 
       {/* 功能选择 */}
-      <Select
-        label={t('parameterPanel.editFunction')}
-        labelPlacement="outside"
-        placeholder={t('parameterPanel.selectEditFunction')}
-        selectedKeys={[formData.function]}
-        onSelectionChange={(keys) => {
-          const selectedFunction = Array.from(keys)[0] as DashscopeImageEditFunction;
-          handleInputChange('function', selectedFunction);
-        }}
-        isRequired
-        renderValue={(items) => {
-          return items.map((item) => {
-            const option = FUNCTION_OPTIONS.find(opt => opt.value === item.key);
-            return (
-              <div key={item.key} className="flex items-center gap-2">
-                <span className={`text-lg ${option?.color}`}>{option?.icon}</span>
-                <div className="flex flex-col">
-                  <span>{option?.label}</span>
-                  <span className="text-xs text-default-400">{option?.description}</span>
+      <div className="space-y-2">
+        <Select
+          label={t('parameterPanel.editFunction')}
+          labelPlacement="outside"
+          placeholder={t('parameterPanel.selectEditFunction')}
+          selectedKeys={[formData.function]}
+          onSelectionChange={(keys) => {
+            const selectedFunction = Array.from(keys)[0] as DashscopeImageEditFunction;
+            handleFunctionChange(selectedFunction);
+          }}
+          isRequired
+          className="mb-2"
+          renderValue={(items) => {
+            return items.map((item) => {
+              const option = FUNCTION_OPTIONS.find(opt => opt.value === item.key);
+              return (
+                <div key={item.key} className="flex items-center gap-2">
+                  <span className={`text-lg ${option?.color}`}>{option?.icon}</span>
+                  <div className="flex flex-col">
+                    <span>{option?.label}</span>
+                    <span className="text-xs text-default-400">{option?.description}</span>
+                  </div>
                 </div>
-              </div>
-            );
-          });
-        }}
-      >
-        {FUNCTION_OPTIONS.map(option => (
-          <SelectItem
-            key={option.value}
-            startContent={<span className={`text-lg ${option.color}`}>{option.icon}</span>}
-            description={option.description}
-          >
-            {option.label}
-          </SelectItem>
-        ))}
-      </Select>
+              );
+            });
+          }}
+        >
+          {FUNCTION_OPTIONS.map(option => (
+            <SelectItem
+              key={option.value}
+              startContent={<span className={`text-lg ${option.color}`}>{option.icon}</span>}
+              description={option.description}
+            >
+              {option.label}
+            </SelectItem>
+          ))}
+        </Select>
+        {formData.function && (
+          <div className="text-xs text-success-500 mt-1">
+            {t('parameterPanel.functions.' + formData.function + '.description')}
+          </div>
+        )}
+      </div>
 
       {/* 蒙版图像URL - 仅局部重绘需要 */}
       {needsMask && (
-        <Input
-          label={t('parameterPanel.maskImageUrl')}
-          placeholder={t('parameterPanel.maskImagePlaceholder')}
-          value={formData.mask_image_url || ''}
-          onChange={e => handleInputChange('mask_image_url', e.target.value)}
-          isRequired
-          description={t('parameterPanel.maskImageDescription')}
-        />
+        <div className="space-y-2">
+          <Input
+            label={t('parameterPanel.maskImageUrl')}
+            placeholder={t('parameterPanel.maskImagePlaceholder')}
+            value={formData.mask_image_url || ''}
+            onChange={e => handleInputChange('mask_image_url', e.target.value)}
+            isRequired
+            description={t('parameterPanel.maskImageDescription')}
+          />
+        </div>
       )}
 
       {/* 图像上色预设滤镜 - 仅图像上色功能显示 */}
@@ -356,6 +376,7 @@ export function ParameterPanel({
                 handleInputChange('prompt', selectedPreset);
               }
             }}
+            className="mb-2"
             renderValue={(items) => {
               return items.map((item) => {
                 const preset = COLORIZATION_PRESETS.find(p => p.value === item.key);
@@ -387,24 +408,15 @@ export function ParameterPanel({
         </div>
       )}
 
-      {/* 提示词 */}
-      <Textarea
-        label={t('parameterPanel.prompt')}
-        labelPlacement="outside"
-        placeholder={isColorization ? t('parameterPanel.promptPlaceholderColorization') : t('parameterPanel.promptPlaceholder')}
-        value={formData.prompt}
-        onChange={e => handleInputChange('prompt', e.target.value)}
-        isRequired
-        maxRows={4}
-        description={isColorization ? t('parameterPanel.promptDescriptionColorization') : t('parameterPanel.promptDescription')}
-      />
+      {/* 删除提示词输入框 */}
 
       {/* 高级参数 */}
-      <Accordion variant="splitted" selectionMode="multiple" defaultExpandedKeys={['advanced-params']}>
-        <AccordionItem key="advanced-params" aria-label={t('parameterPanel.advancedParams')} title={t('parameterPanel.advancedParams')} className="px-0">
-          <div className="space-y-4">
+      <div className="space-y-2">
+        <Accordion variant="splitted" selectionMode="multiple" defaultExpandedKeys={['advanced-params']}>
+          <AccordionItem key="advanced-params" aria-label={t('parameterPanel.advancedParams')} title={t('parameterPanel.advancedParams')} className="px-0">
+            <div className="space-y-4">
             {/* 生成数量 */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium mb-2">
                 {t('parameterPanel.generateCount')}
                 :
@@ -419,7 +431,7 @@ export function ParameterPanel({
                 onChange={value => handleParameterChange('n', value)}
                 className="max-w-md"
               />
-            </div>
+            </div> */}
 
             {/* 修改强度 - 仅特定功能需要 */}
             {isStylization && (
@@ -555,26 +567,29 @@ export function ParameterPanel({
           </div>
         </AccordionItem>
       </Accordion>
+      </div>
 
-      <Tooltip content={getButtonTooltip()} isDisabled={!isButtonDisabled || isGenerating}>
-        <Button
-          color="primary"
-          size="lg"
-          startContent={<Wand2 className="w-4 h-4" />}
-          endContent={(
-            <div className="flex items-center">
-              <Coins className="w-4 h-4 mr-1" />
-              {creditCost}
-            </div>
-          )}
-          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-          onPress={onGenerate}
-          isLoading={isGenerating}
-          isDisabled={isButtonDisabled}
-        >
-          {isGenerating ? t('parameterPanel.generating') : t('parameterPanel.startGenerate')}
-        </Button>
-      </Tooltip>
+      <div className="mt-6">
+        <Tooltip content={getButtonTooltip()} isDisabled={!isButtonDisabled || isGenerating}>
+          <Button
+            color="primary"
+            size="lg"
+            startContent={<Wand2 className="w-4 h-4" />}
+            endContent={(
+              <div className="flex items-center">
+                <Coins className="w-4 h-4 mr-1" />
+                {creditCost}
+              </div>
+            )}
+            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+            onPress={onGenerate}
+            isLoading={isGenerating}
+            isDisabled={isButtonDisabled}
+          >
+            {isGenerating ? t('parameterPanel.generating') : t('parameterPanel.startGenerate')}
+          </Button>
+        </Tooltip>
+      </div>
     </div>
   );
 }

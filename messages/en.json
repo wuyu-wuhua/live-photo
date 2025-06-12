@@ -39,7 +39,8 @@
     "selectCreditPackage": "Please select a credit package to top up",
     "topUp": "Top Up",
     "recommended": "Recommended",
-    "paymentSuccess": "Payment successful! You have received {credits} credits"
+    "paymentSuccess": "Payment successful! You have received {credits} credits",
+    "generateSuccess": "Generate Success"
   },
   "generatePage": {
     "title": "AI Image Generation",
@@ -125,6 +126,11 @@
         "label": "Super Resolution",
         "description": "Enhance image resolution and clarity"
       }
+    },
+    "defaultPrompts": {
+      "expand": "Maintain original image style, naturally expand image boundaries",
+      "remove_watermark": "Remove watermarks from the image while maintaining natural appearance",
+      "super_resolution": "Enhance image clarity and details while maintaining natural look"
     },
     "presets": {
       "custom": {
@@ -264,7 +270,12 @@
         "name": "Premium Plan",
         "description": "Perfect for heavy usage"
       }
-    }
+    },
+    "login": "Login",
+    "profile": "Profile",
+    "logout": "Logout",
+    "signup": "Sig up",
+    "dashboard": "Dashboard"
   },
   "pricing": {
     "title": "Simple, transparent pricing",
@@ -537,5 +548,6 @@
     "download": "Download",
     "loadMore": "Load More",
     "noData": "No data"
-  }
+  },
+  "credits": "Credits"
 }

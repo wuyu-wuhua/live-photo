@@ -95,7 +95,24 @@ export async function POST(request: NextRequest) {
       imageUrl,
       requestData.audioUrl,
     );
-
+    // 创建一条新纪录，不是更新之前的记录
+    await ImageEditService.create(
+      {
+        id: requestData.imageId,
+        user_id: user.id,
+        request_parameters: {
+          image_url: imageUrl,
+          audio_url: requestData.audioUrl,
+          video_url: videoUrl,
+          function: 'liveportrait_animation',
+        },
+        status: 'SUCCEEDED',
+        source_image_url: imageUrl,
+        result_image_url: [videoUrl],
+        result_type: 'video',
+      },
+      supabase,
+    );
     // 更新数据库记录
     await ImageEditService.updateStatus(
       requestData.imageId,

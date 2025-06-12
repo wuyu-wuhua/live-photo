@@ -3,7 +3,7 @@ import type { DashscopeImageEditRequest, DashscopeTaskQueryOutput } from '@/type
 import type { ImageEditResultInsert } from '@/types/database';
 import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
-import { calculateCreditCost, consumeCreditsForImageEdit, refundCreditsForFailedTask } from '@/lib/credits';
+import { consumeCreditsForImageEdit, refundCreditsForFailedTask } from '@/lib/credits';
 import { createClient } from '@/lib/supabase/server';
 import { DashscopeImageService } from '@/services/DashscopeImageService';
 import { ImageEditService } from '@/services/databaseService';
@@ -430,15 +430,14 @@ function setDefaultParameters(requestData: DashscopeImageEditRequest): void {
       }
       break;
 
-    case 'expand':
-      {
-        const expandDefaults = DEFAULT_PARAMETERS.expand;
-        Object.entries(expandDefaults).forEach(([key, value]) => {
-          if (requestData.parameters![key as keyof typeof expandDefaults] === undefined) {
-            (requestData.parameters as any)[key] = value;
-          }
-        });
-      }
+    case 'expand': {
+      const expandDefaults = DEFAULT_PARAMETERS.expand;
+      Object.entries(expandDefaults).forEach(([key, value]) => {
+        if (requestData.parameters![key as keyof typeof expandDefaults] === undefined) {
+          (requestData.parameters as any)[key] = value;
+        }
+      });
+    }
       break;
 
     case 'remove_watermark':
@@ -550,15 +549,17 @@ export async function POST(request: NextRequest) {
     setDefaultParameters(requestData);
 
     // 计算所需积分并进行扣除
-    const creditCost = calculateCreditCost(requestData.function, {
-      count: requestData.parameters?.n || 1,
-    });
+    // const creditCost = calculateCreditCost(requestData.function, {
+    //   count: requestData.parameters?.n || 1,
+    // });
 
     // 扣除积分
     const creditResult = await consumeCreditsForImageEdit(
       user.id,
       requestData.function,
+      1,
       { count: requestData.parameters?.n || 1 },
+      undefined,
     );
 
     if (!creditResult.success) {
@@ -602,7 +603,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 立即返回结果，不等待上传完成
-    return createSuccessResponse(result, editTaskResult.data, creditCost);
+    return createSuccessResponse(result, editTaskResult.data, 1);
   } catch (error) {
     console.error('图像生成API错误:', error);
 
