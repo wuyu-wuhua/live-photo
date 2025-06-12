@@ -14,7 +14,7 @@ vi.mock('../hooks/useUser', () => ({
 // 模拟supabase客户端
 vi.mock('../lib/supabase', () => ({
   createSupabaseClient: vi.fn(() => ({
-    rpc: vi.fn().mockImplementation((funcName, params) => {
+    rpc: vi.fn().mockImplementation((funcName, _params) => {
       if (funcName === 'get_user_credits') {
         return {
           data: {

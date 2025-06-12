@@ -425,7 +425,8 @@
       "succeeded": "已完成",
       "failed": "失败",
       "running": "生成中",
-      "unknown": "未知"
+      "unknown": "未知",
+      "pending": "已创建"
     },
     "messages": {
       "generatingEmoji": "正在生成表情视频...",

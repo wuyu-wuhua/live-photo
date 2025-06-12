@@ -14,7 +14,7 @@ import { createSupabaseClient } from '@/lib/supabase';
 import { useUser } from './useUser';
 
 // 各功能消耗的积分配置
-export const FEATURE_COSTS: FeatureCreditCost = {
+export const FEATURE_COSTS = {
   // 图像编辑功能
   stylization_all: 5,
   stylization_local: 6,
@@ -27,8 +27,8 @@ export const FEATURE_COSTS: FeatureCreditCost = {
   doodle: 5,
   control_cartoon_feature: 7,
   // 视频动画功能
-  liveportrait_animation: 15,
-  emoji_animation: 12,
+  liveportrait_video: 15,
+  emoji_video: 12,
 };
 
 /**
@@ -195,7 +195,7 @@ export function useCredits() {
   // 根据功能类型获取所需积分
   const getFeatureCost = useCallback(
     (featureType: keyof FeatureCreditCost) => {
-      return FEATURE_COSTS[featureType] || 0;
+      return featureType in FEATURE_COSTS ? FEATURE_COSTS[featureType as keyof typeof FEATURE_COSTS] : 0;
     },
     [],
   );

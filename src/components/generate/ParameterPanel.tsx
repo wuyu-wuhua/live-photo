@@ -33,11 +33,41 @@ import {
   Zap,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import { PictureCardForm } from '@/components/upload/picture-card-form';
 import { useCredits } from '@/hooks/useCredits';
 import { Label } from '../ui/label';
 
-const getFunctionOptions = (t: any) => [{
+// 导入上传配置
+const UPLOAD_CONFIG = {
+  maxFileSize: 5 * 1024 * 1024, // 5MB
+  allowedTypes: ['image/jpg', 'image/gif', 'image/png', 'image/jpeg', 'image/webp'],
+  bucket: 'live-photos',
+};
+
+// 验证图片是否符合要求
+const validateImage = (file: File, t: ReturnType<typeof useTranslations>): { valid: boolean; error?: string } => {
+  // 检查文件大小
+  if (file.size > UPLOAD_CONFIG.maxFileSize) {
+    return {
+      valid: false,
+      error: t('parameterPanel.errors.fileSizeExceeded', { size: (UPLOAD_CONFIG.maxFileSize / 1024 / 1024).toFixed(1) }),
+    };
+  }
+
+  // 检查文件类型
+  if (!UPLOAD_CONFIG.allowedTypes.includes(file.type)) {
+    return {
+      valid: false,
+      error: t('parameterPanel.errors.unsupportedFileType', { type: file.type }),
+    };
+  }
+
+  // 检查图片尺寸（可选，需要先加载图片）
+  return { valid: true };
+};
+
+const getFunctionOptions = (t: ReturnType<typeof useTranslations>) => [{
   value: 'colorization' as DashscopeImageEditFunction,
   label: t('parameterPanel.functions.colorization.label'),
   icon: <Palette className="w-5 h-5" />,
@@ -111,7 +141,7 @@ const getFunctionOptions = (t: any) => [{
   defaultPrompt: t('parameterPanel.defaultPrompts.super_resolution'),
 }];
 
-const getColorizationPresets = (t: any) => [
+const getColorizationPresets = (t: ReturnType<typeof useTranslations>) => [
   {
     value: '',
     label: t('parameterPanel.presets.custom.label'),
@@ -210,15 +240,17 @@ export function ParameterPanel({
 }: ParameterPanelProps) {
   const { credits, getFeatureCost, hasEnoughCredits } = useCredits();
   const t = useTranslations();
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [imageValidationError, setImageValidationError] = useState<string | null>(null);
 
   const FUNCTION_OPTIONS = getFunctionOptions(t);
   const COLORIZATION_PRESETS = getColorizationPresets(t);
 
-  const handleInputChange = (field: keyof DashscopeImageEditRequest, value: any) => {
+  const handleInputChange = (field: keyof DashscopeImageEditRequest, value: unknown) => {
     onFormDataChange({ ...formData, [field]: value });
   };
 
-  const handleParameterChange = (field: string, value: any) => {
+  const handleParameterChange = (field: string, value: unknown) => {
     onFormDataChange({
       ...formData,
       parameters: {
@@ -280,7 +312,22 @@ export function ParameterPanel({
         </Label>
         <PictureCardForm
           value={baseImageFiles}
-          onChange={onBaseImageChange}
+          onChange={(files) => {
+            // 如果是新上传的文件，进行验证
+            if (files.length > baseImageFiles.length) {
+              const { file }: any = files[files.length - 1];
+              if (file) {
+                const validation = validateImage(file, t);
+                if (!validation.valid) {
+                  setImageValidationError(validation.error || null);
+                  return; // 不更新状态，阻止上传
+                }
+              }
+            }
+            // 清除错误
+            setImageValidationError(null);
+            onBaseImageChange(files);
+          }}
           maxCount={1}
           className="w-full"
           onUploadComplete={(result) => {
@@ -295,11 +342,18 @@ export function ParameterPanel({
           }}
           onUploadError={(error, file) => {
             console.error('上传失败:', error, file);
+            setUploadError(error);
           }}
         />
         <p className="text-xs text-default-500">
           {t('parameterPanel.referenceImageDescription')}
         </p>
+        {imageValidationError && (
+          <p className="text-xs text-danger mt-1">{imageValidationError}</p>
+        )}
+        {uploadError && (
+          <p className="text-xs text-danger mt-1">{uploadError}</p>
+        )}
       </div>
 
       {/* 功能选择 */}

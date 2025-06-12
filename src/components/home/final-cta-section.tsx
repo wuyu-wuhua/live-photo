@@ -2,29 +2,10 @@
 
 import { Button } from '@heroui/react';
 import { useTranslations } from 'next-intl';
+import NextLink from 'next/link';
 
-type FinalCTASectionProps = {
-  onFileUpload?: () => void;
-};
-
-export function FinalCTASection({ onFileUpload }: FinalCTASectionProps) {
+export function FinalCTASection() {
   const t = useTranslations();
-
-  const handleFileUpload = () => {
-    if (onFileUpload) {
-      onFileUpload();
-    } else {
-      // Default file upload logic
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = 'image/*';
-      input.onchange = (e) => {
-        const file = (e.target as HTMLInputElement).files?.[0];
-        if (file) { /* empty */ }
-      };
-      input.click();
-    }
-  };
 
   return (
     <section
@@ -45,9 +26,10 @@ export function FinalCTASection({ onFileUpload }: FinalCTASectionProps) {
             {t('common.millionPhotosColorized')}
           </h2>
           <Button
+            as={NextLink}
             className="px-8 py-4 text-lg font-semibold"
             color="secondary"
-            onClick={handleFileUpload}
+            href="/generate"
             size="lg"
           >
             {t('common.getStartNow')}

@@ -187,6 +187,10 @@
         "description": "Restore realistic colors of historical photos",
         "value": "Black and white photo colorization, restoring realistic colors of historical photos"
       }
+    },
+    "errors": {
+      "fileSizeExceeded": "File Size Exceeded",
+      "unsupportedFileType": "Unsupported File Type"
     }
   },
   "NotFound": {
@@ -409,7 +413,8 @@
       "succeeded": "Succeeded",
       "failed": "Failed",
       "running": "Running",
-      "unknown": "Unknown"
+      "unknown": "Unknown",
+      "pending": "Pending"
     },
     "messages": {
       "generatingEmoji": "Generating emoji video...",

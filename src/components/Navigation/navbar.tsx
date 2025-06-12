@@ -11,7 +11,6 @@ import { ThemeSwitch } from '@/components/theme-switch';
 import { siteConfig } from '@/config/site';
 import { useUser } from '@/hooks/useUser';
 import { signOut } from '@/lib/auth-client';
-import LanguageSwitcher from '../LanguageSwitcher';
 
 export const Navbar = () => {
   const { user, loading } = useUser();
@@ -74,7 +73,7 @@ export const Navbar = () => {
           <Link isExternal aria-label="Github" href={siteConfig.links.github}>
             <Icon icon="mdi:github" className="text-default-500" />
           </Link> */}
-          <LanguageSwitcher />
+          {/* <LanguageSwitcher /> */}
           <ThemeSwitch />
         </NavbarItem>
         {/* <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem> */}

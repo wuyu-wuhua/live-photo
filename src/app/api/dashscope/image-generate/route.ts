@@ -558,7 +558,6 @@ export async function POST(request: NextRequest) {
       user.id,
       requestData.function,
       1,
-      { count: requestData.parameters?.n || 1 },
       undefined,
     );
 

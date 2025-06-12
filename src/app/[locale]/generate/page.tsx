@@ -232,7 +232,7 @@ export default function GeneratePage() {
                 </div>
                 <Button
                   size="sm"
-                  color="default"
+                  color="primary"
                   variant="flat"
                   onPress={() => setShowCreditModal(true)}
                   startContent={<CreditCard className="w-4 h-4" />}

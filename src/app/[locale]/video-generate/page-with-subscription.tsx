@@ -4,13 +4,14 @@ import type { ImageEditResult, TaskStatus } from '@/types/database';
 import { Button, Modal, ModalBody, ModalContent, ModalHeader } from '@heroui/react';
 import { VideoIcon } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { VideoGeneratePanel } from '@/components/video-generate/VideoGeneratePanel';
 import { VideoParameterPanel } from '@/components/video-generate/VideoParameterPanel';
 import { VideoResultPanel } from '@/components/video-generate/VideoResultPanel';
 import { useCredits } from '@/hooks/useCredits';
+import { useImageEditStatusSubscription } from '@/hooks/useSupabaseSubscription';
 import { useUser } from '@/hooks/useUser';
 import { ImageEditService } from '@/services/databaseService';
 
@@ -35,9 +36,56 @@ export default function VideoGeneratePage() {
   // 新增状态用于跟踪生成任务
   const [generationTaskId, setGenerationTaskId] = useState<string | null>(null);
   const [taskStatus, setTaskStatus] = useState<TaskStatus | null>(null);
-  const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const pollingCountRef = useRef<number>(0);
-  const MAX_POLLING_COUNT = 60; // 最大轮询次数，防止无限轮询
+
+  // 使用Supabase实时订阅替代轮询
+  const { isSubscribed, error: subscriptionError } = useImageEditStatusSubscription(
+    generationTaskId || '',
+    (updatedTask) => {
+      // 当任务状态更新时的回调
+      if (!updatedTask) {
+        return;
+      }
+
+      setTaskStatus(updatedTask.status);
+
+      // 如果任务成功完成
+      if (updatedTask.status === 'SUCCEEDED') {
+        // 获取视频URL
+        if (videoType === 'emoji' && updatedTask.emoji_result_url) {
+          setGeneratedVideoUrl(updatedTask.emoji_result_url);
+        } else if (videoType === 'liveportrait' && updatedTask.liveportrait_result_url) {
+          setGeneratedVideoUrl(updatedTask.liveportrait_result_url);
+        }
+
+        setIsGenerating(false);
+        toast.success('Video generated successfully');
+        refreshCredits();
+      } else if (updatedTask.status === 'FAILED') {
+        const errorMessage = videoType === 'emoji'
+          ? updatedTask.emoji_message || 'Video generation failed'
+          : updatedTask.liveportrait_message || 'Video generation failed';
+
+        setError(errorMessage);
+        setIsGenerating(false);
+        toast.error(errorMessage);
+      }
+    },
+  );
+
+  // 如果订阅出错，显示错误信息
+  useEffect(() => {
+    if (subscriptionError) {
+      console.error('Subscription error:', subscriptionError);
+      toast.error(`Failed to subscribe to task updates: ${subscriptionError}`);
+    }
+  }, [subscriptionError]);
+
+  // 当订阅状态变化时记录日志
+  useEffect(() => {
+    if (generationTaskId) {
+      console.warn(`Subscription status for task ${generationTaskId}: ${isSubscribed ? 'active' : 'inactive'}`);
+    }
+  }, [isSubscribed, generationTaskId]);
 
   // Get image data
   useEffect(() => {
@@ -68,99 +116,6 @@ export default function VideoGeneratePage() {
 
     fetchImageData();
   }, [imageId]);
-
-  // 轮询检查视频生成任务状态
-  const pollTaskStatus = async (taskId: string) => {
-    if (!taskId) {
-      return;
-    }
-
-    try {
-      const response = await ImageEditService.getById(taskId);
-      if (response.success && response.data) {
-        const taskData = response.data;
-        setTaskStatus(taskData.status);
-
-        // 如果任务成功完成
-        if (taskData.status === 'SUCCEEDED') {
-          // 停止轮询
-          if (pollingIntervalRef.current) {
-            clearInterval(pollingIntervalRef.current);
-            pollingIntervalRef.current = null;
-          }
-
-          // 获取视频URL
-          if (videoType === 'emoji' && taskData.emoji_result_url) {
-            setGeneratedVideoUrl(taskData.emoji_result_url);
-          } else if (videoType === 'liveportrait' && taskData.liveportrait_result_url) {
-            setGeneratedVideoUrl(taskData.liveportrait_result_url);
-          }
-
-          setIsGenerating(false);
-          toast.success('Video generated successfully');
-          refreshCredits();
-        } else if (taskData.status === 'FAILED') {
-          // 停止轮询
-          if (pollingIntervalRef.current) {
-            clearInterval(pollingIntervalRef.current);
-            pollingIntervalRef.current = null;
-          }
-
-          const errorMessage = videoType === 'emoji'
-            ? taskData.emoji_message || 'Video generation failed'
-            : taskData.liveportrait_message || 'Video generation failed';
-
-          setError(errorMessage);
-          setIsGenerating(false);
-          toast.error(errorMessage);
-        } else {
-          pollingCountRef.current += 1;
-
-          // 如果超过最大轮询次数，停止轮询
-          if (pollingCountRef.current >= MAX_POLLING_COUNT) {
-            if (pollingIntervalRef.current) {
-              clearInterval(pollingIntervalRef.current);
-              pollingIntervalRef.current = null;
-            }
-
-            setError('Video generation is taking too long. Please check back later.');
-            setIsGenerating(false);
-            toast.error('Video generation is taking too long. Please check back later.');
-          }
-        }
-      }
-    } catch (err) {
-      console.error('Error polling task status:', err);
-    }
-  };
-
-  // 启动轮询
-  const startPolling = (taskId: string) => {
-    // 重置轮询计数
-    pollingCountRef.current = 0;
-
-    // 清除之前的轮询
-    if (pollingIntervalRef.current) {
-      clearInterval(pollingIntervalRef.current);
-    }
-
-    // 立即执行一次
-    pollTaskStatus(taskId);
-
-    // 设置轮询间隔
-    pollingIntervalRef.current = setInterval(() => {
-      pollTaskStatus(taskId);
-    }, 3000); // 每3秒轮询一次
-  };
-
-  // 清理轮询
-  useEffect(() => {
-    return () => {
-      if (pollingIntervalRef.current) {
-        clearInterval(pollingIntervalRef.current);
-      }
-    };
-  }, []);
 
   // Handle video type change
   const handleVideoTypeChange = (type: 'emoji' | 'liveportrait') => {
@@ -262,28 +217,31 @@ export default function VideoGeneratePage() {
         throw new Error('Insufficient credits, please recharge and try again');
       }
 
-      const { success, data, error, credits_consumed } = await response.json() as {
+      const { success, data, error, credits_consumed, imageId: taskId } = await response.json() as {
         success: boolean;
-        data: { videoUrl?: string; imageId?: string; message?: string };
+        data: { videoUrl: string };
         error: any;
         credits_consumed?: number;
+        imageId?: string;
       };
-
-      // 从data对象中获取taskId
-      const taskId = data?.imageId;
 
       if (success) {
         if (taskId) {
-          // If we got a task ID, start polling for status
+          // 如果获得了任务ID，设置任务ID以启动订阅
           setGenerationTaskId(taskId);
-          startPolling(taskId);
           toast.info('Video generation started. Please wait...');
+
+          // 立即获取一次任务状态，以防订阅延迟
+          const taskResponse = await ImageEditService.getById(taskId);
+          if (taskResponse.success && taskResponse.data) {
+            setTaskStatus(taskResponse.data.status);
+          }
         } else if (data?.videoUrl) {
-          // If we got a direct video URL (immediate result)
+          // 如果直接获得了视频URL（立即结果）
           setGeneratedVideoUrl(data.videoUrl);
           setCreditsConsumed(credits_consumed);
           toast.success(`Video generated successfully${credits_consumed ? `, consumed ${credits_consumed} credits` : ''}`);
-          // Refresh credits
+          // 刷新积分
           refreshCredits();
           setIsGenerating(false);
         } else {

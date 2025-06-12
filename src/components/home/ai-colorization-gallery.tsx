@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, CardBody } from '@heroui/react';
+import { Card } from '@heroui/react';
 import { useTranslations } from 'next-intl';
 
 import Image from 'next/image';
@@ -53,7 +53,18 @@ export function AIColorizationGallery() {
                   isPressable
                   key={index}
                 >
-                  <CardBody className="p-0">
+                  <Image
+                    alt={`Effect ${index + 1}`}
+                    className={`
+                        h-auto w-full object-cover transition-transform
+                        duration-300
+                        hover:scale-105
+                      `}
+                    height={250}
+                    src={image}
+                    width={200}
+                  />
+                  {/* <CardBody className="p-0">
                     <Image
                       alt={`Effect ${index + 1}`}
                       className={`
@@ -65,7 +76,7 @@ export function AIColorizationGallery() {
                       src={image}
                       width={200}
                     />
-                  </CardBody>
+                  </CardBody> */}
                 </Card>
               ))}
             </div>

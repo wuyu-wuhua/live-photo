@@ -9,7 +9,10 @@ export function calculateCreditCost(
   featureType: ImageEditFunction | 'liveportrait_animation' | 'emoji_animation',
   options?: { quality?: 'standard' | 'high' | 'ultra'; count?: number },
 ): number {
-  const baseCost = FEATURE_COSTS[featureType] || 0;
+  // 处理特殊的动画类型，它们使用不同的积分消耗配置
+  const baseCost = featureType === 'liveportrait_animation' || featureType === 'emoji_animation'
+    ? FEATURE_COSTS.emoji_video // 使用emoji_video的积分配置作为这些动画类型的基础消耗
+    : FEATURE_COSTS[featureType as keyof typeof FEATURE_COSTS] || 0;
   const { quality = 'standard', count = 1 } = options || {};
 
   // 根据质量等级调整积分消耗

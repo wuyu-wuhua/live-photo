@@ -107,7 +107,8 @@ export function VideoResultPanel({
                   >
                     <video
                       ref={videoRef}
-                      crossOrigin="anonymous"
+                      // 移除crossOrigin属性，这可能是导致CORS问题的原因
+                      // crossOrigin="anonymous"
                       src={videoUrl}
                       className="max-w-full max-h-[70vh] rounded-lg shadow-lg cursor-pointer"
                       controls
@@ -116,7 +117,10 @@ export function VideoResultPanel({
                       playsInline
                       onPlay={() => setIsPlaying(true)}
                       onPause={() => setIsPlaying(false)}
+                      onError={e => console.error('Video error:', e)}
                     >
+                      {/* 添加多种格式支持 */}
+                      <source src={videoUrl} type="video/mp4" />
                       <track kind="captions" src="" label="Captions" />
                     </video>
                     {!isPlaying && (
@@ -173,7 +177,11 @@ export function VideoResultPanel({
               </h3>
               {creditsConsumed !== undefined && (
                 <div className="text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full">
-                  Consumed {creditsConsumed} credits
+                  Consumed
+                  {' '}
+                  {creditsConsumed}
+                  {' '}
+                  credits
                 </div>
               )}
             </div>

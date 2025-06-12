@@ -1,12 +1,18 @@
 'use client';
 
-import { Button, Card, CardBody } from '@heroui/react';
+import { Card, CardBody } from '@heroui/react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-// 分类数据
-const categories = ['light', 'flowers', 'interior', 'history', 'clothes'];
+import {
+  Carousel,
+  type CarouselApi,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
 
 // 对比图片数据
 const beforeAfterImages = [
@@ -42,12 +48,68 @@ const beforeAfterImages = [
 
 export function ExperienceDifferenceSection() {
   const t = useTranslations();
-  const [activeCategory, setActiveCategory] = useState(0);
-  const [activeSlide, setActiveSlide] = useState(1);
+  const [api, setApi] = useState<CarouselApi>();
+  const [isPaused, setIsPaused] = useState(false);
+  const autoScrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 自动滚动功能
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    const startAutoScroll = () => {
+      autoScrollIntervalRef.current = setInterval(() => {
+        if (!isPaused) {
+          api.scrollNext();
+        }
+      }, 3000); // 每3秒滚动一次
+    };
+
+    startAutoScroll();
+
+    // 组件卸载时清除定时器
+    return () => {
+      if (autoScrollIntervalRef.current) {
+        clearInterval(autoScrollIntervalRef.current);
+      }
+    };
+  }, [api, isPaused]);
+
+  // 设置循环滚动
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    // 设置循环滚动
+    api.on('select', () => {
+      // 如果到达最后一个，自动回到第一个
+      if (api.selectedScrollSnap() === api.scrollSnapList().length - 1) {
+        // 使用setTimeout避免立即滚动造成的视觉跳跃
+        setTimeout(() => {
+          api.scrollTo(0, false);
+        }, 500);
+      }
+    });
+
+    return () => {
+      api.off('select', () => {});
+    };
+  }, [api]);
+
+  // 鼠标悬停处理函数
+  const handleMouseEnter = () => {
+    setIsPaused(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsPaused(false);
+  };
 
   return (
     <section className="py-20">
-      <div className="container mx-auto px-4">
+      <div className="container-fluid px-0 mx-auto">
         <div className="space-y-8 text-center">
           <h2
             className={`
@@ -59,45 +121,45 @@ export function ExperienceDifferenceSection() {
           </h2>
 
           {/* Category Buttons */}
-          <div className="flex flex-wrap justify-center gap-4">
+          {/* <div className="flex flex-wrap justify-center gap-4">
             {categories.map((category, index) => (
               <Button
                 className="capitalize"
                 key={category}
                 onClick={() => setActiveCategory(index)}
-                variant={activeCategory === index ? 'solid' : 'bordered'}
+                variant={activeCategory === index ? 'default' : 'outline'}
               >
                 {t(`common.${category}`)}
               </Button>
             ))}
-          </div>
+          </div> */}
 
           {/* Before/After Slider */}
-          <div className="relative overflow-hidden">
-            <div className="flex justify-center">
-              <div
-                className="flex space-x-6 transition-transform duration-300"
-              >
-                {beforeAfterImages.map((item, index) => {
-                  const isActive = index === activeSlide;
-                  const isFaded = Math.abs(index - activeSlide) > 1;
-
-                  return (
+          <div
+            className="relative w-full"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-background to-transparent pointer-events-none"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-background to-transparent pointer-events-none"></div>
+            <Carousel
+              setApi={setApi}
+              opts={{
+                align: 'center',
+                loop: true,
+              }}
+              className="w-full"
+            >
+              <CarouselContent className="px-4">
+                {beforeAfterImages.map((item, index) => (
+                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
                     <Card
                       className={`
-                        relative flex-shrink-0 transition-all duration-300
+                        relative transition-all duration-300
                         hover:z-10 hover:scale-105
-                        ${
-                    isActive
-                      ? 'z-[5] scale-100 opacity-100'
-                      : isFaded
-                        ? `scale-90 opacity-30`
-                        : `scale-95 opacity-70`
-                    }
                       `}
-                      key={index}
                     >
-                      <CardBody className="p-0">
+                      <CardBody className="p-2">
                         <div
                           className={`
                             grid grid-cols-2 gap-0 overflow-hidden rounded-xl
@@ -115,9 +177,9 @@ export function ExperienceDifferenceSection() {
                             <Image
                               alt={`${item.alt} Before`}
                               className=""
-                              height={250}
+                              height={300}
                               src={item.before}
-                              width={200}
+                              width={250}
                             />
                           </div>
                           <div className="relative">
@@ -132,54 +194,33 @@ export function ExperienceDifferenceSection() {
                             <Image
                               alt={`${item.alt} After`}
                               className=""
-                              height={250}
+                              height={300}
                               src={item.after}
-                              width={200}
+                              width={250}
                             />
-                            {item.hasNewPalette && (
+                            {/* {item.hasNewPalette && (
                               <Button
                                 className="absolute right-2 bottom-2 text-xs"
-                                color="secondary"
+                                variant="secondary"
                                 size="sm"
                               >
                                 {t('common.newPalette')}
                                 {' '}
                                 <span className="ml-1">🪄</span>
                               </Button>
-                            )}
+                            )} */}
                           </div>
                         </div>
                       </CardBody>
                     </Card>
-                  );
-                })}
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <div className="hidden sm:block">
+                <CarouselPrevious className="left-2 lg:left-6 bg-white/80 hover:bg-white" />
+                <CarouselNext className="right-2 lg:right-6 bg-white/80 hover:bg-white" />
               </div>
-            </div>
-
-            {/* Navigation Arrows */}
-            <Button
-              className="absolute top-1/2 left-4 -translate-y-1/2 transform"
-              disabled={activeSlide === 0}
-              isIconOnly
-              onClick={() => setActiveSlide(Math.max(0, activeSlide - 1))}
-              size="sm"
-              variant="bordered"
-            >
-              ←
-            </Button>
-            <Button
-              className="absolute top-1/2 right-4 -translate-y-1/2 transform"
-              disabled={activeSlide === beforeAfterImages.length - 1}
-              isIconOnly
-              onClick={() =>
-                setActiveSlide(
-                  Math.min(beforeAfterImages.length - 1, activeSlide + 1),
-                )}
-              size="sm"
-              variant="bordered"
-            >
-              →
-            </Button>
+            </Carousel>
           </div>
         </div>
       </div>

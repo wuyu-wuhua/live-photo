@@ -3,6 +3,7 @@
 import { Button } from '@heroui/react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { useState } from 'react';
 import { Link } from '@/i18n/i18nConfig';
 // 示例图片数据
 const sampleImages = [
@@ -14,6 +15,7 @@ const sampleImages = [
 
 export function HeroSection() {
   const t = useTranslations('common');
+  const [activePhoto, setActivePhoto] = useState<number | null>(null);
 
   return (
     <section
@@ -66,7 +68,7 @@ export function HeroSection() {
               className={`
                 group absolute flex items-center justify-center transition-all
                 duration-500
-                hover:scale-105
+                hover:scale-103
               `}
               style={{
                 height: 'clamp(232px, 26.1vw, 387px)',
@@ -76,23 +78,31 @@ export function HeroSection() {
                 transform: 'translateX(-50%) translateY(-50%)',
                 width: 'clamp(300px, 35vw, 450px)',
               }}
+              onMouseLeave={() => setActivePhoto(null)}
             >
               {/* 彩色照片1 - 左侧 */}
-              <div
+              <button
+                type="button"
                 className={`
                   absolute overflow-hidden rounded-xl bg-white shadow-xl
-                  transition-transform duration-300
-                  group-hover:translate-x-[-12%] group-hover:rotate-[-35deg]
+                  transition-transform duration-300 cursor-pointer
+                  ${activePhoto === 0 ? 'scale-[1.2] z-10' : activePhoto !== null ? 'translate-x-[-12%] rotate-[-35deg]' : 'group-hover:translate-x-[-12%] group-hover:rotate-[-35deg]'}
                 `}
                 style={{
                   backfaceVisibility: 'hidden',
                   height: 'clamp(186px, 21vw, 310px)',
-                  transform:
-                    'translateX(clamp(-75px, -8.5vw, -115px)) translateY(clamp(10px, 1.2vw, 20px)) rotate(-40deg) translateZ(clamp(-50px, -6vw, -85px))',
+                  transform: activePhoto === 0
+                    ? 'scale(1.22) translateZ(clamp(15px, 1.8vw, 25px))'
+                    : 'translateX(clamp(-75px, -8.5vw, -115px)) translateY(clamp(10px, 1.2vw, 20px)) rotate(-40deg) translateZ(clamp(-50px, -6vw, -85px))',
                   transformOrigin: 'center center',
                   width: 'clamp(120px, 13.5vw, 200px)',
-                  zIndex: 2,
+                  zIndex: activePhoto === 0 ? 10 : 2,
+                  boxShadow: activePhoto === 0 ? '0 18px 35px rgba(0,0,0,0.3), 0 12px 12px rgba(0,0,0,0.25)' : '',
+                  border: 'none',
+                  padding: 0,
                 }}
+                onClick={() => setActivePhoto(0)}
+                aria-label="View colorized photo 1"
               >
                 <Image
                   alt="Colorized Photo 1"
@@ -100,25 +110,30 @@ export function HeroSection() {
                   fill
                   src="/assets/image/colorized-1.png"
                 />
-              </div>
-
+              </button>
               {/* 彩色照片2 - 中间突出 */}
-              <div
+              <button
+                type="button"
                 className={`
                   absolute overflow-hidden rounded-xl bg-white transition-all
-                  duration-300
-                  group-hover:scale-[1.3]
+                  duration-300 cursor-pointer
+                  ${activePhoto === 1 ? 'scale-[1.2] z-10' : activePhoto !== null ? '' : 'group-hover:scale-[1.15]'}
                 `}
                 style={{
                   backfaceVisibility: 'hidden',
-                  boxShadow:
-                    '0 18px 35px rgba(0,0,0,0.3), 0 12px 12px rgba(0,0,0,0.25)',
+                  boxShadow: '0 18px 35px rgba(0,0,0,0.3), 0 12px 12px rgba(0,0,0,0.25)',
                   height: 'clamp(186px, 21vw, 310px)',
-                  transform: 'scale(1.22) translateZ(clamp(15px, 1.8vw, 25px))',
+                  transform: activePhoto === 1 || (activePhoto === null)
+                    ? 'scale(1.22) translateZ(clamp(15px, 1.8vw, 25px))'
+                    : 'translateZ(0)',
                   transformOrigin: 'center center',
                   width: 'clamp(120px, 13.5vw, 200px)',
-                  zIndex: 3,
+                  zIndex: activePhoto === 1 ? 10 : (activePhoto === null ? 3 : 1),
+                  border: 'none',
+                  padding: 0,
                 }}
+                onClick={() => setActivePhoto(1)}
+                aria-label="View colorized photo 2"
               >
                 <Image
                   alt="Colorized Photo 2"
@@ -126,24 +141,31 @@ export function HeroSection() {
                   fill
                   src="/assets/image/colorized-2.png"
                 />
-              </div>
+              </button>
 
               {/* 彩色照片3 - 右侧 */}
-              <div
+              <button
+                type="button"
                 className={`
                   absolute overflow-hidden rounded-xl bg-white shadow-xl
-                  transition-transform duration-300
-                  group-hover:translate-x-[12%] group-hover:rotate-[35deg]
+                  transition-transform duration-300 cursor-pointer
+                  ${activePhoto === 2 ? 'scale-[1.2] z-10' : activePhoto !== null ? 'translate-x-[12%] rotate-[35deg]' : 'group-hover:translate-x-[12%] group-hover:rotate-[35deg]'}
                 `}
                 style={{
                   backfaceVisibility: 'hidden',
                   height: 'clamp(186px, 21vw, 310px)',
-                  transform:
-                    'translateX(clamp(75px, 8.5vw, 115px)) translateY(clamp(10px, 1.2vw, 20px)) rotate(40deg) translateZ(clamp(-50px, -6vw, -85px))',
+                  transform: activePhoto === 2
+                    ? 'scale(1.22) translateZ(clamp(15px, 1.8vw, 25px))'
+                    : 'translateX(clamp(75px, 8.5vw, 115px)) translateY(clamp(10px, 1.2vw, 20px)) rotate(40deg) translateZ(clamp(-50px, -6vw, -85px))',
                   transformOrigin: 'center center',
                   width: 'clamp(120px, 13.5vw, 200px)',
-                  zIndex: 2,
+                  zIndex: activePhoto === 2 ? 10 : 2,
+                  boxShadow: activePhoto === 2 ? '0 18px 35px rgba(0,0,0,0.3), 0 12px 12px rgba(0,0,0,0.25)' : '',
+                  border: 'none',
+                  padding: 0,
                 }}
+                onClick={() => setActivePhoto(2)}
+                aria-label="View colorized photo 3"
               >
                 <Image
                   alt="Colorized Photo 3"
@@ -151,7 +173,7 @@ export function HeroSection() {
                   fill
                   src="/assets/image/colorized-3.png"
                 />
-              </div>
+              </button>
             </div>
           </div>
         </div>
@@ -216,25 +238,29 @@ export function HeroSection() {
             {t('sampleText')}
           </p>
           <div className="flex space-x-3">
-            {sampleImages.map((item, index) => (
-              <div
+            {sampleImages.map(item => (
+              <button
+                type="button"
                 className={`
                   h-16 w-16 cursor-pointer overflow-hidden rounded-lg border
                   border-default-200 transition-transform duration-200
                   hover:scale-110 hover:border-primary
                   dark:border-default-100
                 `}
-                key={index}
+                key={item.src}
+                aria-label={`View sample ${item.alt}`}
+                style={{ border: 'none', padding: 0 }}
               >
                 <Image
-                  alt={`Sample ${index + 1}`}
+                  alt={item.alt}
                   className="h-full w-full object-cover"
                   height={80}
                   src={item.src}
                   width={80}
                 />
-              </div>
-            ))}
+              </button>
+            ),
+            )}
           </div>
         </div>
       </div>
