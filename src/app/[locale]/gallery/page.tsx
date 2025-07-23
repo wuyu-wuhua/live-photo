@@ -25,6 +25,10 @@ type GalleryPageState = {
   typeFilter: string; // 'all', 'image', 'video'
 };
 
+type GalleryPageProps = {
+  typeFilter?: 'all' | 'image' | 'video';
+};
+
 // 格式化时间函数
 const formatTime = (date: string) => {
   return new Date(date).toLocaleString('zh-CN', {
@@ -63,15 +67,18 @@ const handleDownload = async (url: string, filename?: string) => {
   }
 };
 
-export default function GalleryPage() {
+export default function GalleryPage(props: GalleryPageProps) {
+  const { typeFilter: propTypeFilter } = props;
   const t = useTranslations('gallery');
   const router = useRouter();
   const pathname = usePathname();
 
-  // 根据路由决定typeFilter
-  let typeFilter: 'all' | 'image' | 'video' = 'all';
-  if (pathname.endsWith('/images')) typeFilter = 'image';
-  if (pathname.endsWith('/videos')) typeFilter = 'video';
+  // 优先用props传递的typeFilter，否则用路由判断
+  let typeFilter: 'all' | 'image' | 'video' = propTypeFilter || 'all';
+  if (!propTypeFilter) {
+    if (pathname.endsWith('/images')) typeFilter = 'image';
+    if (pathname.endsWith('/videos')) typeFilter = 'video';
+  }
 
   const [state, setState] = useState<GalleryPageState>({
     currentPage: 1,
@@ -464,26 +471,7 @@ export default function GalleryPage() {
           </DrawerHeader>
           <DrawerBody>
             {selectedImageForVideo && (
-              <VideoParameterPanel
-                imageData={selectedImageForVideo}
-                isLoading={false}
-                isGenerating={isGenerating}
-                error={generateError}
-                videoType={selectedVideoType}
-                audioUrl={audioUrl}
-                drivenId={drivenId}
-                onVideoTypeChange={setSelectedVideoType}
-                onAudioUrlChange={setAudioUrl}
-                onDrivenIdChange={setDrivenId}
-                onGenerate={() => {
-                  // 这里可以添加生成逻辑，或者保持为空
-                }}
-                onClose={onDrawerClose}
-                onSuccess={() => {
-                  onDrawerClose();
-                  refetch();
-                }}
-              />
+              <VideoParameterPanel referenceImage={selectedImageForVideo.result_image_url?.[0] || selectedImageForVideo.source_image_url || ''} />
             )}
           </DrawerBody>
           <DrawerFooter>
