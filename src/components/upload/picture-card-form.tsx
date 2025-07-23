@@ -9,6 +9,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ImageUploading, { type ImageListType } from 'react-images-uploading';
 import { useImageUpload } from '@/hooks/useFileUpload';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 // 常量定义
 const ACCEPTED_FILE_TYPES = ['jpg', 'gif', 'png', 'jpeg', 'webp']; // 移除 as const 断言
@@ -60,6 +61,7 @@ export function PictureCardForm({
   const uploadingFilesRef = useRef<Set<string>>(new Set());
 
   const { uploadState, uploadFile } = useImageUpload();
+  const t = useTranslations('upload');
 
   // 同步外部传入的 value
   useEffect(() => {
@@ -252,7 +254,7 @@ export function PictureCardForm({
       <div
         key={file.id}
         className={cn(
-          'relative flex h-24 w-24 cursor-pointer items-center',
+          'relative flex h-48 w-48 cursor-pointer items-center',
           'justify-center overflow-hidden rounded-md border bg-background',
           'shadow-sm transition-colors',
           isDone && 'hover:bg-accent/50',
@@ -272,8 +274,8 @@ export function PictureCardForm({
             {file.url && (
               <Image
                 alt={file.name}
-                width={96}
-                height={96}
+                width={192}
+                height={192}
                 className="absolute h-full w-full object-cover opacity-50"
                 src={file.url}
                 unoptimized={file.url.startsWith('blob:')}
@@ -281,7 +283,7 @@ export function PictureCardForm({
               />
             )}
             <div className="relative z-10 flex flex-col items-center">
-              <Loader2 className="size-6 animate-spin text-muted-foreground" />
+              <Loader2 className="size-8 animate-spin text-muted-foreground" />
               {typeof file.progress === 'number' && (
                 <div className="mt-1 text-xs font-medium text-muted-foreground">
                   {Math.floor(file.progress)}
@@ -294,22 +296,22 @@ export function PictureCardForm({
 
         {isError && (
           <div className="flex h-full w-full flex-col items-center justify-center bg-red-50 text-red-500">
-            <X className="mb-1 size-6" />
-            <span className="text-xs">上传失败</span>
+            <X className="mb-1 size-8" />
+            <span className="text-sm">{t('failed')}</span>
             {file.error && (
               <div className="mt-1 px-1 text-center text-xs text-red-400">
                 {file.error}
               </div>
             )}
             <button
-              className="mt-1 text-xs text-blue-500 hover:text-blue-700 transition-colors"
+              className="mt-1 text-sm text-blue-500 hover:text-blue-700 transition-colors"
               onClick={(e) => {
                 e.stopPropagation();
                 handleRetry(file);
               }}
               type="button"
             >
-              重试
+              {t('retry')}
             </button>
           </div>
         )}
@@ -319,8 +321,8 @@ export function PictureCardForm({
             <Image
               alt={file.name}
               className="h-full w-full object-cover"
-              width={96}
-              height={96}
+              width={192}
+              height={192}
               src={file.url}
               onError={() => console.warn('Image load error:', file.url)}
             />
@@ -349,7 +351,7 @@ export function PictureCardForm({
   }, [fileList.length, maxCount, disabled]);
 
   return (
-    <div className={cn('flex flex-wrap gap-4', className)}>
+    <div className={cn('flex flex-col items-center gap-4', className)}>
       <ImageUploading
         acceptType={ACCEPTED_FILE_TYPES}
         dataURLKey="data_url"
@@ -375,7 +377,7 @@ export function PictureCardForm({
             {canUploadMore && (
               <div
                 className={cn(
-                  'flex h-24 w-24 cursor-pointer items-center justify-center',
+                  'flex h-48 w-48 cursor-pointer items-center justify-center',
                   'rounded-md border border-dashed bg-background shadow-sm',
                   'transition-colors hover:bg-accent/50',
                   isDragging && 'border-primary bg-primary/10',
@@ -392,10 +394,10 @@ export function PictureCardForm({
                 tabIndex={0}
                 {...dragProps}
               >
-                <div className="flex flex-col items-center justify-center gap-1 text-muted-foreground">
-                  <Upload className="size-5" />
-                  <span className="text-xs">
-                    {isDragging ? '拖拽到此' : '上传图片'}
+                <div className="flex flex-col items-center justify-center gap-2 text-muted-foreground">
+                  <Upload className="size-6" />
+                  <span className="text-sm">
+                    {isDragging ? t('dragHere') : t('uploadImage')}
                   </span>
                 </div>
               </div>

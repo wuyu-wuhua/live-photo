@@ -2,10 +2,30 @@
 
 import { Button } from '@heroui/react';
 import { useTranslations } from 'next-intl';
-import NextLink from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useUser } from '@/hooks/useUser';
+import { toast } from 'sonner';
 
 export function FinalCTASection() {
   const t = useTranslations();
+  const { user, loading } = useUser();
+  const router = useRouter();
+
+  const handleGetStartButtonClick = () => {
+    if (loading) {
+      // 如果还在加载用户状态，等待一下
+      return;
+    }
+    
+    if (!user) {
+      // 用户未登录，显示提示并跳转到登录页面
+      toast.info('请先登录后再使用照片上色功能');
+      router.push('/auth/sign-in');
+    } else {
+      // 用户已登录，跳转到生成页面
+      router.push('/generate');
+    }
+  };
 
   return (
     <section
@@ -26,11 +46,11 @@ export function FinalCTASection() {
             {t('common.millionPhotosColorized')}
           </h2>
           <Button
-            as={NextLink}
             className="px-8 py-4 text-lg font-semibold"
             color="secondary"
-            href="/generate"
             size="lg"
+            onPress={handleGetStartButtonClick}
+            isDisabled={loading}
           >
             {t('common.getStartNow')}
           </Button>

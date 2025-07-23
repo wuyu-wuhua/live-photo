@@ -3,6 +3,7 @@
 import type { ImageEditResult, TaskStatus } from '@/types/database';
 import { Button, Modal, ModalBody, ModalContent, ModalHeader } from '@heroui/react';
 import { VideoIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -15,6 +16,7 @@ import { useUser } from '@/hooks/useUser';
 import { ImageEditService } from '@/services/databaseService';
 
 export default function VideoGeneratePage() {
+  const t = useTranslations();
   const searchParams = useSearchParams();
   const imageId = searchParams.get('imageId');
   const { user } = useUser();
@@ -345,18 +347,7 @@ export default function VideoGeneratePage() {
           <ResizablePanel defaultSize={30} minSize={20} maxSize={50}>
             <div className="h-full overflow-y-auto p-4 space-y-4">
               <VideoParameterPanel
-                imageData={imageData}
-                isLoading={isLoading}
-                isGenerating={isGenerating}
-                error={error}
-                videoType={videoType}
-                audioUrl={audioUrl}
-                drivenId={drivenId}
-                hasEnoughCredits={currentHasEnoughCredits()}
-                onVideoTypeChange={handleVideoTypeChange}
-                onAudioUrlChange={handleAudioUrlChange}
-                onDrivenIdChange={handleDrivenIdChange}
-                onGenerate={generateVideo}
+                referenceImage={imageData?.source_image_url || ''}
               />
 
               {/* 添加任务状态面板 */}
@@ -395,36 +386,36 @@ export default function VideoGeneratePage() {
       <Modal isOpen={showCreditModal} onClose={() => setShowCreditModal(false)} size="md">
         <ModalContent className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg">
           <ModalHeader className="flex flex-col gap-1 border-b border-slate-200 dark:border-slate-800 pb-3">
-            <h3 className="text-lg font-semibold bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-400 dark:to-slate-200 bg-clip-text text-transparent">Insufficient Credits</h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400">You don't have enough credits to generate the video</p>
+            <h3 className="text-lg font-semibold bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-400 dark:to-slate-200 bg-clip-text text-transparent">{t('common.insufficientCredits')}</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400">{t('common.notEnoughCredits')}</p>
           </ModalHeader>
           <ModalBody className="pb-6 pt-4">
             <div className="space-y-4">
               <p className="text-sm">
-                Current Balance:
+                {t('common.currentBalance')}:
                 {' '}
                 <span className="font-medium">
                   {credits?.balance || 0}
                   {' '}
-                  Credits
+                  {t('common.credits')}
                 </span>
               </p>
               <p className="text-sm">
-                Required Credits:
+                {t('common.requiredCredits')}:
                 {' '}
                 <span className="font-medium text-blue-600">
                   {requiredCredits}
                   {' '}
-                  Credits
+                  {t('common.credits')}
                 </span>
               </p>
               <p className="text-sm">
-                Difference:
+                {t('common.difference')}:
                 {' '}
                 <span className="font-medium text-red-500">
                   {Math.max(0, requiredCredits - (credits?.balance || 0))}
                   {' '}
-                  Credits
+                  {t('common.credits')}
                 </span>
               </p>
               <div className="pt-2">
@@ -437,7 +428,7 @@ export default function VideoGeneratePage() {
                     window.location.href = '/pricing';
                   }}
                 >
-                  Go to Recharge
+                  {t('common.goToRecharge')}
                 </Button>
               </div>
             </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@heroui/react';
+import { Languages } from 'lucide-react';
 import { useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
@@ -11,39 +12,29 @@ export function LanguageSwitcher() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const handleLocaleChange = (newLocale: Locale) => {
-    if (newLocale === locale) {
-      return;
-    }
+  // 只支持中英文互切
+  const nextLocale: Locale = locale === 'zh' ? 'en' : 'zh';
 
+  const handleLocaleChange = () => {
     startTransition(() => {
-      // 保存到本地存储
-      setStoredLocale(newLocale);
-
-      // 设置Cookie（用于服务器端渲染）
-      document.cookie = `preferred-locale=${newLocale}; path=/; max-age=31536000; SameSite=Lax`;
-
-      // 刷新页面以应用新语言
+      setStoredLocale(nextLocale);
+      document.cookie = `preferred-locale=${nextLocale}; path=/; max-age=31536000; SameSite=Lax`;
       router.refresh();
     });
   };
 
   return (
-    <div className="flex gap-2">
-      {locales.map(loc => (
         <Button
-          key={loc}
-          size="sm"
-          variant={locale === loc ? 'solid' : 'bordered'}
-          color={locale === loc ? 'primary' : 'default'}
-          isLoading={isPending && locale !== loc}
-          onPress={() => handleLocaleChange(loc)}
-          className="min-w-16"
-        >
-          {loc.toUpperCase()}
+      isIconOnly
+      variant="light"
+      color="default"
+      onClick={handleLocaleChange}
+      isLoading={isPending}
+      className="w-10 h-10 flex items-center justify-center bg-transparent hover:bg-gray-100/10 dark:hover:bg-white/10 rounded-full shadow-none border-none"
+      title={locale === 'zh' ? '切换为英文' : 'Switch to Chinese'}
+    >
+      <Languages className="w-5 h-5" />
         </Button>
-      ))}
-    </div>
   );
 }
 

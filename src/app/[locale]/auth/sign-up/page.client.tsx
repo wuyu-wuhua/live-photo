@@ -1,52 +1,21 @@
 'use client';
 
-import { Button, Card, CardBody, Divider, Image, Input } from '@heroui/react';
+import { Button, Card, CardBody, Divider, Image } from '@heroui/react';
 
-import { Label } from '@radix-ui/react-label';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SEO_CONFIG } from '@/app';
 import { GitHubIcon } from '@/components/icons/github';
 import { GoogleIcon } from '@/components/icons/google';
-import { signInWithGitHub, signInWithGoogle, signUp } from '@/lib/auth-client';
+import { signInWithGitHub, signInWithGoogle } from '@/lib/auth-client';
+import { useTranslations } from 'next-intl';
 
 export function SignUpPageClient() {
+  const t = useTranslations();
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    email: '',
-    name: '',
-    password: '',
-  });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    try {
-      await signUp(
-        formData.email,
-        formData.password,
-      );
-      router.push('/auth/sign-in?registered=true');
-    } catch (err: unknown) {
-      setError('Registration failed. Please try again.');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleGitHubSignUp = async () => {
     try {
@@ -57,7 +26,7 @@ export function SignUpPageClient() {
       }
     } catch (error) {
       console.error('GitHub注册失败:', error);
-      setError('GitHub注册失败，请重试');
+      setError(t('auth.githubSignUpFailed'));
     } finally {
       setLoading(false);
     }
@@ -72,7 +41,7 @@ export function SignUpPageClient() {
       }
     } catch (error) {
       console.error('Google注册失败:', error);
-      setError('Google注册失败，请重试');
+      setError(t('auth.googleSignUpFailed'));
     } finally {
       setLoading(false);
     }
@@ -112,77 +81,29 @@ export function SignUpPageClient() {
           <div
             className="space-y-4 text-center md:text-left"
           >
-            <h2 className="text-3xl font-bold">Create Account</h2>
+            <h2 className="text-3xl font-bold">{t('auth.signUpTitle')}</h2>
             <p className="text-sm text-muted-foreground">
-              Enter your details to create your account
+              {t('auth.signUpSubtitle')}
             </p>
           </div>
 
           <Card className="py-4">
             <CardBody className="pt-2">
-              <form className="space-y-4" onSubmit={handleSubmit}>
-                <div className="grid gap-2">
-                  <Label htmlFor="name">Full Name</Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    onChange={handleChange}
-                    placeholder="John Doe"
-                    required
-                    type="text"
-                    value={formData.name}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    onChange={handleChange}
-                    placeholder="name@example.com"
-                    required
-                    type="email"
-                    value={formData.email}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    id="password"
-                    name="password"
-                    onChange={handleChange}
-                    required
-                    type="password"
-                    value={formData.password}
-                  />
-                </div>
+              <div className="space-y-4">
                 {error && (
                   <div className="text-sm font-medium text-destructive">
                     {error}
                   </div>
                 )}
-                <Button className="w-full" disabled={loading} type="submit">
-                  {loading ? 'Creating account...' : 'Create account'}
-                </Button>
-              </form>
-              <div className="relative mt-6">
-                <div className="absolute inset-0 flex items-center">
-                  <Divider className="w-full" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">
-                    Or continue with
-                  </span>
-                </div>
-              </div>
-              <div className="mt-6 grid grid-cols-2 gap-4">
+                
+                <div className="grid grid-cols-2 gap-4">
                 <Button
                   className="flex items-center gap-2"
                   disabled={loading}
                   onClick={handleGitHubSignUp}
                 >
                   <GitHubIcon className="h-5 w-5" />
-                  GitHub
+                    {t('auth.github')}
                 </Button>
                 <Button
                   className="flex items-center gap-2"
@@ -190,18 +111,31 @@ export function SignUpPageClient() {
                   onClick={handleGoogleSignUp}
                 >
                   <GoogleIcon className="h-5 w-5" />
-                  Google
+                    {t('auth.google')}
                 </Button>
               </div>
+                
+                <div className="relative mt-6">
+                  <div className="absolute inset-0 flex items-center">
+                    <Divider className="w-full" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-muted-foreground">
+                      {t('auth.orContinueWith')}
+                    </span>
+                  </div>
+                </div>
+                
               <div className="mt-6 text-center text-sm text-muted-foreground">
-                Already have an account?
+                  {t('auth.alreadyHaveAccount')}
                 {' '}
                 <Link
                   className="text-primary underline-offset-4 hover:underline"
                   href="/auth/sign-in"
                 >
-                  Sign in
+                    {t('auth.signInLink')}
                 </Link>
+                </div>
               </div>
             </CardBody>
           </Card>

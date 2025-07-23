@@ -2,6 +2,7 @@
 
 import { Button, Card, CardBody, CardFooter, CardHeader, Image, Spinner, Tooltip } from '@heroui/react';
 import { Download, RefreshCw, Share2, Wand2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -22,6 +23,7 @@ export function VideoResultPanel({
   creditsConsumed,
   onGenerate,
 }: VideoResultPanelProps) {
+  const t = useTranslations('videoResult');
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -63,8 +65,8 @@ export function VideoResultPanel({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'AI Generated Video',
-          text: 'Check out my AI generated video',
+          title: t('shareTitle'),
+          text: t('shareText'),
           url: videoUrl,
         });
       } catch (err) {
@@ -73,7 +75,7 @@ export function VideoResultPanel({
     } else {
       // Copy link to clipboard
       navigator.clipboard.writeText(videoUrl)
-        .then(() => toast.success('Video link copied to clipboard'))
+        .then(() => toast.success(t('linkCopied')))
         .catch(err => console.error('Copy failed:', err));
     }
   };
@@ -87,7 +89,7 @@ export function VideoResultPanel({
               <div className="text-center space-y-4">
                 <Spinner size="lg" color="primary" />
                 <p className="text-gray-600 dark:text-gray-400">
-                  {videoType === 'emoji' ? 'Generating emoji video...' : 'Generating lipsync video...'}
+                  {videoType === 'emoji' ? t('generatingEmoji') : t('generatingLipsync')}
                 </p>
               </div>
             )

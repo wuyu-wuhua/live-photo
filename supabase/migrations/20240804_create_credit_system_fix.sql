@@ -458,9 +458,9 @@ VALUES
 -- 初始化一些默认的积分套餐
 INSERT INTO credit_plans (name, description, credits, price, currency, is_subscription, billing_period)
 VALUES
-  ('基础套餐', '适合轻度使用的用户', 100, 2.99, 'USD', false, NULL),
-  ('标准套餐', '适合中度使用的用户', 500, 11.99, 'USD', false, NULL),
-  ('高级套餐', '适合重度使用的用户', 1200, 24.99, 'USD', false, NULL),
+  ('基础套餐', '适合轻度使用的用户', 600, 9.99, 'USD', false, NULL),
+  ('标准套餐', '适合中度使用的用户', 3000, 29.99, 'USD', false, NULL),
+  ('高级套餐', '适合重度使用的用户', 6000, 49.99, 'USD', false, NULL),
   ('月度订阅', '每月自动充值，更加优惠', 1000, 14.99, 'USD', true, 'MONTHLY');
 
 -- 启用实时订阅

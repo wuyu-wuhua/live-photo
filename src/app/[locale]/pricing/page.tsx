@@ -22,7 +22,7 @@ export default function PricingPage() {
       name: t('common.plans.basic.name'),
       description: t('common.plans.basic.description'),
       credits: 100,
-      price: 19,
+      price: 9.99,
       popular: false,
       stripe_price_id: 'price_basic',
       features: [
@@ -39,7 +39,7 @@ export default function PricingPage() {
       name: t('common.plans.standard.name'),
       description: t('common.plans.standard.description'),
       credits: 500,
-      price: 79,
+      price: 29.99,
       popular: true,
       stripe_price_id: 'price_standard',
       features: [
@@ -57,12 +57,12 @@ export default function PricingPage() {
       id: 'premium',
       name: t('common.plans.premium.name'),
       description: t('common.plans.premium.description'),
-      credits: 1200,
-      price: 159,
+      credits: 1000,
+      price: 49.99,
       popular: false,
       stripe_price_id: 'price_premium',
       features: [
-        t('pricing.features.credits', { count: 1200 }),
+        t('pricing.features.credits', { count: 1000 }),
         t('pricing.features.imageEdit'),
         t('pricing.features.videoAnimation'),
         t('pricing.features.highRes'),
@@ -91,7 +91,7 @@ export default function PricingPage() {
 
   // 支付成功处理
   const handlePaymentSuccess = (credits: number) => {
-    console.warn(`${t('pricing.paymentSuccess')} ${credits} ${t('pricing.credits')}`);
+    console.warn(t('pricing.paymentSuccess', { credits }));
     // 刷新积分数据
     refresh();
     setShowStripePayment(false);
@@ -150,24 +150,24 @@ export default function PricingPage() {
           <Card
             key={plan.id}
             className={`
-                relative transition-all duration-200
+                relative transition-all duration-300 hover:scale-105 hover:shadow-xl
                 ${plan.popular
-            ? 'border-primary shadow-lg shadow-primary/10 z-10 scale-105 md:scale-105'
-            : 'hover:border-primary/50 hover:shadow-md'
+            ? 'border-primary shadow-lg shadow-primary/20 z-10 scale-105 md:scale-105 bg-gradient-to-br from-primary/5 to-primary/10 hover:scale-110 hover:shadow-2xl hover:bg-gradient-to-br hover:from-primary/10 hover:to-primary/15'
+            : 'hover:border-primary hover:shadow-lg hover:bg-primary/5 hover:scale-105'
           }
               `}
           >
             {plan.popular && (
-              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-20">
-                <Chip color="primary" size="sm" className="font-semibold">
-                  {plan.savingLabel}
-                </Chip>
+              <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-20">
+                <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold px-4 py-2 rounded-full shadow-lg border border-white/20 backdrop-blur-sm">
+                  <span className="text-sm">⭐ {plan.savingLabel}</span>
+                </div>
               </div>
             )}
 
             <CardHeader
               className={`
-                  ${plan.popular ? 'pt-8' : 'pt-6'}
+                  ${plan.popular ? 'pt-12' : 'pt-6'}
                 `}
             >
               <h3 className="text-2xl font-semibold">{plan.name}</h3>
@@ -177,7 +177,7 @@ export default function PricingPage() {
             <CardBody className="flex-grow">
               <div className="mb-6 flex items-baseline">
                 <span className="text-4xl font-bold">
-                  ¥
+                  $
                   {plan.price}
                 </span>
                 <span className="text-default-500 ml-1">
@@ -192,8 +192,8 @@ export default function PricingPage() {
               <div className="mb-6">
                 <div className="text-sm text-default-500">
                   {t('pricing.pricePerCredit')}
-                  : ¥
-                  {(plan.price / plan.credits).toFixed(2)}
+                  : $
+                  {(plan.price / plan.credits).toFixed(3)}
                 </div>
               </div>
 
@@ -213,7 +213,11 @@ export default function PricingPage() {
 
             <CardFooter className="mt-6">
               <Button
-                className="w-full"
+                className={`w-full transition-all duration-300 ${
+                  plan.popular 
+                    ? 'bg-gradient-to-r from-primary to-primary-600 hover:from-primary-600 hover:to-primary-700 shadow-lg hover:shadow-xl' 
+                    : 'hover:bg-primary hover:text-white hover:border-primary hover:shadow-md'
+                }`}
                 color={plan.popular ? 'primary' : 'default'}
                 variant={plan.popular ? 'solid' : 'bordered'}
                 onPress={() => handlePurchase(plan.id)}

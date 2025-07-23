@@ -1,159 +1,172 @@
 'use client';
 
-import type { ImageEditResult, TaskStatus } from '@/types/database';
-import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useImageEditStatusSubscription } from '@/hooks/useSupabaseSubscription';
-import { ImageEditService } from '@/services/databaseService';
+import { Button, Card, CardBody, CardHeader, Progress, Spinner } from '@heroui/react';
+import { AlertCircle, CheckCircle, Clock, RefreshCw, XCircle } from 'lucide-react';
+import { toast } from 'sonner';
 
-type TaskStatusMonitorProps = {
+type TaskStatus = 'PENDING' | 'RUNNING' | 'SUCCEEDED' | 'FAILED';
+
+interface TaskStatusMonitorProps {
   taskId: string;
-  onStatusChange?: (status: TaskStatus, result?: ImageEditResult) => void;
-};
+  onSuccess: (videoUrl: string) => void;
+  onError: (error: string) => void;
+}
 
-export function TaskStatusMonitor({ taskId, onStatusChange }: TaskStatusMonitorProps) {
-  const [taskStatus, setTaskStatus] = useState<TaskStatus | null>(null);
-  const [taskData, setTaskData] = useState<ImageEditResult | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+export function TaskStatusMonitor({ taskId, onSuccess, onError }: TaskStatusMonitorProps) {
+  const [status, setStatus] = useState<TaskStatus>('PENDING');
+  const [progress, setProgress] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
-  // 使用Supabase实时订阅监听任务状态变更
-  const { isSubscribed, error } = useImageEditStatusSubscription(
-    taskId,
-    (updatedTask) => {
-      if (!updatedTask) {
-        return;
-      }
-
-      setTaskStatus(updatedTask.status);
-      setTaskData(updatedTask);
-
-      // 调用外部状态变更回调
-      if (onStatusChange) {
-        onStatusChange(updatedTask.status, updatedTask);
-      }
-    },
-  );
-
-  // 初始加载任务数据
+  // 轮询任务状态
   useEffect(() => {
-    async function fetchTaskData() {
-      if (!taskId) {
-        return;
-      }
+    if (!taskId) return;
 
+    const pollTaskStatus = async () => {
       try {
-        setIsLoading(true);
-        const response = await ImageEditService.getById(taskId);
-        if (response.success && response.data) {
-          setTaskData(response.data);
-          setTaskStatus(response.data.status);
+        const response = await fetch(`/api/dashscope/video-synthesis/status?taskId=${taskId}`);
+        const result = await response.json() as any;
 
-          // 调用外部状态变更回调
-          if (onStatusChange) {
-            onStatusChange(response.data.status, response.data);
-          }
+        if (!response.ok) {
+          throw new Error(result.error || '查询任务状态失败');
         }
-      } catch (error) {
-        console.error('Error fetching task data:', error);
-      } finally {
-        setIsLoading(false);
+
+        const taskStatus = result.data?.task_status;
+        setStatus(taskStatus);
+
+        if (taskStatus === 'SUCCEEDED') {
+          const videoUrl = result.data?.video_url;
+          console.log('TaskStatusMonitor - 任务成功，videoUrl:', videoUrl);
+          if (videoUrl) {
+            setVideoUrl(videoUrl);
+            setProgress(100);
+            console.log('TaskStatusMonitor - 调用 onSuccess 回调');
+            onSuccess(videoUrl);
+            toast.success('视频生成完成！');
+          } else {
+            console.error('TaskStatusMonitor - 任务成功但没有视频URL');
+          }
+        } else if (taskStatus === 'FAILED') {
+          const errorMsg = result.data?.error || '视频生成失败';
+          setError(errorMsg);
+          onError(errorMsg);
+          toast.error(errorMsg);
+        } else if (taskStatus === 'RUNNING') {
+          // 模拟进度增长
+          setProgress(prev => Math.min(prev + Math.random() * 10, 90));
+        } else if (taskStatus === 'PENDING') {
+          setProgress(prev => Math.min(prev + Math.random() * 5, 30));
+        }
+      } catch (err: any) {
+        const errorMsg = err.message || '查询任务状态失败';
+        setError(errorMsg);
+        onError(errorMsg);
+        toast.error(errorMsg);
       }
-    }
+    };
 
-    fetchTaskData();
-  }, [taskId, onStatusChange]);
+    // 立即执行一次
+    pollTaskStatus();
 
-  // 根据任务状态显示不同的UI
-  function renderStatusIndicator() {
-    if (isLoading) {
-      return (
-        <div className="flex items-center gap-2 text-slate-600">
-          <Loader2 className="w-4 h-4 animate-spin" />
-          <span>Loading task status...</span>
-        </div>
-      );
-    }
+    // 设置轮询间隔
+    const interval = setInterval(pollTaskStatus, 5000);
 
-    if (!taskStatus) {
-      return (
-        <div className="text-slate-600">
-          No status information available
-        </div>
-      );
-    }
+    return () => clearInterval(interval);
+  }, [taskId, onSuccess, onError]);
 
-    switch (taskStatus) {
+  const getStatusIcon = () => {
+    switch (status) {
       case 'PENDING':
-        return (
-          <div className="flex items-center gap-2 text-amber-600">
-            <Loader2 className="w-4 h-4 animate-spin" />
-            <span>Pending</span>
-          </div>
-        );
+        return <Clock className="w-5 h-5 text-yellow-500" />;
       case 'RUNNING':
-        return (
-          <div className="flex items-center gap-2 text-blue-600">
-            <Loader2 className="w-4 h-4 animate-spin" />
-            <span>Processing</span>
-          </div>
-        );
+        return <Spinner size="sm" color="primary" />;
       case 'SUCCEEDED':
-        return (
-          <div className="flex items-center gap-2 text-green-600">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-            <span>Completed</span>
-          </div>
-        );
+        return <CheckCircle className="w-5 h-5 text-green-500" />;
       case 'FAILED':
-        return (
-          <div className="flex items-center gap-2 text-red-600">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-            <span>Failed</span>
-            {taskData?.emoji_message && (
-              <span className="text-xs ml-2 text-red-500">{taskData.emoji_message}</span>
-            )}
-            {taskData?.liveportrait_message && (
-              <span className="text-xs ml-2 text-red-500">{taskData.liveportrait_message}</span>
-            )}
-          </div>
-        );
+        return <XCircle className="w-5 h-5 text-red-500" />;
       default:
-        return (
-          <div className="text-slate-600">
-            Unknown status:
-            {' '}
-            {taskStatus}
-          </div>
-        );
+        return <Clock className="w-5 h-5 text-gray-500" />;
     }
-  }
+  };
+
+  const getStatusText = () => {
+    switch (status) {
+      case 'PENDING':
+        return '任务已创建，等待处理...';
+      case 'RUNNING':
+        return '正在生成视频...';
+      case 'SUCCEEDED':
+        return '视频生成完成！';
+      case 'FAILED':
+        return '视频生成失败';
+      default:
+        return '未知状态';
+    }
+  };
+
+  const getStatusColor = () => {
+    switch (status) {
+      case 'PENDING':
+        return 'warning';
+      case 'RUNNING':
+        return 'primary';
+      case 'SUCCEEDED':
+        return 'success';
+      case 'FAILED':
+        return 'danger';
+      default:
+        return 'default';
+    }
+  };
 
   return (
-    <div className="p-3 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-700">
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300">Task Status</h3>
-          <div className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
-            {isSubscribed ? 'Live Updates' : 'Connecting...'}
-          </div>
+    <Card className="w-full">
+      <CardHeader className="flex flex-row items-center gap-2">
+        {getStatusIcon()}
+        <div className="flex flex-col">
+          <h4 className="text-sm font-medium">视频生成状态</h4>
+          <p className="text-xs text-gray-500">任务ID: {taskId}</p>
         </div>
-
-        <div className="mt-1">
-          {renderStatusIndicator()}
+      </CardHeader>
+      <CardBody className="space-y-4">
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm">
+            <span>{getStatusText()}</span>
+            <span className="text-gray-500">{Math.round(progress)}%</span>
+          </div>
+          <Progress
+            value={progress}
+            color={getStatusColor()}
+            className="w-full"
+          />
         </div>
 
         {error && (
-          <div className="mt-2 text-xs text-red-500">
-            Subscription error:
-            {' '}
-            {error}
+          <div className="flex items-center gap-2 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+            <AlertCircle className="w-4 h-4 text-red-500" />
+            <span className="text-sm text-red-600 dark:text-red-400">{error}</span>
           </div>
         )}
-      </div>
-    </div>
+
+        {videoUrl && (
+          <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+            <CheckCircle className="w-4 h-4 text-green-500" />
+            <span className="text-sm text-green-600 dark:text-green-400">视频生成成功！</span>
+          </div>
+        )}
+
+        <div className="flex gap-2">
+          <Button
+            size="sm"
+            variant="flat"
+            startContent={<RefreshCw className="w-4 h-4" />}
+            onPress={() => window.location.reload()}
+          >
+            刷新状态
+          </Button>
+        </div>
+      </CardBody>
+    </Card>
   );
 }

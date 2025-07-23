@@ -1,54 +1,33 @@
 'use client';
 
-import { Button, Card, CardBody, Divider, Image, Input } from '@heroui/react';
+import { Button, Card, CardBody, Divider, Image } from '@heroui/react';
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { SEO_CONFIG, SYSTEM_CONFIG } from '@/app';
 import { GitHubIcon } from '@/components/icons/github';
 import { GoogleIcon } from '@/components/icons/google';
-import { Label } from '@/components/ui/label';
-import { signIn, signInWithGitHub, signInWithGoogle } from '@/lib/auth-client';
+import { signInWithGitHub, signInWithGoogle } from '@/lib/auth-client';
 
 export function SignInPageClient() {
+  const t = useTranslations();
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const handleEmailLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    try {
-      const result = await signIn(email, password);
-      if (result.error) {
-        setError('Invalid email or password');
-      } else {
-        router.push(SYSTEM_CONFIG.redirectAfterSignIn);
-      }
-    } catch (err) {
-      setError('Invalid email or password');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleGitHubLogin = async () => {
     setLoading(true);
     try {
       const result = await signInWithGitHub();
       if (result.error) {
-        setError('Failed to sign in with GitHub');
+        setError(t('auth.githubSignInFailed'));
         setLoading(false);
       }
       // OAuth会重定向，不需要手动设置loading为false
     } catch (err) {
-      setError('Failed to sign in with GitHub');
+      setError(t('auth.githubSignInFailed'));
       console.error(err);
       setLoading(false);
     }
@@ -59,12 +38,12 @@ export function SignInPageClient() {
     try {
       const result = await signInWithGoogle();
       if (result.error) {
-        setError('Failed to sign in with Google');
+        setError(t('auth.googleSignInFailed'));
         setLoading(false);
       }
       // OAuth会重定向，不需要手动设置loading为false
     } catch (err) {
-      setError('Failed to sign in with Google');
+      setError(t('auth.googleSignInFailed'));
       console.error(err);
       setLoading(false);
     }
@@ -81,7 +60,7 @@ export function SignInPageClient() {
         <Image
           isBlurred
           radius="none"
-          alt="Sign-up background image"
+          alt="Sign-in background image"
           className="h-full w-full object-cover"
           src="https://plus.unsplash.com/premium_photo-1747748530197-d9eab242dc0f?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         />
@@ -104,81 +83,29 @@ export function SignInPageClient() {
           <div
             className="space-y-4 text-center md:text-left"
           >
-            <h2 className="text-3xl font-bold">Sign In</h2>
+            <h2 className="text-3xl font-bold">{t('auth.signInTitle')}</h2>
             <p className="text-sm text-muted-foreground">
-              Enter your credentials to access your account
+              {t('auth.signInSubtitle')}
             </p>
           </div>
 
           <Card className="border-none shadow-sm">
             <CardBody className="pt-2">
-              <form
-                className="space-y-4"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  void handleEmailLogin(e);
-                }}
-              >
-                <div className="grid gap-2">
-                  <Label htmlFor="email" className="text-sm font-medium">Email</Label>
-                  <Input
-                    id="email"
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
-                    placeholder="name@example.com"
-                    required
-                    type="email"
-                    value={email}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="password" className="text-sm font-medium">Password</Label>
-                    <Link
-                      className="text-sm text-muted-foreground hover:underline"
-                      href="#"
-                    >
-                      Forgot password?
-                    </Link>
-                  </div>
-                  <Input
-                    id="password"
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                    }}
-                    required
-                    type="password"
-                    value={password}
-                  />
-                </div>
+              <div className="space-y-4">
                 {error && (
                   <div className="text-sm font-medium text-destructive">
                     {error}
                   </div>
                 )}
-                <Button className="w-full" disabled={loading} type="submit">
-                  {loading ? 'Signing in...' : 'Sign in'}
-                </Button>
-              </form>
-              <div className="relative mt-6">
-                <div className="absolute inset-0 flex items-center">
-                  <Divider className="w-full" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">
-                    Or continue with
-                  </span>
-                </div>
-              </div>
-              <div className="mt-6 grid grid-cols-2 gap-4">
+                
+                <div className="grid grid-cols-2 gap-4">
                 <Button
                   className="flex items-center gap-2"
                   disabled={loading}
                   onClick={handleGitHubLogin}
                 >
                   <GitHubIcon className="h-5 w-5" />
-                  GitHub
+                  {t('auth.github')}
                 </Button>
                 <Button
                   className="flex items-center gap-2"
@@ -186,18 +113,31 @@ export function SignInPageClient() {
                   onClick={handleGoogleLogin}
                 >
                   <GoogleIcon className="h-5 w-5" />
-                  Google
+                  {t('auth.google')}
                 </Button>
               </div>
+                
+                <div className="relative mt-6">
+                  <div className="absolute inset-0 flex items-center">
+                    <Divider className="w-full" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-muted-foreground">
+                      {t('auth.orContinueWith')}
+                    </span>
+                  </div>
+                </div>
+                
               <div className="mt-6 text-center text-sm text-muted-foreground">
-                Don't have an account?
+                {t('auth.dontHaveAccount')}
                 {' '}
                 <Link
-                  className="text-primary underline-offset-4  hover:underline "
+                    className="text-primary underline-offset-4 hover:underline"
                   href="/auth/sign-up"
                 >
-                  Sign up
+                  {t('auth.signUpLink')}
                 </Link>
+                </div>
               </div>
             </CardBody>
           </Card>

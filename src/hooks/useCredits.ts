@@ -16,19 +16,20 @@ import { useUser } from './useUser';
 // 各功能消耗的积分配置
 export const FEATURE_COSTS = {
   // 图像编辑功能
-  stylization_all: 5,
-  stylization_local: 6,
-  description_edit: 8,
-  description_edit_with_mask: 10,
-  remove_watermark: 3,
-  expand: 4,
-  super_resolution: 7,
-  colorization: 6,
-  doodle: 5,
-  control_cartoon_feature: 7,
+  stylization_all: 1,
+  stylization_local: 1,
+  description_edit: 1,
+  description_edit_with_mask: 1,
+  remove_watermark: 1,
+  expand: 1,
+  super_resolution: 1,
+  colorization: 1,
+  doodle: 1,
+  control_cartoon_feature: 1,
   // 视频动画功能
-  liveportrait_video: 15,
-  emoji_video: 12,
+  liveportrait_video: 10,
+  emoji_video: 10,
+  video_synthesis: 10,
 };
 
 /**

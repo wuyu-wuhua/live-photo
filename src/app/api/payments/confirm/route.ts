@@ -27,6 +27,16 @@ export async function POST(request: NextRequest) {
     // 确认支付状态
     const paymentIntent = await confirmPayment(paymentIntentId);
 
+    // 添加调试日志
+    console.log('🔍 支付确认信息:', {
+      paymentIntentId,
+      amount: paymentIntent.amount,
+      currency: paymentIntent.currency,
+      status: paymentIntent.status,
+      planId: paymentIntent.metadata.planId,
+      planName: paymentIntent.metadata.planName,
+    });
+
     if (paymentIntent.status !== 'succeeded') {
       return NextResponse.json(
         { error: 'Payment not completed', status: paymentIntent.status },
@@ -63,14 +73,14 @@ export async function POST(request: NextRequest) {
         credits = 500;
         break;
       case 'premium':
-        credits = 1200;
+        credits = 1000;
         break;
       case 'subscription':
         credits = 2000;
         break;
       default:
-        // 如果没有匹配的套餐，根据金额计算积分（1元=10积分）
-        credits = Math.floor((paymentIntent.amount / 100) * 10);
+        // 如果没有匹配的套餐，根据金额计算积分（1美元=60积分）
+        credits = Math.floor((paymentIntent.amount / 100) * 60);
     }
 
     // 添加积分到用户账户
@@ -98,6 +108,17 @@ export async function POST(request: NextRequest) {
         { status: 500 },
       );
     }
+
+    // 添加支付成功日志
+    console.log('✅ 支付成功完成:', {
+      paymentIntentId,
+      amount: paymentIntent.amount,
+      currency: paymentIntent.currency,
+      credits,
+      planId,
+      planName,
+      transactionId: creditResult?.transaction_id,
+    });
 
     return NextResponse.json({
       success: true,

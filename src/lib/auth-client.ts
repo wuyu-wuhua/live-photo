@@ -93,12 +93,22 @@ export async function signIn(email: string, password: string): Promise<AuthRespo
  */
 export async function signInWithGitHub(): Promise<AuthResponse> {
   try {
-    const { error } = await supabase.auth.signInWithOAuth({
+    console.log('开始GitHub OAuth登录...');
+    console.log('当前域名:', window.location.origin);
+    console.log('重定向URL:', `${window.location.origin}/auth/callback`);
+    
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
+
+    console.log('GitHub OAuth响应:', { data, error });
+
+    if (error) {
+      console.error('GitHub OAuth错误:', error);
+    }
 
     return {
       user: null,
@@ -121,12 +131,26 @@ export async function signInWithGitHub(): Promise<AuthResponse> {
  */
 export async function signInWithGoogle(): Promise<AuthResponse> {
   try {
-    const { error } = await supabase.auth.signInWithOAuth({
+    console.log('开始Google OAuth登录...');
+    console.log('当前域名:', window.location.origin);
+    console.log('重定向URL:', `${window.location.origin}/auth/callback`);
+    
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
       },
     });
+
+    console.log('Google OAuth响应:', { data, error });
+
+    if (error) {
+      console.error('Google OAuth错误:', error);
+    }
 
     return {
       user: null,

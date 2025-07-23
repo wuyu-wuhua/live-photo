@@ -1,13 +1,14 @@
 'use client';
 
-import { Button, Image } from '@heroui/react';
-import { Loader2, Upload, X } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
-import ImageUploading, { type ImageListType } from 'react-images-uploading';
-import { v4 as uuidv4 } from 'uuid';
-
-import { createClient } from '@/lib/supabase/client';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { createClient } from '@/lib/supabase/client';
+import ImageUploading, { type ImageListType } from 'react-images-uploading';
+import { useCallback, useEffect, useState } from 'react';
+import { Loader2, Upload, X } from 'lucide-react';
+import { v4 as uuidv4 } from 'uuid';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 // 常量定义
 const STORAGE_BUCKET = 'live-photos';
@@ -75,8 +76,10 @@ export function PictureCardUpload({
   onSelectFile,
   userId,
 }: PictureCardUploadProps) {
+  const t = useTranslations('upload');
   const [fileList, setFileList] = useState<UploadFile[]>(propFileList);
   const [images, setImages] = useState<ImageListType>([]);
+  const supabase = createClient();
 
   // 同步外部传入的 fileList
   useEffect(() => {
@@ -125,11 +128,13 @@ export function PictureCardUpload({
 
   // 上传文件到 Supabase
   const uploadToSupabase = useCallback(async (file: File): Promise<UploadFile> => {
+    if (!userId) {
+      throw new Error(t('userIdRequired'));
+    }
+
     // 获取文件扩展名
     const fileExtension = file.name.split('.').pop() || '';
-    const tempId = `temp-${Date.now()}-${Math.random()
-      .toString(36)
-      .substring(2)}${fileExtension ? `.${fileExtension}` : ''}`;
+    const tempId = `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
     // 创建临时文件对象显示上传进度
     const tempFile: UploadFile = {
@@ -145,8 +150,6 @@ export function PictureCardUpload({
     handleFileListChange(newFileList);
 
     try {
-      const supabase = await createClient();
-
       // 上传文件到 Storage
       const { data: storageData, error: storageError } = await supabase.storage
         .from(STORAGE_BUCKET)
@@ -154,11 +157,11 @@ export function PictureCardUpload({
 
       if (storageError) {
         console.error('Storage upload error:', storageError);
-        throw new Error(`文件上传失败: ${storageError.message}`);
+        throw new Error(`${t('fileUploadFailed')}: ${storageError.message}`);
       }
 
       if (!storageData?.fullPath) {
-        throw new Error('上传返回数据异常，请重试');
+        throw new Error(t('uploadDataError'));
       }
 
       // 获取公共 URL - 使用 path 而不是 fullPath 避免重复路径
@@ -205,7 +208,7 @@ export function PictureCardUpload({
         } catch (cleanupError) {
           console.error('Failed to cleanup uploaded file:', cleanupError);
         }
-        throw new Error(`保存上传记录失败: ${dbError.message}`);
+                  throw new Error(`${t('saveRecordFailed')}: ${dbError.message}`);
       }
 
       const uploadedFile: UploadFile = {
@@ -239,7 +242,7 @@ export function PictureCardUpload({
 
       throw error;
     }
-  }, [fileList, handleFileListChange, userId]);
+  }, [fileList, handleFileListChange, userId, t]);
 
   // 处理图片变化
   const handleImagesChange = useCallback(async (imageList: ImageListType) => {
@@ -336,7 +339,7 @@ export function PictureCardUpload({
                         >
                           <div className="text-center">
                             <X className="mx-auto mb-1 size-6" />
-                            <span className="text-xs">上传失败</span>
+                            <span className="text-xs">{t('uploadFailed')}</span>
                             {file.error && (
                               <div className="mt-1 text-xs text-red-400">
                                 {file.error}
@@ -378,7 +381,7 @@ export function PictureCardUpload({
                           >
                             <div className="text-center">
                               <X className="mx-auto mb-1 size-6" />
-                              <span className="text-xs">加载失败</span>
+                              <span className="text-xs">{t('loadFailed')}</span>
                             </div>
                           </div>
                           <div
@@ -434,7 +437,7 @@ export function PictureCardUpload({
                 >
                   <Upload className="size-5" />
                   <span className="text-xs">
-                    {isDragging ? '拖拽到此' : '上传图片'}
+                    {isDragging ? t('dragHere') : t('uploadImage')}
                   </span>
                 </div>
               </div>

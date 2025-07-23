@@ -8,11 +8,12 @@ import { useRouter } from 'next/navigation';
 
 import { Icon } from '@/components/Icon';
 import { ThemeSwitch } from '@/components/theme-switch';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { siteConfig } from '@/config/site';
 import { useUser } from '@/hooks/useUser';
 import { signOut } from '@/lib/auth-client';
 
-export const Navbar = () => {
+export default function Navbar() {
   const { user, loading } = useUser();
   const router = useRouter();
   const t = useTranslations();
@@ -23,7 +24,22 @@ export const Navbar = () => {
       router.push('/');
     }
   };
-  // const searchInput = (...);
+
+  // 导航项配置
+  const navItems = [
+    {
+      label: t('common.home'),
+      href: '/',
+    },
+    {
+      label: t('common.pricing'),
+      href: '/pricing',
+    },
+    {
+      label: t('common.about'),
+      href: '/about',
+    },
+  ];
 
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
@@ -41,7 +57,7 @@ export const Navbar = () => {
           </NextLink>
         </NavbarBrand>
         <ul className="hidden lg:flex gap-4 justify-start ml-2">
-          {siteConfig.navItems.map(item => (
+          {navItems.map(item => (
             <NavbarItem key={item.href}>
               <NextLink
                 className={clsx(
@@ -63,31 +79,9 @@ export const Navbar = () => {
         justify="end"
       >
         <NavbarItem className="hidden sm:flex gap-2">
-          {/* <Link isExternal aria-label="Twitter" href={siteConfig.links.twitter}>
-            <Icon icon="mdi:twitter" className="text-default-500" />
-          </Link>
-          <Link isExternal aria-label="Discord" href={siteConfig.links.discord}>
-            <Icon icon="ic:baseline-discord" className="text-default-500" />
-          </Link>
-          <Link isExternal aria-label="Github" href={siteConfig.links.github}>
-            <Icon icon="mdi:github" className="text-default-500" />
-          </Link> */}
-          {/* <LanguageSwitcher /> */}
           <ThemeSwitch />
+          <LanguageSwitcher />
         </NavbarItem>
-        {/* <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem> */}
-        {/* <NavbarItem className="hidden md:flex">
-          <Button
-            isExternal
-            as={Link}
-            className="text-sm font-normal text-default-600 bg-default-100"
-            href={siteConfig.links.sponsor}
-            startContent={<Icon icon="heroicons:heart-solid" className="text-danger" />}
-            variant="flat"
-          >
-            Sponsor
-          </Button>
-        </NavbarItem> */}
 
         {/* 用户认证区域 */}
         <NavbarItem className="flex gap-2">
@@ -117,15 +111,12 @@ export const Navbar = () => {
                           {t('common.profile')}
                         </DropdownItem>
                         <DropdownItem key="Generate" as={NextLink} href="/generate" startContent={<Icon icon="solar:magic-stick-3-bold-duotone" className="text-lg text-purple-500" />}>
-                          Generate
+                          {t('common.generate')}
                         </DropdownItem>
                         <DropdownItem key="gallery" as={NextLink} href="/gallery" startContent={<Icon icon="solar:gallery-bold-duotone" className="text-lg text-green-500" />}>
-                          Gallery
+                          {t('nav.gallery')}
                         </DropdownItem>
                       </DropdownSection>
-                      {/* <DropdownItem key="settings" as={NextLink} href="/settings">
-                        {tCommon('edit')}
-                      </DropdownItem> */}
                       <DropdownSection>
                         <DropdownItem key="logout" color="danger" onClick={handleSignOut} startContent={<Icon icon="solar:logout-2-bold-duotone" className="text-lg text-red-500" />}>
                           {t('common.logout')}
@@ -158,9 +149,7 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-        <Link isExternal aria-label="Github" href={siteConfig.links.github}>
-          <Icon icon="mdi:github" className="text-default-500" />
-        </Link>
+        <LanguageSwitcher />
         <ThemeSwitch />
 
         {/* 移动端用户认证 */}
@@ -180,18 +169,18 @@ export const Navbar = () => {
                     />
                   </DropdownTrigger>
                   <DropdownMenu aria-label={t('common.login')} variant="flat">
-                    <DropdownItem key="profile" className="h-14 gap-2">
+                    <DropdownItem key="user-info" className="h-14 gap-2">
                       <p className="font-semibold">{t('common.login')}</p>
                       <p className="font-semibold">{user.email}</p>
                     </DropdownItem>
                     <DropdownItem key="profile" as={NextLink} href="/profile">
                       {t('common.profile')}
                     </DropdownItem>
-                    <DropdownItem key="dashboard" as={NextLink} href="/dashboard">
-                      {t('common.dashboard')}
+                    <DropdownItem key="generate" as={NextLink} href="/generate">
+                      {t('common.generate')}
                     </DropdownItem>
-                    <DropdownItem key="settings" as={NextLink} href="/settings">
-                      {t('common.edit')}
+                    <DropdownItem key="gallery" as={NextLink} href="/gallery">
+                      {t('common.gallery')}
                     </DropdownItem>
                     <DropdownItem key="logout" color="danger" onClick={handleSignOut}>
                       {t('common.logout')}
@@ -214,19 +203,18 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarMenu>
-        {/* {searchInput} */}
         <div className="mx-4 mt-2 flex flex-col gap-2">
-          {siteConfig.navMenuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
+          {navItems.map((item, index) => (
+            <NavbarMenuItem key={`${item.href}-${index}`}>
               <Link
                 color={
                   index === 2
                     ? 'primary'
-                    : index === siteConfig.navMenuItems.length - 1
+                    : index === navItems.length - 1
                       ? 'danger'
                       : 'foreground'
                 }
-                href="#"
+                href={item.href}
                 size="lg"
               >
                 {item.label}
@@ -263,6 +251,4 @@ export const Navbar = () => {
       </NavbarMenu>
     </HeroUINavbar>
   );
-};
-
-export default Navbar;
+}

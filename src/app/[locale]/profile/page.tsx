@@ -31,7 +31,7 @@ export default function ProfilePage() {
       name: t('common.plans.basic.name'),
       description: t('common.plans.basic.description'),
       credits: 100,
-      price: 19,
+      price: 9.99,
       popular: false,
       stripe_price_id: 'price_basic',
     },
@@ -40,7 +40,7 @@ export default function ProfilePage() {
       name: t('common.plans.standard.name'),
       description: t('common.plans.standard.description'),
       credits: 500,
-      price: 79,
+      price: 29.99,
       popular: true,
       stripe_price_id: 'price_standard',
     },
@@ -48,8 +48,8 @@ export default function ProfilePage() {
       id: 'premium',
       name: t('common.plans.premium.name'),
       description: t('common.plans.premium.description'),
-      credits: 1200,
-      price: 159,
+      credits: 1000,
+      price: 49.99,
       popular: false,
       stripe_price_id: 'price_premium',
     },
@@ -301,7 +301,7 @@ export default function ProfilePage() {
                         </div>
                         <div className="text-right">
                           <p className="text-lg font-bold">
-                            ¥
+                            $
                             {plan.price}
                           </p>
                           <Button

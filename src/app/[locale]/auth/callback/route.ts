@@ -45,5 +45,5 @@ export async function GET(request: NextRequest) {
   }
 
   // 如果没有code参数，重定向到登录页面
-  return NextResponse.redirect(new URL('/auth', requestUrl.origin));
+  return NextResponse.redirect(new URL('/auth/sign-in', requestUrl.origin));
 }

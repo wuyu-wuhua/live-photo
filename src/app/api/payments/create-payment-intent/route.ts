@@ -28,12 +28,22 @@ export async function POST(request: NextRequest) {
     // 创建支付意图
     const paymentIntent = await createPaymentIntent({
       amount,
+      currency: 'usd', // 明确指定使用美元
       metadata: {
         userId: user.id,
         planId: planId || '',
         planName: planName || '',
         type: 'credit_purchase',
       },
+    });
+
+    // 添加调试日志
+    console.log('🔍 支付意图创建信息:', {
+      amount: paymentIntent.amount,
+      currency: paymentIntent.currency,
+      planId,
+      planName,
+      paymentIntentId: paymentIntent.id,
     });
 
     // 将支付意图保存到数据库

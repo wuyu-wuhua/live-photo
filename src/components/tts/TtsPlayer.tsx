@@ -1,6 +1,7 @@
 'use client';
 
 import { Icon } from '@iconify/react';
+import { useTranslations } from 'next-intl';
 import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -10,6 +11,7 @@ type TtsPlayerProps = {
 };
 
 export default function TtsPlayer({ initialText = '', className = '' }: TtsPlayerProps) {
+  const t = useTranslations('tts');
   const [text, setText] = useState(initialText);
   const [voices, setVoices] = useState<Record<string, string>>({});
   const [selectedVoice, setSelectedVoice] = useState('zh-CN-XiaoxiaoNeural');
@@ -29,18 +31,18 @@ export default function TtsPlayer({ initialText = '', className = '' }: TtsPlaye
         if (data.success && data.data.voices) {
           setVoices(data.data.voices);
         } else {
-          setError('获取语音列表失败');
-          toast.error('获取语音列表失败');
+                  setError(t('getVoicesFailed'));
+        toast.error(t('getVoicesFailed'));
         }
       } catch (err) {
-        setError('获取语音列表时发生错误');
-        toast.error('获取语音列表时发生错误');
+        setError(t('getVoicesError'));
+        toast.error(t('getVoicesError'));
         console.error('获取语音列表错误:', err);
       }
     }
 
     fetchVoices();
-  }, []);
+  }, [t]);
 
   // 处理播放状态变化
   useEffect(() => {
@@ -54,8 +56,8 @@ export default function TtsPlayer({ initialText = '', className = '' }: TtsPlaye
   // 生成语音
   const handleGenerateSpeech = async () => {
     if (!text.trim()) {
-      setError('请输入要转换的文本');
-      toast.error('请输入要转换的文本');
+              setError(t('pleaseEnterText'));
+        toast.error(t('pleaseEnterText'));
       return;
     }
 
@@ -78,22 +80,22 @@ export default function TtsPlayer({ initialText = '', className = '' }: TtsPlaye
 
       if (data.success && data.data.audioUrl) {
         setAudioUrl(data.data.audioUrl);
-        toast.success('语音生成成功');
+        toast.success(t('generateSuccess'));
         // 自动播放
         if (audioRef.current) {
           audioRef.current.load();
           audioRef.current.play().catch((err) => {
             console.error('自动播放失败:', err);
-            toast.error('自动播放失败，请手动点击播放按钮');
+            toast.error(t('autoPlayFailed'));
           });
         }
       } else {
-        setError(data.error || '生成语音失败');
-        toast.error(data.error || '生成语音失败');
+                  setError(data.error || t('generateFailed'));
+          toast.error(data.error || t('generateFailed'));
       }
     } catch (err) {
-      setError('请求失败，请稍后再试');
-      toast.error('请求失败，请稍后再试');
+              setError(t('requestFailed'));
+        toast.error(t('requestFailed'));
       console.error('生成语音错误:', err);
     } finally {
       setIsLoading(false);
@@ -111,8 +113,8 @@ export default function TtsPlayer({ initialText = '', className = '' }: TtsPlaye
     } else {
       audioRef.current.play().catch((err) => {
         console.error('播放失败:', err);
-        setError('播放失败，请稍后再试');
-        toast.error('播放失败，请稍后再试');
+        setError(t('playFailed'));
+        toast.error(t('playFailed'));
       });
     }
   };
@@ -121,20 +123,20 @@ export default function TtsPlayer({ initialText = '', className = '' }: TtsPlaye
     <div className={`w-full max-w-3xl mx-auto ${className}`}>
       <div className="mb-4">
         <label htmlFor="tts-text" className="block text-lg font-medium mb-2">
-          输入文本
+                      {t('enterText')}
         </label>
         <textarea
           id="tts-text"
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[120px]"
           value={text}
           onChange={e => setText(e.target.value)}
-          placeholder="请输入要转换为语音的文本..."
+                      placeholder={t('enterTextPlaceholder')}
         />
       </div>
 
       <div className="mb-4">
         <label htmlFor="voice-select" className="block text-lg font-medium mb-2">
-          选择语音
+                      {t('selectVoice')}
         </label>
         <select
           id="voice-select"
@@ -171,13 +173,13 @@ export default function TtsPlayer({ initialText = '', className = '' }: TtsPlaye
             ? (
                 <>
                   <Icon icon="mdi:loading" className="animate-spin" />
-                  生成中...
+                  {t('generating')}
                 </>
               )
             : (
                 <>
                   <Icon icon="mdi:microphone" />
-                  生成语音
+                  {t('generateSpeech')}
                 </>
               )}
         </button>
@@ -194,13 +196,13 @@ export default function TtsPlayer({ initialText = '', className = '' }: TtsPlaye
               ? (
                   <>
                     <Icon icon="mdi:pause" />
-                    暂停
+                    {t('pause')}
                   </>
                 )
               : (
                   <>
                     <Icon icon="mdi:play" />
-                    播放
+                    {t('play')}
                   </>
                 )}
           </button>
@@ -209,9 +211,9 @@ export default function TtsPlayer({ initialText = '', className = '' }: TtsPlaye
 
       {audioUrl && (
         <audio ref={audioRef} className="hidden">
-          <track kind="captions" src="" label="字幕" />
+                        <track kind="captions" src="" label={t('captions')} />
           <source src={audioUrl} type="audio/mpeg" />
-          您的浏览器不支持音频播放
+                      {t('browserNotSupported')}
         </audio>
       )}
     </div>

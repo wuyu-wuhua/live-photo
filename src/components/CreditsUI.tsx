@@ -3,6 +3,7 @@
 import type { CreditPlan } from '@/types/database';
 import { Button, Card, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, Spinner, useDisclosure } from '@heroui/react';
 import { Gift, History, Plus, Wallet } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useCredits } from '@/hooks/useCredits';
 
@@ -10,6 +11,7 @@ import { useCredits } from '@/hooks/useCredits';
  * 用户积分和充值界面
  */
 export default function CreditsUI() {
+  const t = useTranslations();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [activeTab, setActiveTab] = useState<'buy' | 'history'>('buy');
   const { credits, loading, recentTransactions, fetchTransactions, refresh } = useCredits();
@@ -18,11 +20,11 @@ export default function CreditsUI() {
   const creditPlans: CreditPlan[] = [
     {
       id: 'basic',
-      name: '基础套餐',
-      description: '适合轻度使用的用户',
+      name: t('credits.plans.basic.name'),
+      description: t('credits.plans.basic.description'),
       credits: 100,
-      price: 19,
-      currency: 'CNY',
+      price: 9.99,
+      currency: 'USD',
       is_subscription: false,
       billing_period: null,
       stripe_price_id: 'price_basic',
@@ -32,11 +34,11 @@ export default function CreditsUI() {
     },
     {
       id: 'standard',
-      name: '标准套餐',
-      description: '适合中度使用的用户',
+      name: t('credits.plans.standard.name'),
+      description: t('credits.plans.standard.description'),
       credits: 500,
-      price: 79,
-      currency: 'CNY',
+      price: 29.99,
+      currency: 'USD',
       is_subscription: false,
       billing_period: null,
       stripe_price_id: 'price_standard',
@@ -46,11 +48,11 @@ export default function CreditsUI() {
     },
     {
       id: 'premium',
-      name: '高级套餐',
-      description: '适合重度使用的用户',
-      credits: 1200,
-      price: 159,
-      currency: 'CNY',
+      name: t('credits.plans.premium.name'),
+      description: t('credits.plans.premium.description'),
+      credits: 1000,
+      price: 49.99,
+      currency: 'USD',
       is_subscription: false,
       billing_period: null,
       stripe_price_id: 'price_premium',
@@ -60,8 +62,8 @@ export default function CreditsUI() {
     },
     {
       id: 'subscription',
-      name: '月度订阅',
-      description: '每月自动充值，更加优惠',
+      name: t('credits.plans.subscription.name'),
+      description: t('credits.plans.subscription.description'),
       credits: 1000,
       price: 99,
       currency: 'CNY',
@@ -94,28 +96,28 @@ export default function CreditsUI() {
   // 获取交易类型描述
   const getTransactionTypeLabel = (type: string) => {
     switch (type) {
-      case 'PURCHASE': return '购买积分';
-      case 'SUBSCRIPTION': return '订阅获得';
-      case 'REFERRAL': return '推荐奖励';
-      case 'BONUS': return '奖励积分';
-      case 'ADMIN_ADJUSTMENT': return '管理员调整';
-      case 'IMAGE_GENERATION': return '图片生成';
-      case 'VIDEO_GENERATION': return '视频生成';
-      case 'REFUND': return '退款';
-      case 'EXPIRATION': return '积分过期';
-      case 'PROMOTIONAL': return '促销赠送';
-      default: return '未知类型';
+      case 'PURCHASE': return t('credits.transactionTypes.purchase');
+      case 'SUBSCRIPTION': return t('credits.transactionTypes.subscription');
+      case 'REFERRAL': return t('credits.transactionTypes.referral');
+      case 'BONUS': return t('credits.transactionTypes.bonus');
+      case 'ADMIN_ADJUSTMENT': return t('credits.transactionTypes.adminAdjustment');
+      case 'IMAGE_GENERATION': return t('credits.transactionTypes.imageGeneration');
+      case 'VIDEO_GENERATION': return t('credits.transactionTypes.videoGeneration');
+      case 'REFUND': return t('credits.transactionTypes.refund');
+      case 'EXPIRATION': return t('credits.transactionTypes.expiration');
+      case 'PROMOTIONAL': return t('credits.transactionTypes.promotional');
+      default: return t('credits.transactionTypes.unknown');
     }
   };
 
   // 获取交易状态标签
   const getTransactionStatusLabel = (status: string) => {
     switch (status) {
-      case 'COMPLETED': return '已完成';
-      case 'PENDING': return '处理中';
-      case 'FAILED': return '失败';
-      case 'REFUNDED': return '已退款';
-      default: return '未知状态';
+      case 'COMPLETED': return t('credits.status.completed');
+      case 'PENDING': return t('credits.status.pending');
+      case 'FAILED': return t('credits.status.failed');
+      case 'REFUNDED': return t('credits.status.refunded');
+      default: return t('credits.status.unknown');
     }
   };
 
@@ -145,7 +147,7 @@ export default function CreditsUI() {
       >
         {credits?.balance || 0}
         {' '}
-        积分
+        {t('credits.credits')}
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size="3xl" scrollBehavior="inside">
@@ -153,7 +155,7 @@ export default function CreditsUI() {
           <ModalHeader className="flex flex-col gap-1">
             <div className="flex items-center gap-2">
               <Wallet className="w-5 h-5" />
-              <span>我的积分</span>
+              <span>{t('credits.title')}</span>
             </div>
           </ModalHeader>
 
@@ -162,7 +164,7 @@ export default function CreditsUI() {
             <Card className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white mb-6">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-2">
-                  <div className="text-sm font-medium opacity-80">当前积分余额</div>
+                  <div className="text-sm font-medium opacity-80">{t('credits.currentCredits')}</div>
                   <Button
                     size="sm"
                     color="default"
@@ -179,11 +181,11 @@ export default function CreditsUI() {
                 <div className="text-4xl font-bold mb-4">{credits?.balance || 0}</div>
                 <div className="flex justify-between text-sm">
                   <div>
-                    <div className="opacity-80 mb-1">累计获得</div>
+                    <div className="opacity-80 mb-1">{t('credits.totalEarned')}</div>
                     <div>{credits?.lifetime_earned || 0}</div>
                   </div>
                   <div>
-                    <div className="opacity-80 mb-1">累计消费</div>
+                    <div className="opacity-80 mb-1">{t('credits.totalSpent')}</div>
                     <div>{credits?.lifetime_spent || 0}</div>
                   </div>
                 </div>
@@ -200,7 +202,7 @@ export default function CreditsUI() {
                 }`}
                 onClick={() => setActiveTab('buy')}
               >
-                购买积分
+                {t('credits.buyCredits')}
               </button>
               <button
                 className={`px-4 py-2 font-medium text-sm ${
@@ -210,80 +212,55 @@ export default function CreditsUI() {
                 }`}
                 onClick={() => setActiveTab('history')}
               >
-                交易记录
+                {t('credits.transactionHistory')}
               </button>
             </div>
 
-            {/* 购买积分内容 */}
+            {/* 购买积分 */}
             {activeTab === 'buy' && (
               <div className="space-y-4">
-                <h3 className="text-lg font-medium">选择套餐</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {creditPlans.map(plan => (
+                  {creditPlans.map((plan) => (
                     <Card key={plan.id} className="p-4">
-                      <div className="flex flex-col h-full">
-                        <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <h4 className="font-bold text-lg">{plan.name}</h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">{plan.description}</p>
-                          </div>
-                          {plan.is_subscription && (
-                            <div className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs px-2 py-1 rounded-full">
-                              订阅
-                            </div>
-                          )}
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h3 className="font-semibold text-lg">{plan.name}</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">{plan.description}</p>
                         </div>
-                        <div className="flex items-baseline mt-2 mb-4">
-                          <span className="text-2xl font-bold">
-                            ¥
-                            {plan.price}
+                        {plan.is_subscription && (
+                          <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                            {t('credits.subscription')}
                           </span>
-                          {plan.is_subscription && <span className="text-sm ml-1">/月</span>}
-                        </div>
-                        <div className="flex items-center mb-4 mt-auto">
-                          <Gift className="w-5 h-5 text-green-500 mr-2" />
-                          <span className="font-semibold">
-                            {plan.credits}
-                            {' '}
-                            积分
-                          </span>
-                        </div>
-                        <Button
-                          color="primary"
-                          className="w-full"
-                          onClick={() => handlePayment(plan)}
-                        >
-                          {plan.is_subscription ? '订阅' : '购买'}
-                        </Button>
+                        )}
                       </div>
+                      <div className="mb-4">
+                        <div className="text-2xl font-bold">
+                          ${plan.price}
+                          {plan.is_subscription && <span className="text-sm font-normal text-gray-500">/{t('credits.month')}</span>}
+                        </div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                          {plan.credits} {t('credits.credits')}
+                        </div>
+                      </div>
+                      <Button
+                        color="primary"
+                        variant="flat"
+                        className="w-full"
+                        onClick={() => handlePayment(plan)}
+                      >
+                        {plan.is_subscription ? t('credits.subscribe') : t('credits.purchase')}
+                      </Button>
                     </Card>
                   ))}
-                </div>
-
-                <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                  <h4 className="font-medium mb-2">自定义金额</h4>
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    <Input
-                      type="number"
-                      label="积分数量"
-                      placeholder="输入需要购买的积分数量"
-                      min={10}
-                      step={10}
-                      className="flex-1"
-                    />
-                    <Button color="primary" startContent={<Plus size={16} />}>
-                      充值
-                    </Button>
-                  </div>
                 </div>
               </div>
             )}
 
-            {/* 交易历史内容 */}
+            {/* 交易历史 */}
             {activeTab === 'history' && (
-              <div>
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-medium">最近交易</h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-medium">{t('credits.recentTransactions')}</h3>
                   <Select
                     className="w-40"
                     size="sm"
@@ -291,75 +268,41 @@ export default function CreditsUI() {
                     placeholder="所有类型"
                   >
                     {/* SelectItem组件将根据实际的组件库类型定义调整 */}
-                    <SelectItem key="all">所有类型</SelectItem>
-                    <SelectItem key="in">收入</SelectItem>
-                    <SelectItem key="out">支出</SelectItem>
+                    <SelectItem key="all">{t('credits.allTypes')}</SelectItem>
+                    <SelectItem key="in">{t('credits.income')}</SelectItem>
+                    <SelectItem key="out">{t('credits.expense')}</SelectItem>
                   </Select>
                 </div>
-
-                <div className="space-y-3">
-                  {recentTransactions.length > 0
-                    ? (
-                        recentTransactions.map(transaction => (
-                          <div
-                            key={transaction.id}
-                            className="p-3 border border-gray-200 dark:border-gray-800 rounded-lg"
-                          >
-                            <div className="flex justify-between items-start mb-2">
-                              <div>
-                                <div className="font-medium">{getTransactionTypeLabel(transaction.type)}</div>
-                                <div className="text-xs text-gray-600 dark:text-gray-400">
-                                  {formatTime(transaction.created_at)}
-                                </div>
-                              </div>
-                              <div className={getAmountClass(transaction.amount)}>
-                                {transaction.amount > 0 ? '+' : ''}
-                                {transaction.amount}
-                              </div>
-                            </div>
-                            {transaction.description && (
-                              <div className="text-sm text-gray-700 dark:text-gray-300 mb-1">
-                                {transaction.description}
-                              </div>
-                            )}
-                            <div className="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
-                              <div>
-                                余额:
-                                {transaction.balance_after}
-                              </div>
-                              <div className="px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded">
-                                {getTransactionStatusLabel(transaction.status)}
-                              </div>
-                            </div>
+                
+                <div className="space-y-2">
+                  {recentTransactions.map((transaction) => (
+                    <Card key={transaction.id} className="p-4">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <div className="font-medium">{getTransactionTypeLabel(transaction.type)}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400">
+                            {formatTime(transaction.created_at)}
                           </div>
-                        ))
-                      )
-                    : (
-                        <div className="text-center py-6 text-gray-500 dark:text-gray-400">
-                          <History className="w-10 h-10 mx-auto mb-2 opacity-50" />
-                          <p>暂无交易记录</p>
                         </div>
-                      )}
+                        <div className="text-right">
+                          <div className={getAmountClass(transaction.amount)}>
+                            {transaction.amount > 0 ? '+' : ''}{transaction.amount}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {getTransactionStatusLabel(transaction.status)}
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
                 </div>
-
-                {recentTransactions.length > 0 && (
-                  <div className="mt-4 text-center">
-                    <Button
-                      variant="flat"
-                      color="primary"
-                      onClick={() => fetchTransactions(1, 20)}
-                    >
-                      查看更多
-                    </Button>
-                  </div>
-                )}
               </div>
             )}
           </ModalBody>
 
           <ModalFooter>
-            <Button color="primary" variant="light" onClick={onClose}>
-              关闭
+            <Button color="danger" variant="light" onPress={onClose}>
+              {t('common.close')}
             </Button>
           </ModalFooter>
         </ModalContent>

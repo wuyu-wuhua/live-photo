@@ -307,6 +307,7 @@ export type Database = {
           emoji_request_id: string | null;
           emoji_result_url: string | null;
           emoji_status: Database['public']['Enums']['task_status'] | null;
+          video_result_url: string | null;
         };
         Insert: {
           created_at?: string;
@@ -331,6 +332,7 @@ export type Database = {
           emoji_request_id?: string | null;
           emoji_result_url?: string | null;
           emoji_status?: Database['public']['Enums']['task_status'] | null;
+          video_result_url?: string | null;
         };
         Update: {
           created_at?: string;
@@ -355,6 +357,7 @@ export type Database = {
           emoji_request_id?: string | null;
           emoji_result_url?: string | null;
           emoji_status?: Database['public']['Enums']['task_status'] | null;
+          video_result_url?: string | null;
         };
         Relationships: [];
       };

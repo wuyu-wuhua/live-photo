@@ -11,13 +11,15 @@ import { ParameterPanel } from '@/components/generate/ParameterPanel';
 import { ResultPanel } from '@/components/generate/ResultPanel';
 import StripePayment from '@/components/payments/StripePayment';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
-import { FEATURE_COSTS, useCredits } from '@/hooks/useCredits';
+import { useCredits } from '@/hooks/useCredits';
 import { useUser } from '@/hooks/useUser';
+import { use302AIColorize } from '@/hooks/use302AIColorize';
 
 export default function GeneratePage() {
   const t = useTranslations();
   const { user } = useUser();
   const { credits, loading: creditsLoading, refresh: refreshCredits } = useCredits();
+  const { colorizeImage, isLoading: isColorizing, result: colorizedImage, error: colorizeError, reset: resetColorize } = use302AIColorize();
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [baseImageFiles, setBaseImageFiles] = useState<FormUploadFile[]>([]);
@@ -52,7 +54,7 @@ export default function GeneratePage() {
       name: t('common.plans.basic.name'),
       description: t('common.plans.basic.description'),
       credits: 100,
-      price: 19,
+      price: 9.99,
       popular: false,
       stripe_price_id: 'price_basic',
     },
@@ -61,7 +63,7 @@ export default function GeneratePage() {
       name: t('common.plans.standard.name'),
       description: t('common.plans.standard.description'),
       credits: 500,
-      price: 79,
+      price: 29.99,
       popular: true,
       stripe_price_id: 'price_standard',
     },
@@ -69,8 +71,8 @@ export default function GeneratePage() {
       id: 'premium',
       name: t('common.plans.premium.name'),
       description: t('common.plans.premium.description'),
-      credits: 1200,
-      price: 159,
+      credits: 1000,
+      price: 49.99,
       popular: false,
       stripe_price_id: 'price_premium',
     },
@@ -102,7 +104,8 @@ export default function GeneratePage() {
       return false;
     }
 
-    const requiredCredits = FEATURE_COSTS[formData.function as keyof typeof FEATURE_COSTS] || 5;
+    // 固定需要1积分
+    const requiredCredits = 1;
     const currentCredits = credits?.balance || 0;
 
     if (currentCredits < requiredCredits) {
@@ -125,7 +128,7 @@ export default function GeneratePage() {
 
   // 支付成功处理
   const handlePaymentSuccess = (credits: number) => {
-    toast.success(t('generate.paymentSuccess').replace('{credits}', credits.toString()));
+    toast.success(t('generate.paymentSuccess', { credits }));
     // 刷新积分数据
     refreshCredits();
     setShowStripePayment(false);
@@ -144,6 +147,41 @@ export default function GeneratePage() {
       return;
     }
 
+    // 如果是上色功能，使用302.AI接口
+    if (formData.function === 'colorization' && baseImageFiles.length > 0) {
+      try {
+        const imageFile = baseImageFiles[0]?.file;
+        if (!imageFile) {
+          toast.error(t('generate.noImageSelected'));
+          return;
+        }
+
+        // 保存原图URL用于对比显示
+        setOriginalImageUrl(URL.createObjectURL(imageFile));
+
+        // 调用302.AI上色接口
+        const taskId = await colorizeImage({ image: imageFile });
+        
+        // 保存 task_id 用于视频生成
+        if (taskId) {
+          setImageEditResultId(taskId);
+        }
+
+        // 刷新积分数据
+        refreshCredits();
+
+        // 显示成功提示
+        toast.success(t('generate.generateSuccess'));
+        
+        // 重置其他状态
+        setGeneratedImages([]);
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : t('generate.generateFailed'));
+      }
+      return;
+    }
+
+    // 其他功能使用原来的DashScope接口
     setIsGenerating(true);
     setGeneratedImages([]);
 
@@ -278,6 +316,9 @@ export default function GeneratePage() {
                 originalImageUrl={originalImageUrl}
                 onGenerate={handleGenerate}
                 imageEditResultId={imageEditResultId}
+                colorizedImage={colorizedImage}
+                isColorizing={isColorizing}
+                colorizeError={colorizeError}
               />
             </div>
           </ResizablePanel>
@@ -318,12 +359,12 @@ export default function GeneratePage() {
                       </div>
                       <div className="text-right">
                         <p className="text-lg font-bold bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-400 dark:to-gray-200 bg-clip-text text-transparent">
-                          ¥
+                          $
                           {plan.price}
                         </p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                          ¥
-                          {(plan.price / plan.credits * 100).toFixed(1)}
+                          $
+                          {(plan.price / plan.credits * 100).toFixed(2)}
                           /100
                           {t('credits')}
                         </p>

@@ -1,7 +1,7 @@
 {
   "app": {
-    "title": "Supabase Next.js 模板",
-    "description": "使用 Next.js 和 Supabase 构建的强大模板"
+    "title": "AI图像编辑器",
+    "description": "使用先进的AI技术为您的照片添加真实色彩"
   },
   "nav": {
     "home": "首页",
@@ -15,13 +15,13 @@
     "signup": "注册",
     "logout": "退出",
     "pricing": "价格",
-    "profile": "个人中心"
+    "profile": "个人中心",
+    "gallery": "画廊"
   },
   "Navigation": {
     "home": "首页",
     "generate": "AI生成",
     "gallery": "我的作品",
-    "auth": "登录",
     "pathnames": "路径",
     "todos": "待办事项",
     "database": "数据库",
@@ -32,6 +32,156 @@
   "NotFound": {
     "description": "抱歉，您访问的页面不存在。",
     "backToHome": "返回首页"
+  },
+
+
+  "footer": {
+    "brandName": "LivePhoto",
+    "brandDescription": "您的一站式科技商店。以有竞争力的价格提供优质产品。",
+    "shop": "商店",
+    "allProducts": "所有产品",
+    "audio": "音频",
+    "wearables": "可穿戴设备",
+    "smartphones": "智能手机",
+    "laptops": "笔记本电脑",
+    "company": "公司",
+    "aboutUs": "关于我们",
+    "careers": "职业",
+    "blog": "博客",
+    "press": "新闻",
+    "contact": "联系我们",
+    "support": "支持",
+    "helpCenter": "帮助中心",
+    "shippingReturns": "配送与退货",
+    "refundPolicy": "退款政策",
+    "privacyPolicy": "隐私政策",
+    "termsOfService": "服务条款",
+    "copyright": "© {year} {name}。保留所有权利。",
+    "privacy": "隐私",
+    "terms": "条款",
+    "cookies": "Cookie",
+    "sitemap": "网站地图"
+  },
+  "tts": {
+    "enterText": "输入文本",
+    "enterTextPlaceholder": "请输入要转换为语音的文本...",
+    "selectVoice": "选择语音",
+    "generateSpeech": "生成语音",
+    "generating": "生成中...",
+    "pause": "暂停",
+    "play": "播放",
+    "captions": "字幕",
+    "browserNotSupported": "您的浏览器不支持音频播放",
+    "getVoicesFailed": "获取语音列表失败",
+    "getVoicesError": "获取语音列表时发生错误",
+    "pleaseEnterText": "请输入要转换的文本",
+    "generateSuccess": "语音生成成功",
+    "autoPlayFailed": "自动播放失败，请手动点击播放按钮",
+    "generateFailed": "生成语音失败",
+    "requestFailed": "请求失败，请稍后再试",
+    "playFailed": "播放失败，请稍后再试"
+  },
+  "credits": {
+    "title": "我的积分",
+    "credits": "积分",
+    "currentCredits": "当前积分余额",
+    "totalEarned": "累计获得",
+    "totalSpent": "累计消费",
+    "buyCredits": "购买积分",
+    "transactionHistory": "交易记录",
+    "recentTransactions": "最近交易",
+    "refresh": "刷新",
+    "subscription": "订阅",
+    "month": "月",
+    "subscribe": "订阅",
+    "purchase": "购买",
+    "allTypes": "所有类型",
+    "income": "收入",
+    "expense": "支出",
+    "plans": {
+      "basic": {
+        "name": "基础套餐",
+        "description": "适合轻度使用的用户"
+      },
+      "standard": {
+        "name": "标准套餐",
+        "description": "适合中度使用的用户"
+      },
+      "premium": {
+        "name": "高级套餐",
+        "description": "适合重度使用的用户"
+      },
+      "subscription": {
+        "name": "月度订阅",
+        "description": "每月自动充值，更加优惠"
+      }
+    },
+    "transactionTypes": {
+      "purchase": "购买积分",
+      "subscription": "订阅获得",
+      "referral": "推荐奖励",
+      "bonus": "奖励积分",
+      "adminAdjustment": "管理员调整",
+      "imageGeneration": "图片生成",
+      "videoGeneration": "视频生成",
+      "refund": "退款",
+      "expiration": "积分过期",
+      "promotional": "促销赠送",
+      "unknown": "未知类型"
+    },
+    "status": {
+      "completed": "已完成",
+      "pending": "处理中",
+      "failed": "失败",
+      "refunded": "已退款",
+      "unknown": "未知状态"
+    }
+  },
+  "upload": {
+    "userIdRequired": "用户ID是必需的",
+    "fileUploadFailed": "文件上传失败",
+    "uploadDataError": "上传返回数据异常，请重试",
+    "saveRecordFailed": "保存上传记录失败",
+    "uploadFailed": "上传失败",
+    "loadFailed": "加载失败",
+    "dragHere": "拖拽到此",
+    "uploadImage": "上传图片",
+    "failed": "上传失败",
+    "retry": "重试"
+  },
+  "testimonials": {
+    "title": "值得信赖的制作伙伴：",
+    "subtitle": "不要只听我们说 - 听听我们满意客户的声音",
+    "testimonial1": {
+      "name": "James",
+      "handle": "@james",
+      "text": "我无法用言语表达。这太棒了。我爱它。"
+    },
+    "testimonial2": {
+      "name": "Jane",
+      "handle": "@jane",
+      "text": "喜欢这个结果！强烈推荐。我的家人对这次转变感到惊讶。"
+    },
+    "testimonial3": {
+      "name": "Tom",
+      "handle": "@tom",
+      "text": "这太不可思议了！AI上色让我的老家庭照片重获新生。"
+    },
+    "testimonial4": {
+      "name": "John",
+      "handle": "@john",
+      "text": "我无法用言语表达。这太棒了。我爱它。颜色如此鲜艳，细节令人难以置信！"
+    },
+    "testimonial5": {
+      "name": "Jack",
+      "handle": "@jack",
+      "text": "我从未见过这样的东西。太棒了。我爱它。"
+    },
+    "testimonial6": {
+      "name": "Jill",
+      "handle": "@jill",
+      "text": "我不知道该说什么。我无语了。"
+    }
   },
   "generate": {
     "title": "AI 图像编辑",
@@ -44,7 +194,8 @@
     "topUp": "充值",
     "recommended": "推荐",
     "paymentSuccess": "支付成功！您已获得{credits}积分",
-    "generateSuccess": "生成成功"
+    "generateSuccess": "生成成功",
+    "noImageSelected": "请选择要处理的图片"
   },
   "generatePage": {
     "title": "AI 图像生成",
@@ -54,30 +205,46 @@
   },
   "resultPanel": {
     "title": "生成结果",
-    "subtitle": "AI 图像生成结果展示",
-    "generating": "AI 正在创作中...",
-    "generatingDescription": "请稍候，我们正在为您生成精美的图像",
+    "subtitle": "AI 智能生成的高质量图片",
+    "generating": "正在生成中...",
+    "generatingDescription": "AI 正在为您生成精美的图片，请稍候",
+    "colorizing": "正在上色中...",
+    "colorizingDescription": "AI 正在为您的黑白照片上色，请稍候",
+    "noResults": "暂无生成结果",
+    "downloadImage": "下载图片",
+    "downloadImageFailed": "下载图片失败",
+    "videoNotStarted": "视频未开始生成",
+    "downloadVideo": "下载视频",
+    "downloadVideoFailed": "下载视频失败",
+    "close": "关闭",
+    "pleaseUploadImage": "请先上传图片",
+    "generateVideoTitle": "让图片动起来",
+    "configureParameters": "配置生成参数",
+    "videoPreview": "视频预览",
+    "cancel": "取消",
+    "startGenerate": "开始生成",
+    "referenceImage": "参考图片",
+    "video": "视频",
+    "generatingVideo": "正在生成视频...",
+    "regenerate": "重新生成",
+    "credits": "积分",
     "originalImage": "原图",
+    "colorizedResult": "上色结果",
     "generatedResult": "生成结果",
     "download": "下载",
-    "makeItMove": "让它动起来",
-    "allResults": "所有生成结果",
+    "makePhotoMove": "让照片动起来",
+    "allResults": "所有结果",
     "result": "结果",
     "waitingGenerate": "等待生成",
-    "waitingDescription": "配置参数后点击右上角的生成按钮开始创作",
+    "waitingDescription": "请稍候，AI 正在处理您的请求",
+    "videoResult": "视频结果",
     "loginRequired": "请先登录",
-    "generateFailed": "生成失败",
-    "generateVideoError": "视频生成失败",
-    "generateVideoTitle": "生成{type}",
-    "emojiVideo": "表情视频",
-    "lipsyncVideo": "对口型视频",
-    "configureParameters": "配置生成参数",
-    "cancel": "取消",
-    "startGenerate": "开始生成"
+    "missingImageId": "缺少图片ID",
+    "videoTaskCreated": "视频生成任务已创建"
   },
   "parameterPanel": {
     "referenceImage": "参考图片",
-    "referenceImageDescription": "支持JPG、PNG、WEBP等格式，大小不超过10MB",
+    "referenceImageDescription": "支持JPG、PNG、WEBP等格式，大小不超过10MB。图片尺寸会自动调整到512-4096像素之间",
     "editFunction": "编辑功能",
     "selectEditFunction": "选择图像编辑功能",
     "maskImageUrl": "蒙版图像URL",
@@ -105,6 +272,8 @@
     "isSketch": "输入图像为线稿图像",
     "generating": "生成中...",
     "startGenerate": "开始生成",
+    "colorizing": "上色中...",
+    "colorizeImage": "图片上色",
     "uploadFailed": "上传失败:",
     "tooltipUploadImage": "请上传参考图片",
     "tooltipEnterPrompt": "请输入提示词",
@@ -137,6 +306,10 @@
       "control_cartoon": {
         "label": "卡通控制",
         "description": "将图像转换为卡通风格"
+      },
+      "remove_watermark": {
+        "label": "去除水印",
+        "description": "去除图像中的文字水印"
       }
     },
     "defaultPrompts": {
@@ -153,6 +326,73 @@
       "blackAndWhite": "黑白艺术",
       "sepia": "棕褐色调",
       "custom": "自定义"
+    },
+    "presets": {
+      "custom": {
+        "label": "自定义",
+        "description": "手动输入提示词"
+      },
+      "natural": {
+        "label": "自然色彩",
+        "description": "真实自然的色彩还原",
+        "value": "自然真实的色彩，保持原始光影效果"
+      },
+      "warm": {
+        "label": "温暖色调",
+        "description": "温馨舒适的暖色调",
+        "value": "温暖色调，增强黄色和橙色，营造温馨氛围"
+      },
+      "cool": {
+        "label": "冷色调",
+        "description": "清凉优雅的冷色调",
+        "value": "冷色调为主，增强蓝色和青色，营造清凉氛围"
+      },
+      "vintage": {
+        "label": "复古怀旧",
+        "description": "怀旧的复古色彩风格",
+        "value": "复古怀旧色彩风格，略带泛黄的色调"
+      },
+      "vibrant": {
+        "label": "鲜艳活力",
+        "description": "充满活力的鲜艳色彩",
+        "value": "鲜艳饱和的色彩，高对比度，充满活力"
+      },
+      "soft": {
+        "label": "柔和优雅",
+        "description": "艺术清新的优雅色调",
+        "value": "柔和优雅的色彩，低饱和度，艺术清新"
+      },
+      "cinematic": {
+        "label": "电影级调色",
+        "description": "专业的电影级色彩效果",
+        "value": "电影级调色，专业的色彩分级效果"
+      },
+      "japanese": {
+        "label": "日系清新",
+        "description": "明亮通透的日系风格",
+        "value": "日系清新色彩，明亮通透，略带过曝效果"
+      },
+      "korean": {
+        "label": "韩系浪漫",
+        "description": "柔和浪漫的韩系色调",
+        "value": "韩系色彩风格，粉色调，柔和浪漫"
+      },
+      "historical": {
+        "label": "历史还原",
+        "description": "还原历史照片的真实色彩",
+        "value": "黑白照片上色，还原历史照片的真实色彩"
+      }
+    },
+    "errors": {
+      "fileSizeExceeded": "文件大小超出限制（{size}MB）",
+      "unsupportedFileType": "不支持的文件类型：{type}",
+      "invalidImageDimensions": "图片尺寸不符合要求。图片的宽度和高度必须在 512-4096 像素之间。当前尺寸：{width} x {height} 像素。系统将自动调整图片尺寸。",
+      "imageLoadError": "无法读取图片尺寸，请检查图片文件是否损坏",
+      "unsupportedFileType": "文件格式不支持。支持JPEG、PNG、WebP",
+      "fileSizeExceeded": "文件过大，最大{size}MB"
+    },
+    "notices": {
+      "imageResized": "图片尺寸已自动调整到符合要求的范围"
     }
   },
   "common": {
@@ -280,7 +520,7 @@
     "volume": "音量",
     "i18n_test": "国际化测试",
     "heroTitle": "让您的照片焕发真实色彩",
-    "heroDescription": "上传您的照片，选择独特的滤镜，瞬间将您的时刻转化为充满活力的逼真色彩。",
+    "heroDescription": "上传您的照片，选择独特的滤镜，瞬间将您的时刻转化为充满活力的逼真色彩。每次生成消耗1积分。",
     "colorizePhoto": "为照片上色",
     "rating": "280万+用户 | 4.9星评分",
     "sampleText": "↓ 或点击示例 ↓",
@@ -289,25 +529,95 @@
     "worldsBestAI": "世界最佳黑白照片上色AI",
     "inALeagueOfItsOwn": "独一无二的存在",
     "experienceTheDifference": "体验与众不同",
-    "light": "明亮"
+    "light": "明亮",
+    "dark": "暗色",
+    "appName": "AI图像编辑器",
+    "home": "首页",
+    "pricing": "价格",
+    "about": "关于我们",
+    "login": "登录",
+    "signup": "注册",
+    "logout": "退出",
+    "profile": "个人中心",
+    "gallery": "画廊",
+    "settings": "设置",
+    "help": "帮助",
+    "feedback": "反馈",
+    "before": "之前",
+    "after": "之后",
+    "uploadImage": "上传图片",
+    "uploadImageDescription": "支持JPG、PNG、WEBP等格式，大小不超过10MB",
+    "uploadImagePlaceholder": "请上传参考图片",
+    "uploadImageButton": "上传图片",
+    "uploadImageButtonDescription": "支持JPG、PNG、WEBP等格式，大小不超过10MB",
+    "trustedByPhotographers": "值得信赖的制作伙伴：",
+    "newGenerationAI": "新一代AI图像编辑器",
+    "yearsOfResearch": "年研究",
+    "newFeatures": "新功能",
+    "newFeaturesDescription": "我们不断更新和改进我们的产品，以提供最好的用户体验。",
+    "millionPhotosColorized": "百万照片上色",
+    "millionsOfUsers": "百万用户",
+    "getStartNow": "开始使用",
+    "flowers": "花卉",
+    "interior": "室内",
+    "history": "历史",
+    "clothes": "服装",
+    "newPalette": "新调色板",
+    "filtersLabel": "21+ 色彩滤镜",
+    "backToHome": "返回首页",
+    "plans": {
+      "basic": {
+        "name": "基础套餐",
+        "description": "适合轻度使用的用户"
+      },
+      "standard": {
+        "name": "标准套餐",
+        "description": "适合中度使用的用户"
+      },
+      "premium": {
+        "name": "高级套餐",
+        "description": "适合重度使用的用户"
+      }
+    },
+    "insufficientCredits": "积分不足",
+    "notEnoughCredits": "您的积分不足以生成视频",
+    "currentBalance": "当前余额",
+    "requiredCredits": "所需积分",
+    "difference": "差额",
+    "credits": "积分",
+    "goToRecharge": "去充值",
+    "cancel": "取消",
+    "generating": "生成中...",
+    "startGenerate": "开始生成",
+    "close": "关闭",
+    "completed": "已完成",
+    "experienceTheDifference": "体验差异"
   },
   "pricing": {
-    "title": "价格套餐",
-    "subtitle": "选择适合您的套餐",
+    "title": "简单透明的价格",
+    "subtitle": "选择适合您需求的完美套餐。每次生成图片消耗1积分，生成视频消耗10积分，高分辨率且无水印。",
     "monthly": "月付",
     "yearly": "年付",
+    "month": "月",
+    "billedAnnually": "年付",
+    "mostPopular": "最受欢迎",
     "free": {
       "name": "免费版",
-      "description": "适合初次尝试",
+      "description": "使用基础功能开始上色",
       "price": {
         "value": "¥0",
-        "period": "/月"
+        "period": "/月",
+        "monthly": "¥0",
+        "yearly": "¥0"
       },
       "features": {
         "credits": "5个免费积分",
         "watermark": "结果带水印",
+        "watermarked": "带水印图像",
         "resolution": "标准分辨率",
-        "support": "社区支持"
+        "support": "社区支持",
+        "previews": "无限色彩预览",
+        "filters": "使用所有色彩滤镜"
       },
       "cta": "开始使用"
     },
@@ -364,6 +674,23 @@
       "cta": "订阅",
       "savingLabel": "节省28%"
     },
+    "pro": {
+      "name": "专业版",
+      "description": "适合爱好者和创作者",
+      "price": {
+        "monthly": "¥39",
+        "yearly": "¥468"
+      },
+      "features": {
+        "credits": "每年480积分",
+        "highRes": "高分辨率（最大5000x5000像素）",
+        "noWatermark": "无水印",
+        "rollover": "未用完积分可结转",
+        "filters": "使用所有色彩滤镜"
+      },
+      "cta": "订阅",
+      "savingLabel": "节省28%"
+    },
     "onetime": {
       "name": "一次性",
       "description": "一次性购买积分包",
@@ -383,7 +710,7 @@
     "faq": {
       "title": "常见问题",
       "question1": "什么是积分？",
-      "answer1": "一个积分允许您为一张照片上色，高分辨率且无水印。您可以将积分用于任何支持的图像尺寸，最大可达5000x5000像素。",
+      "answer1": "1个积分允许您生成一张图片，10个积分允许您生成一个视频，高分辨率且无水印。您可以将积分用于任何支持的图像尺寸，最大可达5000x5000像素。",
       "question2": "积分会过期吗？",
       "answer2": "对于订阅计划，未使用的积分可结转，最多为您每月分配量的五倍。只要您的订阅处于活动状态，积分就一直有效。对于一次性购买，积分有效期为2年。",
       "question3": "我可以随时取消订阅吗？",
@@ -409,7 +736,7 @@
     "currentCredits": "当前积分",
     "pricePerCredit": "单价",
     "credits": "积分",
-    "paymentSuccess": "支付成功！您已获得",
+    "paymentSuccess": "支付成功！您已获得{credits}积分",
     "pleaseLogin": "请先登录"
   },
   "gallery": {
@@ -430,7 +757,21 @@
     "taskId": "任务ID",
     "unknownFunction": "未知功能",
     "generateEmojiVideo": "生成表情视频",
-    "generateLipsyncVideo": "生成对口型视频",
+    "generateLipsyncVideo": "图片动起来",
+    "deleteConfirm": "确认删除",
+    "deleteConfirmMessage": "确定要删除这个作品吗？删除后将无法恢复。",
+    "batchDeleteConfirm": "确认批量删除",
+    "batchDeleteConfirmMessage": "确定要删除选中的 {count} 个项目吗？删除后将无法恢复。",
+    "selectMode": "多选模式",
+    "selectAll": "全选",
+    "deselectAll": "取消全选",
+    "cancelSelectItem": "取消选择项目",
+    "batchDelete": "批量删除",
+    "pleaseSelectItems": "请先选择要删除的项目",
+    "deleteSuccess": "成功删除 {count} 个项目",
+    "deleteFailed": "删除失败",
+    "deleteFailedWithCount": "删除失败 {count} 个项目",
+    "deleteNetworkError": "删除失败: 网络错误",
     "close": "关闭",
     "retry": "重试",
     "myGeneratedContent": "我的生成内容",
@@ -443,12 +784,14 @@
     "lipsyncCompleted": "对口型完成",
     "lipsyncGenerating": "对口型生成中",
     "lipsyncFailed": "对口型失败",
-    "generateVideoTitle": "生成{type}视频",
+    "generateVideoTitle": "让图片动起来",
     "emoji": "表情",
     "lipsync": "对口型",
     "configureAndGenerate": "配置参数并生成视频",
     "generating": "生成中...",
     "startGenerate": "开始生成",
+    "cancel": "取消",
+    "delete": "删除",
     "filters": {
       "allStatus": "所有状态",
       "succeeded": "已完成",
@@ -468,7 +811,10 @@
       "failed": "失败",
       "running": "生成中",
       "unknown": "未知",
-      "pending": "已创建"
+      "pending": "已创建",
+      "originalImage": "原始图片",
+      "cancel": "取消",
+      "delete": "删除"
     },
     "messages": {
       "generatingEmoji": "正在生成表情视频...",
@@ -482,7 +828,7 @@
     },
     "videoGeneration": {
       "generateEmoji": "生成表情视频",
-      "generateLiveportrait": "生成对口型视频",
+      "generateLiveportrait": "图片动起来",
       "configureParameters": "配置参数并生成视频",
       "cancel": "取消",
       "startGeneration": "开始生成",
@@ -509,12 +855,34 @@
     },
     "pagination": {
       "total": "共 {total} 条记录，第 {current} / {totalPages} 页"
+    },
+    "errorLoadingResults": "加载结果失败",
+    "noResults": "暂无结果",
+    "noResultsDescription": "暂无结果描述",
+    "emojiReady": "表情就绪",
+    "emojiGenerating": "表情生成中",
+    "emojiFailed": "表情失败",
+    "emojiAvailable": "表情可用",
+    "lipsyncReady": "对口型就绪",
+    "lipsyncAvailable": "对口型生成中",
+    "video": "视频",
+    "video_synthesis": "视频生成",
+    "gifResult": "GIF结果",
+    "colorization": "上色",
+    "image": "图片",
+    "videoResult": {
+      "linkCopied": "视频链接已复制到剪贴板",
+      "generatingEmoji": "正在生成表情视频...",
+      "generatingLipsync": "正在生成对口型视频...",
+      "shareTitle": "AI生成的视频",
+      "shareText": "看看我生成的AI视频"
     }
   },
   "profile": {
     "title": "个人中心",
     "subtitle": "管理您的账户信息和偏好设置",
-    "credits": {
+    "credits": "积分",
+    "creditsDetails": {
       "title": "我的积分",
       "current": "当前积分",
       "history": "积分历史",
@@ -589,7 +957,9 @@
       "videoGeneration": "视频生成",
       "refund": "退款",
       "expiration": "积分过期",
-      "promotional": "促销赠送"
+      "promotional": "促销赠送",
+      "IMAGE_GENERATION": "图片生成",
+      "BONUS": "奖励积分"
     },
     "features": {
       "unknown": "未知功能",
@@ -607,15 +977,362 @@
       "emojiAnimation": "表情动画"
     },
     "payment": {
-      "createFailed": "创建支付失败，请重试",
-      "formNotLoaded": "支付表单未正确加载",
+      "securePayment": "安全支付",
+      "cardInfo": "卡信息",
+
+      "processing": "支付处理中...",
+      "pay": "立即支付",
       "failed": "支付失败",
-      "processingFailed": "支付处理失败，请重试",
-      "cardInfo": "银行卡信息",
-      "processing": "处理中...",
-      "pay": "支付",
-      "securePayment": "安全支付"
+      "createFailed": "创建支付失败",
+      "formNotLoaded": "支付表单未加载",
+      "processingFailed": "支付处理失败",
+      "cancel": "取消"
+    },
+    "viewAll": "查看全部",
+    "usage": "使用",
+    "download": "下载",
+    "loadMore": "加载更多",
+    "noData": "暂无数据"
+  },
+  "credits": "积分",
+  "privacy": {
+    "title": "隐私政策",
+    "intro": "我们重视您的隐私。本政策说明我们如何收集、使用和保护您的信息。",
+    "lastUpdated": "最后更新时间",
+    "lastUpdatedDate": "2025年1月15日",
+    "dataCollectionTitle": "信息收集",
+    "dataCollection": "我们仅收集您在注册、使用AI图像/视频处理服务、支付等环节主动提供的信息。",
+    "personalInfoTitle": "个人信息",
+    "personalInfo1": "注册信息：邮箱、用户名、密码等",
+    "personalInfo2": "支付信息：信用卡信息、账单地址等",
+    "personalInfo3": "使用数据：上传的图片/视频、处理记录等",
+    "personalInfo4": "设备信息：IP地址、浏览器类型、操作系统等",
+    "usageDataTitle": "使用数据",
+    "usageData1": "服务使用记录和偏好设置",
+    "usageData2": "错误日志和技术支持信息",
+    "usageData3": "用户反馈和评价信息",
+    "dataUsageTitle": "信息使用",
+    "dataUsage": "您的信息仅用于账号管理、服务改进、订单处理和法定要求。",
+    "serviceProvisionTitle": "服务提供",
+    "serviceProvision": "处理您的AI图像/视频生成请求，提供技术支持",
+    "improvementTitle": "服务改进",
+    "improvement": "分析使用模式，优化AI算法和服务质量",
+    "communicationTitle": "沟通联系",
+    "communication": "发送服务通知、更新信息和营销信息",
+    "legalTitle": "法律要求",
+    "legal": "遵守法律法规，处理争议和投诉",
+    "dataProtectionTitle": "信息保护",
+    "dataProtection": "我们采用行业标准的安全措施保护您的数据，不会将您的信息出售给第三方。",
+    "securityMeasuresTitle": "安全措施",
+    "securityMeasures1": "数据加密传输和存储",
+    "securityMeasures2": "访问控制和身份验证",
+    "securityMeasures3": "定期安全审计和漏洞修复",
+    "securityMeasures4": "员工保密培训和数据保护协议",
+    "dataRetentionTitle": "数据保留",
+    "dataRetention": "我们仅在提供服务所需的时间内保留您的数据，最长不超过3年。",
+    "thirdPartyTitle": "第三方服务",
+    "thirdParty": "我们可能使用第三方服务提供商来支持我们的服务运营。",
+    "aiServicesTitle": "AI服务提供商",
+    "aiServices": "我们与阿里云、腾讯云等AI服务提供商合作，您的数据可能通过这些平台处理。",
+    "paymentServicesTitle": "支付服务提供商",
+    "paymentServices": "我们使用Stripe、支付宝等支付服务处理您的付款信息。",
+    "userRightsTitle": "用户权利",
+    "userRights": "根据相关法律法规，您享有以下权利：",
+    "accessTitle": "访问权",
+    "access": "您有权了解我们收集、使用您个人信息的情况",
+    "correctionTitle": "更正权",
+    "correction": "您有权要求我们更正或补充您的个人信息",
+    "deletionTitle": "删除权",
+    "deletion": "您有权要求我们删除您的个人信息",
+    "portabilityTitle": "可携带权",
+    "portability": "您有权获取您的个人信息副本",
+    "contactTitle": "联系我们",
+    "contact": "如有隐私相关问题，请通过以下方式联系我们：",
+    "contactMethodsTitle": "联系方式",
+    "email": "邮箱",
+    "phone": "电话",
+    "address": "地址",
+    "companyAddress": "北京市朝阳区科技园区创新大厦A座1001室"
+  },
+  "contact": {
+    "needHelp": "需要帮助？",
+    "contactDescription": "如果您在使用过程中遇到任何问题，请通过邮箱或电话联系我们，我们会尽快为您解决！",
+    "customerServiceEmail": "客服邮箱",
+    "emailAddress": "q9425916@gmail.com",
+    "clickToSendEmail": "点击即可发送邮件",
+    "customerServicePhone": "客服电话",
+    "phoneNumber": "+023 6287 2229",
+    "clickToCall": "点击即可拨打电话",
+    "responseTime": "我们通常在24小时内回复"
+  },
+  "about": {
+    "title": "关于 SmartPhoto",
+    "subtitle": "SmartPhoto 是一个由AI驱动的图像编辑和动画平台，旨在帮助您使用最先进的技术让照片栩栩如生。",
+    "tryItNow": "立即试用",
+    "viewPricing": "查看价格",
+    "mission": {
+      "title": "我们的使命",
+      "description": "在 SmartPhoto，我们的使命是让先进的图像编辑技术民主化。我们相信每个人都应该能够使用强大的AI工具来转换他们的照片，并以新的和令人兴奋的方式保存记忆。通过将前沿研究与直观设计相结合，我们正在让专业级的图像增强技术为所有人所用。"
+    },
+    "features": {
+      "title": "我们的功能",
+      "aiColorization": {
+        "title": "AI图像上色",
+        "description": "使用我们先进的AI技术将黑白照片转换为生动、逼真的彩色图像。"
+      },
+      "smartEditing": {
+        "title": "智能编辑",
+        "description": "使用AI驱动的工具编辑和增强您的图像，包括去除水印、扩展图像等功能。"
+      },
+      "videoAnimation": {
+        "title": "视频动画",
+        "description": "通过面部动画和唇语同步技术让您的静态图像栩栩如生。"
+      },
+      "emojiEffects": {
+        "title": "表情效果",
+        "description": "使用我们专门的AI技术从您的肖像创建有趣的表情动画。"
+      }
+    },
+    "team": {
+      "title": "认识我们的团队",
+      "alex": {
+        "name": "Alex Thompson",
+        "role": "创始人兼CEO",
+        "bio": "计算机视觉专家，在AI和机器学习领域拥有10多年经验。"
+      },
+      "sophia": {
+        "name": "Sophia Chen",
+        "role": "首席技术官",
+        "bio": "计算机科学博士，专攻深度学习和神经网络。"
+      },
+      "marcus": {
+        "name": "Marcus Johnson",
+        "role": "首席AI工程师",
+        "bio": "前OpenAI研究科学家，在生成模型方面拥有专业知识。"
+      },
+      "emma": {
+        "name": "Emma Rodriguez",
+        "role": "产品经理",
+        "bio": "热衷于为先进技术创造直观的用户体验。"
+      }
+    },
+    "faq": {
+      "title": "常见问题",
+      "colorization": {
+        "question": "AI上色是如何工作的？",
+        "answer": "我们的AI使用在数百万张彩色图像上训练的深度学习算法，智能分析黑白照片并预测逼真的颜色。它识别物体、光照条件和上下文信息，为图像的不同部分应用适当的颜色。"
+      },
+      "formats": {
+        "question": "支持哪些图像格式？",
+        "answer": "我们支持JPG、PNG和WEBP格式。图像大小应小于10MB以获得最佳处理效果。"
+      },
+      "credits": {
+        "question": "不同功能需要多少积分？",
+        "answer": "图像上色每张图片需要6个积分。视频动画根据复杂程度需要12-15个积分。您可以在我们的价格页面查看确切的积分成本。"
+      },
+      "refund": {
+        "question": "如果我不满意可以退款吗？",
+        "answer": "如果您对结果不满意，请联系我们的支持团队。我们为失败的生成提供退款，我们的团队将根据具体情况审查其他请求。"
+      },
+      "privacy": {
+        "question": "我的数据是如何处理的？",
+        "answer": "我们优先考虑您的隐私。您的图像会被安全处理，未经明确同意不会用于训练我们的AI。更多详情请参阅我们的隐私政策。"
+      }
+    },
+    "contact": {
+      "title": "联系我们",
+      "getInTouch": {
+        "title": "联系我们",
+        "description": "有疑问或反馈？我们很乐意听取您的意见。我们的团队随时准备协助您解决有关我们服务的任何问题。"
+      },
+      "businessHours": {
+        "title": "营业时间",
+        "weekdays": "周一至周五：",
+        "weekdaysTime": "上午9:00 - 下午6:00 PST",
+        "saturday": "周六：",
+        "saturdayTime": "上午10:00 - 下午4:00 PST",
+        "sunday": "周日：",
+        "sundayTime": "休息",
+        "supportNote": "支持工单24/7监控，我们的团队会尽快回复，即使在营业时间之外。"
+      }
+    },
+    "cta": {
+      "title": "准备好转换您的照片了吗？",
+      "description": "加入数千名满意的用户，他们已经在使用SmartPhoto让照片栩栩如生。",
+      "button": "立即开始"
     }
   },
-  "credits": "积分"
+  "auth": {
+    "signInTitle": "登录账户",
+    "signInSubtitle": "使用您的社交账户登录",
+    "signUpTitle": "创建账户",
+    "signUpSubtitle": "使用您的社交账户注册",
+    "github": "GitHub",
+    "google": "Google",
+    "orContinueWith": "或继续使用",
+    "dontHaveAccount": "还没有账户？",
+    "signUpLink": "立即注册",
+    "alreadyHaveAccount": "已有账户？",
+    "signInLink": "立即登录",
+    "githubSignInFailed": "GitHub登录失败",
+    "googleSignInFailed": "Google登录失败",
+    "githubSignUpFailed": "GitHub注册失败",
+    "googleSignUpFailed": "Google注册失败"
+  },
+  "terms": {
+    "title": "服务条款",
+    "intro": "欢迎使用LivePhoto。请仔细阅读以下条款，使用本平台即表示您同意这些条款。",
+    "lastUpdated": "最后更新时间",
+    "lastUpdatedDate": "2025年1月15日",
+    "acceptanceTitle": "条款接受",
+    "acceptance": "通过注册账户或使用我们的服务，您确认已阅读、理解并同意遵守本服务条款。",
+    "ageRequirementTitle": "年龄要求",
+    "ageRequirement": "您必须年满18岁或在其居住地具有完全民事行为能力才能使用我们的服务。",
+    "serviceDescriptionTitle": "服务描述",
+    "serviceDescription": "LivePhoto提供基于人工智能的图像和视频处理服务，包括但不限于：",
+    "aiImageTitle": "AI图像生成",
+    "aiImage": "使用先进的AI技术生成、编辑和增强图像",
+    "aiVideoTitle": "AI视频生成",
+    "aiVideo": "创建表情视频、对口型视频等AI驱动的视频内容",
+    "colorizationTitle": "图像上色",
+    "colorization": "为黑白图像添加自然、真实的色彩",
+    "ttsTitle": "文本转语音",
+    "tts": "将文本转换为自然流畅的语音内容",
+    "userObligationsTitle": "用户义务",
+    "userObligations": "您需保证上传的图片/视频内容合法，不侵犯他人权益，不用于违法用途。",
+    "contentRequirementsTitle": "内容要求",
+    "contentRequirements1": "上传的内容必须为原创或您拥有合法使用权的作品",
+    "contentRequirements2": "不得上传包含暴力、色情、歧视等违法或不当内容",
+    "contentRequirements3": "不得侵犯他人知识产权、肖像权等合法权益",
+    "contentRequirements4": "不得用于欺诈、骚扰或其他非法活动",
+    "accountSecurityTitle": "账户安全",
+    "accountSecurity1": "妥善保管您的账户信息和登录凭据",
+    "accountSecurity2": "不得将账户借给他人使用或进行账户交易",
+    "accountSecurity3": "发现账户异常时及时联系我们",
+    "serviceUsageTitle": "服务使用",
+    "serviceUsage": "本平台仅供个人/商业合法用途。AI生成内容仅供参考，平台不对内容准确性负责。",
+    "personalUseTitle": "个人使用",
+    "personalUse": "可用于个人创作、学习、娱乐等非商业用途",
+    "commercialUseTitle": "商业使用",
+    "commercialUse": "可用于商业项目，但需遵守相关法律法规",
+    "prohibitedUseTitle": "禁止用途",
+    "prohibitedUse": "不得用于制作虚假信息、深度伪造等违法用途",
+    "aiAccuracyTitle": "AI准确性",
+    "aiAccuracy": "AI生成内容可能存在不准确之处，请谨慎使用并自行验证",
+    "paymentTitle": "支付和积分",
+    "payment": "我们采用积分制收费模式，用户需要购买积分来使用我们的服务。",
+    "creditSystemTitle": "积分系统",
+    "creditSystem": "不同服务消耗不同数量的积分，积分购买后不可退款",
+    "refundPolicyTitle": "退款政策",
+    "refundPolicy": "除法律规定的特殊情况外，已购买的积分不予退款",
+    "subscriptionTitle": "订阅服务",
+    "subscription": "我们提供月度订阅服务，可享受更多积分和优惠",
+    "priceChangesTitle": "价格变更",
+    "priceChanges": "我们保留调整服务价格的权利，变更前会提前通知用户",
+    "intellectualPropertyTitle": "知识产权",
+    "intellectualProperty": "关于内容所有权和平台权利的说明。",
+    "userContentTitle": "用户内容",
+    "userContent": "您保留对上传内容的所有权，但授予我们处理和使用这些内容的许可",
+    "platformRightsTitle": "平台权利",
+    "platformRights": "我们拥有平台技术、算法和服务的知识产权",
+    "limitationTitle": "责任限制",
+    "limitation": "因不可抗力或第三方原因导致的服务中断、数据丢失，平台不承担责任。",
+    "serviceInterruptionTitle": "服务中断",
+    "serviceInterruption": "因系统维护、技术故障等原因导致的服务中断",
+    "dataLossTitle": "数据丢失",
+    "dataLoss": "因技术故障、黑客攻击等原因导致的数据丢失或损坏",
+    "thirdPartyTitle": "第三方责任",
+    "thirdParty": "因第三方服务提供商问题导致的服务问题",
+    "terminationTitle": "服务终止",
+    "termination": "关于账户和服务终止的条款。",
+    "userTerminationTitle": "用户终止",
+    "userTermination": "您可以随时停止使用我们的服务并删除账户",
+    "platformTerminationTitle": "平台终止",
+    "platformTermination": "我们可能因违反条款或其他原因终止您的账户",
+    "contactTitle": "联系我们",
+    "contact": "如有条款相关问题，请通过以下方式联系我们：",
+    "contactMethodsTitle": "联系方式",
+    "email": "邮箱",
+    "phone": "电话",
+    "address": "地址",
+    "companyAddress": "北京市朝阳区科技园区创新大厦A座1001室"
+  },
+  "refundPolicy": {
+    "backToHome": "返回首页",
+    "title": "退款政策",
+    "subtitle": "我们致力于为您提供满意的服务体验，以下是我们的退款政策详情",
+    "overview": {
+      "title": "政策概述",
+      "description": "我们理解您可能对购买的服务不满意，因此我们制定了合理的退款政策。在特定条件下，我们提供退款服务以确保您的权益。",
+      "timeLimit": "退款时限",
+      "conditions": "退款条件",
+      "conditionsDesc": "符合条件可退款",
+      "refundMethod": "退款方式",
+      "refundMethodDesc": "原路退回"
+    },
+    "conditions": {
+      "title": "退款条件",
+      "eligible": {
+        "title": "符合退款条件",
+        "description": "购买后7天内，且积分未被使用的情况下，可以申请退款。"
+      },
+      "unused": {
+        "title": "积分未使用",
+        "description": "购买的积分必须完全未使用，已消费的积分部分不予退款。"
+      },
+      "technical": {
+        "title": "技术问题",
+        "description": "因我们的技术故障导致服务无法正常使用，可以申请全额退款。"
+      }
+    },
+    "nonRefundable": {
+      "title": "不退款情况",
+      "usedCredits": {
+        "title": "已使用的积分",
+        "description": "已消费的积分部分不予退款，包括图像生成、视频制作等服务消耗的积分。"
+      },
+      "subscription": {
+        "title": "订阅服务",
+        "description": "月度订阅服务在订阅期间内不予退款，但可以取消自动续费。"
+      },
+      "promotional": {
+        "title": "促销活动",
+        "description": "通过促销活动获得的积分或优惠价格购买的服务，通常不予退款。"
+      },
+      "violation": {
+        "title": "违反服务条款",
+        "description": "如果用户违反我们的服务条款或使用政策，将不予退款。"
+      }
+    },
+    "process": {
+      "title": "退款流程",
+      "step1": {
+        "title": "提交申请",
+        "description": "通过邮件联系我们，说明退款原因和订单信息。"
+      },
+      "step2": {
+        "title": "审核确认",
+        "description": "我们将在24小时内审核您的退款申请，确认是否符合退款条件。"
+      },
+      "step3": {
+        "title": "处理退款",
+        "description": "审核通过后，我们将在3-5个工作日内处理退款。"
+      },
+      "step4": {
+        "title": "退款到账",
+        "description": "退款将原路返回到您的支付账户，具体到账时间取决于支付平台。"
+      }
+    },
+    "contact": {
+      "title": "联系我们",
+      "email": {
+        "title": "邮件联系",
+        "description": "如需申请退款，请发送邮件至以下地址："
+      },
+      "response": {
+        "title": "响应时间",
+        "description": "我们承诺在24小时内回复您的退款申请，并在3-5个工作日内完成退款处理。"
+      }
+    }
+  }
 }

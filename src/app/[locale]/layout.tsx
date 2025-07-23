@@ -8,6 +8,7 @@ import Navbar from '@/components/Navigation';
 import { Toaster } from '@/components/ui/sonner';
 import { fontSans } from '@/config/fonts';
 import { RootProvider } from '@/provider/RootProvider';
+import { ContactModalProvider } from '@/components/FloatingContactModal';
 import '@/styles/globals.css';
 
 type Props = {
@@ -35,11 +36,13 @@ export default async function RootLayout({ children }: Props) {
       >
         <NextIntlClientProvider messages={messages}>
           <RootProvider>
-            <div className="relative flex min-h-screen flex-col">
-              <Navbar />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
+            <ContactModalProvider>
+              <div className="relative flex min-h-screen flex-col">
+                <Navbar />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
+            </ContactModalProvider>
             <Toaster />
           </RootProvider>
         </NextIntlClientProvider>

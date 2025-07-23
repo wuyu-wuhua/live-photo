@@ -33,7 +33,7 @@ export function calculateCreditCost(
  */
 export async function consumeCreditsForImageEdit(
   userId: string,
-  editFunction: ImageEditFunction,
+  editFunction: ImageEditFunction | 'video_synthesis',
   creditCost: number,
   referenceId?: string,
 ): Promise<{ success: boolean; message?: string; transactionId?: string }> {

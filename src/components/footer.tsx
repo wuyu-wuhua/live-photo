@@ -3,11 +3,16 @@
 import { Button } from '@heroui/react';
 import { Facebook, Github, Instagram, Linkedin, Twitter } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 import { SEO_CONFIG } from '@/app';
 import { cn } from '@/lib/cn';
+import { useContactModal } from './FloatingContactModal';
 
 export function Footer({ className }: { className?: string }) {
+  const t = useTranslations();
+  const { openContactModal } = useContactModal();
+
   return (
     <footer className={cn('border-t border-divider bg-background', className)}>
       <div
@@ -35,8 +40,7 @@ export function Footer({ className }: { className?: string }) {
               </span>
             </Link>
             <p className="text-default-500 text-sm">
-              Your one-stop shop for everything tech. Premium products at
-              competitive prices.
+              {t('footer.brandDescription')}
             </p>
             <div className="flex space-x-4">
               <Button
@@ -82,7 +86,7 @@ export function Footer({ className }: { className?: string }) {
             </div>
           </div>
           <div>
-            <h3 className="mb-4 text-sm font-semibold">Shop</h3>
+            <h3 className="mb-4 text-sm font-semibold">{t('footer.shop')}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
@@ -90,9 +94,9 @@ export function Footer({ className }: { className?: string }) {
                     text-default-500
                     hover:text-foreground
                   `}
-                  href="/products"
+                  href="#"
                 >
-                  All Products
+                  {t('footer.allProducts')}
                 </Link>
               </li>
               <li>
@@ -101,9 +105,9 @@ export function Footer({ className }: { className?: string }) {
                     text-default-500
                     hover:text-foreground
                   `}
-                  href="/products?category=audio"
+                  href="#"
                 >
-                  Audio
+                  {t('footer.audio')}
                 </Link>
               </li>
               <li>
@@ -112,9 +116,9 @@ export function Footer({ className }: { className?: string }) {
                     text-default-500
                     hover:text-foreground
                   `}
-                  href="/products?category=wearables"
+                  href="#"
                 >
-                  Wearables
+                  {t('footer.wearables')}
                 </Link>
               </li>
               <li>
@@ -123,9 +127,9 @@ export function Footer({ className }: { className?: string }) {
                     text-default-500
                     hover:text-foreground
                   `}
-                  href="/products?category=smartphones"
+                  href="#"
                 >
-                  Smartphones
+                  {t('footer.smartphones')}
                 </Link>
               </li>
               <li>
@@ -134,15 +138,15 @@ export function Footer({ className }: { className?: string }) {
                     text-default-500
                     hover:text-foreground
                   `}
-                  href="/products?category=laptops"
+                  href="#"
                 >
-                  Laptops
+                  {t('footer.laptops')}
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className="mb-4 text-sm font-semibold">Company</h3>
+            <h3 className="mb-4 text-sm font-semibold">{t('footer.company')}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
@@ -152,7 +156,7 @@ export function Footer({ className }: { className?: string }) {
                   `}
                   href="/about"
                 >
-                  About Us
+                  {t('footer.aboutUs')}
                 </Link>
               </li>
               <li>
@@ -161,9 +165,9 @@ export function Footer({ className }: { className?: string }) {
                     text-default-500
                     hover:text-foreground
                   `}
-                  href="/careers"
+                  href="#"
                 >
-                  Careers
+                  {t('footer.careers')}
                 </Link>
               </li>
               <li>
@@ -172,9 +176,9 @@ export function Footer({ className }: { className?: string }) {
                     text-default-500
                     hover:text-foreground
                   `}
-                  href="/blog"
+                  href="#"
                 >
-                  Blog
+                  {t('footer.blog')}
                 </Link>
               </li>
               <li>
@@ -183,26 +187,27 @@ export function Footer({ className }: { className?: string }) {
                     text-default-500
                     hover:text-foreground
                   `}
-                  href="/press"
+                  href="#"
                 >
-                  Press
+                  {t('footer.press')}
                 </Link>
               </li>
               <li>
-                <Link
+                <button
                   className={`
                     text-default-500
                     hover:text-foreground
+                    text-left
                   `}
-                  href="/contact"
+                  onClick={openContactModal}
                 >
-                  Contact
-                </Link>
+                  {t('footer.contact')}
+                </button>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className="mb-4 text-sm font-semibold">Support</h3>
+            <h3 className="mb-4 text-sm font-semibold">{t('footer.support')}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
@@ -210,9 +215,9 @@ export function Footer({ className }: { className?: string }) {
                     text-default-500
                     hover:text-foreground
                   `}
-                  href="/help"
+                  href="#"
                 >
-                  Help Center
+                  {t('footer.helpCenter')}
                 </Link>
               </li>
               <li>
@@ -221,9 +226,9 @@ export function Footer({ className }: { className?: string }) {
                     text-default-500
                     hover:text-foreground
                   `}
-                  href="/shipping"
+                  href="#"
                 >
-                  Shipping & Returns
+                  {t('footer.shippingReturns')}
                 </Link>
               </li>
               <li>
@@ -232,9 +237,9 @@ export function Footer({ className }: { className?: string }) {
                     text-default-500
                     hover:text-foreground
                   `}
-                  href="/warranty"
+                  href="/refund-policy"
                 >
-                  Warranty
+                  {t('footer.refundPolicy')}
                 </Link>
               </li>
               <li>
@@ -245,7 +250,7 @@ export function Footer({ className }: { className?: string }) {
                   `}
                   href="/privacy"
                 >
-                  Privacy Policy
+                  {t('footer.privacyPolicy')}
                 </Link>
               </li>
               <li>
@@ -256,7 +261,7 @@ export function Footer({ className }: { className?: string }) {
                   `}
                   href="/terms"
                 >
-                  Terms of Service
+                  {t('footer.termsOfService')}
                 </Link>
               </li>
             </ul>
@@ -270,26 +275,20 @@ export function Footer({ className }: { className?: string }) {
             `}
           >
             <p className="text-default-500 text-sm">
-              &copy;
-              {' '}
-              {new Date().getFullYear()}
-              {' '}
-              {SEO_CONFIG.name}
-              . All rights
-              reserved.
+              {t('footer.copyright', { year: new Date().getFullYear(), name: SEO_CONFIG.name })}
             </p>
             <div className="text-default-500 flex items-center gap-4 text-sm">
               <Link className="hover:text-foreground" href="/privacy">
-                Privacy
+                {t('footer.privacy')}
               </Link>
               <Link className="hover:text-foreground" href="/terms">
-                Terms
+                {t('footer.terms')}
               </Link>
-              <Link className="hover:text-foreground" href="/cookies">
-                Cookies
+              <Link className="hover:text-foreground" href="#">
+                {t('footer.cookies')}
               </Link>
-              <Link className="hover:text-foreground" href="/sitemap">
-                Sitemap
+              <Link className="hover:text-foreground" href="#">
+                {t('footer.sitemap')}
               </Link>
             </div>
           </div>

@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { TestimonialsSection } from '../testimonials/testimonials-with-marquee';
+
 // 用户评价数据
 const testimonials = [
   {
@@ -11,7 +12,7 @@ const testimonials = [
       handle: '@john',
       name: 'John',
     },
-    text: 'I\'m at a loss for words. This is amazing. I love it. The color is so vivid and the details are incredible!',
+    text: 'testimonials.testimonial4.text',
   },
   {
     author: {
@@ -20,7 +21,7 @@ const testimonials = [
       handle: '@jack',
       name: 'Jack',
     },
-    text: 'I\'ve never seen anything like this before. It\'s amazing. I love it.',
+    text: 'testimonials.testimonial5.text',
   },
   {
     author: {
@@ -29,7 +30,7 @@ const testimonials = [
       handle: '@jill',
       name: 'Jill',
     },
-    text: 'I don\'t know what to say. I\'m speechless.',
+    text: 'testimonials.testimonial6.text',
   },
   {
     author: {
@@ -39,7 +40,7 @@ const testimonials = [
       image: '/assets/image/user-work-2.png',
       name: 'James',
     },
-    text: 'I\'m at a loss for words. This is amazing. I love it.',
+    text: 'testimonials.testimonial1.text',
   },
   {
     author: {
@@ -48,7 +49,7 @@ const testimonials = [
       handle: '@jane',
       name: 'Jane',
     },
-    text: 'Love the results! Highly recommended. My family is amazed by the transformation.',
+    text: 'testimonials.testimonial2.text',
   },
   {
     author: {
@@ -57,7 +58,7 @@ const testimonials = [
       image: '/assets/image/user-work-3.png',
       name: 'Tom',
     },
-    text: 'This is incredible! The AI colorization brought my old family photos back to life.',
+    text: 'testimonials.testimonial3.text',
   },
   // {
   //   author: {
@@ -80,15 +81,21 @@ const testimonials = [
 export function HomeTestimonialsSection() {
   const t = useTranslations();
 
+  // 将翻译键转换为实际文本
+  const translatedTestimonials = testimonials.map(testimonial => ({
+    ...testimonial,
+    text: t(testimonial.text)
+  }));
+
   return (
     <section className="bg-muted/50">
       {/* First Row - Scrolling Left */}
       <div className="relative overflow-hidden">
         <TestimonialsSection
           className="py-0"
-          description="Don't just take our word for it - hear from our satisfied customers"
-          testimonials={testimonials}
-          title={t('common.trustedByPhotographers')}
+          description={t('testimonials.subtitle')}
+          testimonials={translatedTestimonials}
+          title={t('testimonials.title')}
         />
       </div>
     </section>

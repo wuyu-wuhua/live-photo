@@ -15,6 +15,7 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { getStripe } from '@/lib/stripe';
 
@@ -35,7 +36,18 @@ type StripePaymentProps = {
   onSuccess: (credits: number) => void;
 };
 
-const CARD_ELEMENT_OPTIONS = {
+
+
+function CheckoutForm({ plan, onSuccess, onClose }: Omit<StripePaymentProps, 'isOpen'>) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const t = useTranslations('profile');
+
+  // 动态配置 CardElement 选项
+  const cardElementOptions = {
   style: {
     base: {
       'fontSize': '16px',
@@ -49,14 +61,6 @@ const CARD_ELEMENT_OPTIONS = {
     },
   },
 };
-
-function CheckoutForm({ plan, onSuccess, onClose }: Omit<StripePaymentProps, 'isOpen'>) {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const t = useTranslations('profile');
 
   // 创建支付意图
   useEffect(() => {
@@ -171,7 +175,7 @@ function CheckoutForm({ plan, onSuccess, onClose }: Omit<StripePaymentProps, 'is
             {plan.credits}
           </span>
           <span className="text-xl font-bold text-primary">
-            ¥
+            $
             {plan.price}
           </span>
         </div>
@@ -184,7 +188,7 @@ function CheckoutForm({ plan, onSuccess, onClose }: Omit<StripePaymentProps, 'is
             {t('payment.cardInfo')}
           </label>
           <div className="p-3 border border-default-200 rounded-lg">
-            <CardElement options={CARD_ELEMENT_OPTIONS} />
+            <CardElement options={cardElementOptions} />
           </div>
         </div>
 
@@ -203,7 +207,7 @@ function CheckoutForm({ plan, onSuccess, onClose }: Omit<StripePaymentProps, 'is
           className="flex-1"
           disabled={isLoading}
         >
-          Cancel
+          {t('payment.cancel')}
         </Button>
         <Button
           type="submit"
@@ -219,7 +223,7 @@ function CheckoutForm({ plan, onSuccess, onClose }: Omit<StripePaymentProps, 'is
                 </>
               )
             : (
-                `${t('payment.pay')} ¥${plan.price}`
+                `${t('payment.pay')} $${plan.price}`
               )}
         </Button>
       </div>
@@ -228,13 +232,20 @@ function CheckoutForm({ plan, onSuccess, onClose }: Omit<StripePaymentProps, 'is
 }
 
 export default function StripePayment({ plan, isOpen, onClose, onSuccess }: StripePaymentProps) {
-  const [stripePromise] = useState(() => getStripe());
+  const t = useTranslations();
+  const params = useParams();
+  const locale = params.locale as string;
+  
+  const [stripePromise] = useState(() => {
+    // 根据当前语言环境设置 Stripe 语言
+    return getStripe(locale === 'zh' ? 'zh' : 'en');
+  });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
       <ModalContent>
         <ModalHeader>
-          <h3 className="text-xl font-semibold">{useTranslations('profile')('payment.securePayment')}</h3>
+          <h3 className="text-xl font-semibold">{t('profile.payment.securePayment')}</h3>
         </ModalHeader>
         <ModalBody>
           <Elements stripe={stripePromise}>

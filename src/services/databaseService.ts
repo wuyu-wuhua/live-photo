@@ -221,6 +221,11 @@ export class ImageEditService {
         query = query.eq('status', params.filters.status);
       }
 
+      // 类型过滤
+      if (params?.filters?.result_type) {
+        query = query.eq('result_type', params.filters.result_type);
+      }
+
       // 排序
       if (params?.sortBy) {
         query = query.order(params.sortBy, { ascending: params.sortOrder === 'asc' });

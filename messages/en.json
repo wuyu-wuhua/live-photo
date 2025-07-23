@@ -1,7 +1,7 @@
 {
   "app": {
-    "title": "Supabase Next.js Template",
-    "description": "A robust template built with Next.js and Supabase"
+    "title": "AI Image Editor",
+    "description": "Add realistic colors to your photos with advanced AI technology"
   },
   "nav": {
     "home": "Home",
@@ -29,6 +29,186 @@
     "about": "About Us",
     "pricing": "Pricing"
   },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signInTitle": "Sign In",
+    "signUpTitle": "Sign Up",
+    "signInSubtitle": "Enter your credentials to access your account",
+    "signUpSubtitle": "Create your account to get started",
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Enter your password again",
+    "forgotPassword": "Forgot password?",
+    "signInButton": "Sign in",
+    "signUpButton": "Sign up",
+    "orContinueWith": "OR CONTINUE WITH",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "signUpLink": "Sign up",
+    "signInLink": "Sign in",
+    "github": "GitHub",
+    "google": "Google",
+    "continueWithGitHub": "Continue with GitHub",
+    "continueWithGoogle": "Continue with Google",
+    "githubSignUpFailed": "GitHub registration failed, please try again",
+    "googleSignUpFailed": "Google registration failed, please try again",
+    "invalidCredentials": "Invalid email or password",
+    "githubSignInFailed": "Failed to sign in with GitHub",
+    "googleSignInFailed": "Failed to sign in with Google",
+    "signingIn": "Signing in..."
+  },
+  "footer": {
+    "brandName": "LivePhoto",
+    "brandDescription": "Your one-stop shop for everything tech. Premium products at competitive prices.",
+    "shop": "Shop",
+    "allProducts": "All Products",
+    "audio": "Audio",
+    "wearables": "Wearables",
+    "smartphones": "Smartphones",
+    "laptops": "Laptops",
+    "company": "Company",
+    "aboutUs": "About Us",
+    "careers": "Careers",
+    "blog": "Blog",
+    "press": "Press",
+    "contact": "Contact",
+    "support": "Support",
+    "helpCenter": "Help Center",
+    "shippingReturns": "Shipping & Returns",
+    "refundPolicy": "Refund Policy",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "copyright": "© {year} {name}. All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "cookies": "Cookies",
+    "sitemap": "Sitemap"
+  },
+  "tts": {
+    "enterText": "Enter Text",
+    "enterTextPlaceholder": "Please enter text to convert to speech...",
+    "selectVoice": "Select Voice",
+    "generateSpeech": "Generate Speech",
+    "generating": "Generating...",
+    "pause": "Pause",
+    "play": "Play",
+    "captions": "Captions",
+    "browserNotSupported": "Your browser does not support audio playback",
+    "getVoicesFailed": "Failed to get voice list",
+    "getVoicesError": "Error occurred while getting voice list",
+    "pleaseEnterText": "Please enter text to convert",
+    "generateSuccess": "Speech generation successful",
+    "autoPlayFailed": "Auto-play failed, please click play button manually",
+    "generateFailed": "Speech generation failed",
+    "requestFailed": "Request failed, please try again later",
+    "playFailed": "Playback failed, please try again later"
+  },
+  "credits": {
+    "title": "My Credits",
+    "credits": "Credits",
+    "currentCredits": "Current Credit Balance",
+    "totalEarned": "Total Earned",
+    "totalSpent": "Total Spent",
+    "buyCredits": "Buy Credits",
+    "transactionHistory": "Transaction History",
+    "recentTransactions": "Recent Transactions",
+    "refresh": "Refresh",
+    "subscription": "Subscription",
+    "month": "Month",
+    "subscribe": "Subscribe",
+    "purchase": "Purchase",
+    "allTypes": "All Types",
+    "income": "Income",
+    "expense": "Expense",
+    "plans": {
+      "basic": {
+        "name": "Basic Plan",
+        "description": "Suitable for light users"
+      },
+      "standard": {
+        "name": "Standard Plan",
+        "description": "Suitable for moderate users"
+      },
+      "premium": {
+        "name": "Premium Plan",
+        "description": "Suitable for heavy users"
+      },
+      "subscription": {
+        "name": "Monthly Subscription",
+        "description": "Auto-recharge monthly, more cost-effective"
+      }
+    },
+    "transactionTypes": {
+      "purchase": "Purchase Credits",
+      "subscription": "Subscription Earned",
+      "referral": "Referral Bonus",
+      "bonus": "Bonus Credits",
+      "adminAdjustment": "Admin Adjustment",
+      "imageGeneration": "Image Generation",
+      "videoGeneration": "Video Generation",
+      "refund": "Refund",
+      "expiration": "Credits Expired",
+      "promotional": "Promotional Gift",
+      "unknown": "Unknown Type"
+    },
+    "status": {
+      "completed": "Completed",
+      "pending": "Processing",
+      "failed": "Failed",
+      "refunded": "Refunded",
+      "unknown": "Unknown Status"
+    }
+  },
+  "upload": {
+    "userIdRequired": "User ID is required",
+    "fileUploadFailed": "File upload failed",
+    "uploadDataError": "Upload returned data error, please try again",
+    "saveRecordFailed": "Failed to save upload record",
+    "uploadFailed": "Upload failed",
+    "loadFailed": "Load failed",
+    "dragHere": "Drag here",
+    "uploadImage": "Upload Image",
+    "failed": "Upload failed",
+    "retry": "Retry"
+  },
+  "testimonials": {
+    "title": "Trusted in productions for:",
+    "subtitle": "Don't just take our word for it - hear from our satisfied customers",
+    "testimonial1": {
+      "name": "James",
+      "handle": "@james",
+      "text": "I'm at a loss for words. This is amazing. I love it."
+    },
+    "testimonial2": {
+      "name": "Jane",
+      "handle": "@jane",
+      "text": "Love the results! Highly recommended. My family is amazed by the transformation."
+    },
+    "testimonial3": {
+      "name": "Tom",
+      "handle": "@tom",
+      "text": "This is incredible! The AI colorization brought my old family photos back to life."
+    },
+    "testimonial4": {
+      "name": "John",
+      "handle": "@john",
+      "text": "I'm at a loss for words. This is amazing. I love it. The color is so vivid and the details are incredible!"
+    },
+    "testimonial5": {
+      "name": "Jack",
+      "handle": "@jack",
+      "text": "I've never seen anything like this before. It's amazing. I love it."
+    },
+    "testimonial6": {
+      "name": "Jill",
+      "handle": "@jill",
+      "text": "I don't know what to say. I'm speechless."
+    }
+  },
   "generate": {
     "title": "AI Image Editing",
     "subtitle": "Intelligent Image Processing and Generation Platform",
@@ -40,7 +220,8 @@
     "topUp": "Top Up",
     "recommended": "Recommended",
     "paymentSuccess": "Payment successful! You have received {credits} credits",
-    "generateSuccess": "Generate Success"
+    "generateSuccess": "Generate Success",
+    "noImageSelected": "Please select an image to process"
   },
   "generatePage": {
     "title": "AI Image Generation",
@@ -50,30 +231,46 @@
   },
   "resultPanel": {
     "title": "Generation Results",
-    "subtitle": "AI image generation results display",
-    "generating": "AI is creating...",
-    "generatingDescription": "Please wait, we are generating beautiful images for you",
+    "subtitle": "AI-generated high-quality images",
+    "generating": "Generating...",
+    "generatingDescription": "AI is generating beautiful images for you, please wait",
+    "colorizing": "Colorizing...",
+    "colorizingDescription": "AI is adding natural colors to your black and white photo, please wait",
+    "noResults": "No generation results yet",
+    "downloadImage": "Download Image",
+    "downloadImageFailed": "Failed to download image",
+    "videoNotStarted": "Video generation not started",
+    "downloadVideo": "Download Video",
+    "downloadVideoFailed": "Failed to download video",
+    "close": "Close",
+    "pleaseUploadImage": "Please upload an image first",
+    "generateVideoTitle": "Make the image move",
+    "configureParameters": "Configure generation parameters",
+    "videoPreview": "Video Preview",
+    "cancel": "Cancel",
+    "startGenerate": "Start Generate",
+    "referenceImage": "Reference Image",
+    "video": "Video",
+    "generatingVideo": "Generating video...",
+    "regenerate": "Regenerate",
+    "credits": "Credits",
     "originalImage": "Original Image",
+    "colorizedResult": "Colorized Result",
     "generatedResult": "Generated Result",
     "download": "Download",
-    "makeItMove": "Make It Move",
+    "makePhotoMove": "Make Photo Move",
     "allResults": "All Results",
     "result": "Result",
     "waitingGenerate": "Waiting for Generation",
-    "waitingDescription": "Configure parameters and click the generate button in the top right to start creating",
+    "waitingDescription": "Please wait, AI is processing your request",
+    "videoResult": "Video Result",
     "loginRequired": "Please login first",
-    "generateFailed": "Generation failed",
-    "generateVideoError": "Video generation failed",
-    "generateVideoTitle": "Generate {type}",
-    "emojiVideo": "Emoji Video",
-    "lipsyncVideo": "Lipsync Video",
-    "configureParameters": "Configure generation parameters",
-    "cancel": "Cancel",
-    "startGenerate": "Start Generation"
+    "missingImageId": "Missing image ID",
+    "videoTaskCreated": "Video generation task created"
   },
   "parameterPanel": {
     "referenceImage": "Reference Image",
-    "referenceImageDescription": "Supports JPG, PNG, WEBP formats, max size 10MB",
+    "referenceImageDescription": "Supports JPG, PNG, WEBP formats, max size 10MB. Image dimensions will be automatically adjusted to 512-4096 pixels",
     "editFunction": "Edit Function",
     "selectEditFunction": "Select image editing function",
     "maskImageUrl": "Mask Image URL",
@@ -101,6 +298,8 @@
     "isSketch": "Input image is a sketch",
     "generating": "Generating...",
     "startGenerate": "Start Generation",
+    "colorizing": "Colorizing...",
+    "colorizeImage": "Colorize Image",
     "uploadFailed": "Upload failed:",
     "tooltipUploadImage": "Please upload reference image",
     "tooltipEnterPrompt": "Please enter prompt",
@@ -114,23 +313,45 @@
         "label": "Description Edit",
         "description": "Edit images based on text descriptions"
       },
+      "description_edit_with_mask": {
+        "label": "Local Edit",
+        "description": "Edit specific areas using masks"
+      },
       "expand": {
         "label": "Image Expansion",
         "description": "Expand image boundaries"
       },
-      "remove_watermark": {
-        "label": "Remove Text Watermark",
-        "description": "Remove text watermarks from images"
-      },
       "super_resolution": {
         "label": "Super Resolution",
         "description": "Enhance image resolution and clarity"
+      },
+      "doodle": {
+        "label": "Doodle",
+        "description": "Convert simple doodles into beautiful images"
+      },
+      "control_cartoon": {
+        "label": "Cartoon Control",
+        "description": "Convert images to cartoon style"
+      },
+      "remove_watermark": {
+        "label": "Remove Text Watermark",
+        "description": "Remove text watermarks from images"
       }
     },
     "defaultPrompts": {
       "expand": "Maintain original image style, naturally expand image boundaries",
       "remove_watermark": "Remove watermarks from the image while maintaining natural appearance",
       "super_resolution": "Enhance image clarity and details while maintaining natural look"
+    },
+    "colorPresets": {
+      "natural": "Natural Colors",
+      "warm": "Warm Tones",
+      "cool": "Cool Tones",
+      "vibrant": "Vibrant Colors",
+      "vintage": "Vintage Style",
+      "blackAndWhite": "Black & White Art",
+      "sepia": "Sepia Tone",
+      "custom": "Custom"
     },
     "presets": {
       "custom": {
@@ -189,14 +410,22 @@
       }
     },
     "errors": {
-      "fileSizeExceeded": "File Size Exceeded",
-      "unsupportedFileType": "Unsupported File Type"
+      "fileSizeExceeded": "File size exceeds limit ({size}MB)",
+      "unsupportedFileType": "Unsupported file type: {type}",
+      "invalidImageDimensions": "Image dimensions do not meet requirements. Image width and height must be between 512-4096 pixels. Current dimensions: {width} x {height} pixels. System will automatically adjust image dimensions.",
+      "imageLoadError": "Unable to read image dimensions, please check if the image file is corrupted",
+      "unsupportedFileType": "Unsupported file format. Only JPEG, PNG, WebP are supported",
+      "fileSizeExceeded": "File is too large, max {size}MB"
+    },
+    "notices": {
+      "imageResized": "Image dimensions have been automatically adjusted to meet requirements"
     }
   },
   "NotFound": {
     "description": "Sorry, the page you are looking for does not exist.",
     "backToHome": "Back to Home"
   },
+
   "common": {
     "loading": "Loading...",
     "error": "An error occurred",
@@ -206,7 +435,7 @@
     "edit": "Edit",
     "create": "Create",
     "welcome": "Welcome",
-    "appName": "SmartPhoto",
+    "appName": "AI Image Editor",
     "success": "Success",
     "confirm": "Confirm",
     "add": "Add",
@@ -248,6 +477,7 @@
     "inALeagueOfItsOwn": "In a league of its own",
     "experienceTheDifference": "Experience The Difference",
     "light": "Light",
+    "dark": "Dark",
     "flowers": "Flowers",
     "interior": "Interior",
     "history": "History",
@@ -261,6 +491,7 @@
     "millionPhotosColorized": "54 Million Photos Already Colorized",
     "getStartNow": "Get Start Now",
     "filtersLabel": "21+ Color filters",
+    "backToHome": "Back to Home",
     "plans": {
       "basic": {
         "name": "Basic Plan",
@@ -277,13 +508,60 @@
     },
     "login": "Login",
     "profile": "Profile",
+    "gallery": "Gallery",
     "logout": "Logout",
-    "signup": "Sig up",
-    "dashboard": "Dashboard"
+    "signup": "Sign up",
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "help": "Help",
+    "feedback": "Feedback",
+    "uploadImage": "Upload Image",
+    "uploadImageDescription": "Supports JPG, PNG, WEBP formats, max size 10MB",
+    "uploadImagePlaceholder": "Please upload reference image",
+    "uploadImageButton": "Upload Image",
+    "uploadImageButtonDescription": "Supports JPG, PNG, WEBP formats, max size 10MB",
+    "newFeatures": "New Features",
+    "newFeaturesDescription": "We continuously update and improve our products to provide the best user experience.",
+    "millionsOfUsers": "Millions of Users",
+    "home": "Home",
+    "pricing": "Pricing",
+    "about": "About",
+    "insufficientCredits": "Insufficient Credits",
+    "notEnoughCredits": "You don't have enough credits to generate the video",
+    "currentBalance": "Current Balance",
+    "requiredCredits": "Required Credits",
+    "difference": "Difference",
+    "credits": "Credits",
+    "goToRecharge": "Go to Recharge",
+    "cancel": "Cancel",
+    "generating": "Generating...",
+    "startGenerate": "Start Generate"
+  },
+  "nav": {
+    "gallery": "Gallery"
+  },
+  "auth": {
+    "signInTitle": "Sign in to your account",
+    "signInSubtitle": "Sign in with your social account",
+    "signUpTitle": "Create your account",
+    "signUpSubtitle": "Sign up with your social account",
+    "github": "GitHub",
+    "google": "Google",
+    "orContinueWith": "Or continue with",
+    "dontHaveAccount": "Don't have an account?",
+    "signUpLink": "Sign up",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInLink": "Sign in",
+    "githubSignInFailed": "GitHub sign in failed",
+    "googleSignInFailed": "Google sign in failed",
+    "githubSignUpFailed": "GitHub sign up failed",
+    "googleSignUpFailed": "Google sign up failed"
   },
   "pricing": {
     "title": "Simple, transparent pricing",
-    "subtitle": "Choose the perfect plan for your needs. Each credit lets you colorize one photo in high resolution without watermarks.",
+    "subtitle": "Choose the perfect plan for your needs. Each image generation costs 1 credit, video generation costs 10 credits, high resolution and no watermarks.",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
     "month": "month",
     "billedAnnually": "Billed annually",
     "mostPopular": "Most Popular",
@@ -291,16 +569,74 @@
       "name": "Free",
       "description": "Start colorizing with basic features",
       "price": {
+        "value": "$0",
+        "period": "/month",
         "monthly": "$0",
         "yearly": "$0"
       },
       "features": {
+        "credits": "5 free credits",
+        "watermark": "Results with watermark",
         "watermarked": "Watermarked images",
         "resolution": "Max 500x500px resolution",
+        "support": "Community support",
         "previews": "Unlimited color previews",
         "filters": "Access to 21+ color filters"
       },
       "cta": "Get Started"
+    },
+    "basic": {
+      "name": "Basic",
+      "description": "Perfect for personal use",
+      "price": {
+        "value": "$6",
+        "period": "/month"
+      },
+      "priceDetail": "$0.65 per credit",
+      "features": {
+        "credits": "10 credits/month",
+        "highRes": "High resolution (up to 5000x5000px)",
+        "noWatermark": "No watermarks",
+        "rollover": "Unused credits roll over",
+        "filters": "Access to all color filters"
+      },
+      "cta": "Subscribe"
+    },
+    "standard": {
+      "name": "Standard",
+      "description": "Perfect for professional users",
+      "price": {
+        "value": "$15",
+        "period": "/month"
+      },
+      "priceDetail": "$0.50 per credit",
+      "features": {
+        "credits": "30 credits/month",
+        "highRes": "High resolution (up to 5000x5000px)",
+        "noWatermark": "No watermarks",
+        "rollover": "Unused credits roll over",
+        "filters": "Access to all color filters"
+      },
+      "cta": "Subscribe",
+      "savingLabel": "Save 20%"
+    },
+    "premium": {
+      "name": "Premium",
+      "description": "Perfect for professional teams",
+      "price": {
+        "value": "$30",
+        "period": "/month"
+      },
+      "priceDetail": "$0.43 per credit",
+      "features": {
+        "credits": "70 credits/month",
+        "highRes": "High resolution (up to 5000x5000px)",
+        "noWatermark": "No watermarks",
+        "rollover": "Unused credits roll over",
+        "filters": "Access to all color filters"
+      },
+      "cta": "Subscribe",
+      "savingLabel": "Save 28%"
     },
     "pro": {
       "name": "Pro",
@@ -338,7 +674,7 @@
     "faq": {
       "title": "Frequently Asked Questions",
       "question1": "What is a credit?",
-      "answer1": "One credit allows you to colorize one photo in high resolution without watermarks. You can use credits for any supported image size up to 5000x5000 pixels.",
+      "answer1": "One credit allows you to generate one image, ten credits allow you to generate one video, in high resolution without watermarks. You can use credits for any supported image size up to 5000x5000 pixels.",
       "question2": "Do credits expire?",
       "answer2": "For subscription plans, unused credits roll over up to five times your monthly allocation. Credits remain valid as long as your subscription is active. For one-time purchases, credits are valid for 2 years.",
       "question3": "Can I cancel my subscription anytime?",
@@ -364,7 +700,7 @@
     "currentCredits": "Current Credits",
     "pricePerCredit": "Price per credit",
     "credits": "credits",
-    "paymentSuccess": "Payment successful! You have received",
+    "paymentSuccess": "Payment successful! You have received {credits} credits",
     "pleaseLogin": "Please login first"
   },
   "gallery": {
@@ -385,7 +721,21 @@
     "taskId": "Task ID",
     "unknownFunction": "Unknown Function",
     "generateEmojiVideo": "Generate Emoji Video",
-    "generateLipsyncVideo": "Generate Lipsync Video",
+    "generateLipsyncVideo": "The picture moves",
+    "deleteConfirm": "Confirm Delete",
+    "deleteConfirmMessage": "Are you sure you want to delete this work? This action cannot be undone.",
+    "batchDeleteConfirm": "Confirm Batch Delete",
+    "batchDeleteConfirmMessage": "Are you sure you want to delete the selected {count} items? This action cannot be undone.",
+    "selectMode": "Select Mode",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All",
+    "cancelSelectItem": "Cancel select item",
+    "batchDelete": "Batch Delete",
+    "pleaseSelectItems": "Please select items to delete first",
+    "deleteSuccess": "Successfully deleted {count} items",
+    "deleteFailed": "Delete failed",
+    "deleteFailedWithCount": "Failed to delete {count} items",
+    "deleteNetworkError": "Delete failed: Network error",
     "close": "Close",
     "retry": "Retry",
     "myGeneratedContent": "My Generated Content",
@@ -398,13 +748,14 @@
     "lipsyncCompleted": "Lipsync Completed",
     "lipsyncGenerating": "Lipsync Generating",
     "lipsyncFailed": "Lipsync Failed",
-    "generateVideoTitle": "Generate {type} Video",
+    "generateVideoTitle": "Make the image move",
     "emoji": "Emoji",
     "lipsync": "Lipsync",
     "configureAndGenerate": "Configure parameters and generate video",
     "cancel": "Cancel",
     "generating": "Generating...",
     "startGenerate": "Start Generate",
+    "delete": "Delete",
     "status": {
       "waiting": "Waiting",
       "processing": "Processing",
@@ -428,7 +779,7 @@
     },
     "videoGeneration": {
       "generateEmoji": "Generate Emoji Video",
-      "generateLiveportrait": "Generate Liveportrait Video",
+      "generateLiveportrait": "The picture moves",
       "configureParameters": "Configure parameters and generate video",
       "cancel": "Cancel",
       "startGeneration": "Start Generation",
@@ -475,10 +826,16 @@
     "emojiAvailable": "Emoji Available",
     "lipsyncReady": "Lipsync Ready",
     "lipsyncAvailable": "Lipsync Generating",
-    "video": "Video"
+    "video": "Video",
+    "video_synthesis": "Video Synthesis",
+    "gifResult": "GIF Result",
+    "colorization": "Colorization",
+    "image": "Image",
+    "videoResult": "Video Result"
   },
   "profile": {
     "title": "Profile",
+    "subtitle": "Manage your account information and preferences",
     "description": "Manage your credits, view generation history and spending records",
     "user": "User",
     "creditsOverview": "Credits Overview",
@@ -550,14 +907,16 @@
       "emojiAnimation": "Emoji Animation"
     },
     "payment": {
-      "createFailed": "Failed to create payment, please try again",
-      "formNotLoaded": "Payment form not loaded correctly",
-      "failed": "Payment failed",
-      "processingFailed": "Payment processing failed, please try again",
+      "securePayment": "Secure Payment",
       "cardInfo": "Card Information",
+
       "processing": "Processing...",
       "pay": "Pay",
-      "securePayment": "Secure Payment"
+      "failed": "Payment failed",
+      "createFailed": "Failed to create payment",
+      "formNotLoaded": "Payment form not loaded",
+      "processingFailed": "Payment processing failed",
+      "cancel": "Cancel"
     },
     "viewAll": "View All",
     "usage": "Usage",
@@ -565,5 +924,328 @@
     "loadMore": "Load More",
     "noData": "No data"
   },
-  "credits": "Credits"
+  "credits": "Credits",
+  "privacy": {
+    "title": "Privacy Policy",
+    "intro": "We value your privacy. This policy explains how we collect, use, and protect your information.",
+    "lastUpdated": "Last Updated",
+    "lastUpdatedDate": "January 15, 2025",
+    "dataCollectionTitle": "Information Collection",
+    "dataCollection": "We only collect information you provide when registering, using AI image/video processing services, or making payments.",
+    "personalInfoTitle": "Personal Information",
+    "personalInfo1": "Registration information: email, username, password, etc.",
+    "personalInfo2": "Payment information: credit card details, billing address, etc.",
+    "personalInfo3": "Usage data: uploaded images/videos, processing records, etc.",
+    "personalInfo4": "Device information: IP address, browser type, operating system, etc.",
+    "usageDataTitle": "Usage Data",
+    "usageData1": "Service usage records and preferences",
+    "usageData2": "Error logs and technical support information",
+    "usageData3": "User feedback and review information",
+    "dataUsageTitle": "Information Use",
+    "dataUsage": "Your information is used for account management, service improvement, order processing, and legal requirements.",
+    "serviceProvisionTitle": "Service Provision",
+    "serviceProvision": "Process your AI image/video generation requests and provide technical support",
+    "improvementTitle": "Service Improvement",
+    "improvement": "Analyze usage patterns to optimize AI algorithms and service quality",
+    "communicationTitle": "Communication",
+    "communication": "Send service notifications, updates, and marketing information",
+    "legalTitle": "Legal Requirements",
+    "legal": "Comply with laws and regulations, handle disputes and complaints",
+    "dataProtectionTitle": "Information Protection",
+    "dataProtection": "We use industry-standard security measures to protect your data and do not sell your information to third parties.",
+    "securityMeasuresTitle": "Security Measures",
+    "securityMeasures1": "Data encryption for transmission and storage",
+    "securityMeasures2": "Access control and authentication",
+    "securityMeasures3": "Regular security audits and vulnerability fixes",
+    "securityMeasures4": "Employee confidentiality training and data protection agreements",
+    "dataRetentionTitle": "Data Retention",
+    "dataRetention": "We only retain your data for as long as necessary to provide services, up to a maximum of 3 years.",
+    "thirdPartyTitle": "Third-Party Services",
+    "thirdParty": "We may use third-party service providers to support our service operations.",
+    "aiServicesTitle": "AI Service Providers",
+    "aiServices": "We partner with AI service providers like Alibaba Cloud and Tencent Cloud. Your data may be processed through these platforms.",
+    "paymentServicesTitle": "Payment Service Providers",
+    "paymentServices": "We use payment services like Stripe and Alipay to process your payment information.",
+    "userRightsTitle": "User Rights",
+    "userRights": "According to relevant laws and regulations, you have the following rights:",
+    "accessTitle": "Right of Access",
+    "access": "You have the right to know how we collect and use your personal information",
+    "correctionTitle": "Right of Correction",
+    "correction": "You have the right to request us to correct or supplement your personal information",
+    "deletionTitle": "Right of Deletion",
+    "deletion": "You have the right to request us to delete your personal information",
+    "portabilityTitle": "Right of Portability",
+    "portability": "You have the right to obtain a copy of your personal information",
+    "contactTitle": "Contact Us",
+    "contact": "For privacy-related questions, please contact us through the following methods:",
+    "contactMethodsTitle": "Contact Methods",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "companyAddress": "Room 1001, Building A, Innovation Plaza, Technology Park, Chaoyang District, Beijing"
+  },
+  "contact": {
+    "needHelp": "Need Help?",
+    "contactDescription": "If you encounter any problems during use, please contact us via email or phone, and we will resolve them for you as soon as possible!",
+    "customerServiceEmail": "Customer Service Email",
+    "emailAddress": "q9425916@gmail.com",
+    "clickToSendEmail": "Click to send email",
+    "customerServicePhone": "Customer Service Phone",
+    "phoneNumber": "+023 6287 2229",
+    "clickToCall": "Click to dial phone",
+    "responseTime": "We usually reply within 24 hours"
+  },
+  "about": {
+    "title": "About SmartPhoto",
+    "subtitle": "SmartPhoto is an AI-powered platform for image editing and animation, designed to help you bring your photos to life with state-of-the-art technology.",
+    "tryItNow": "Try It Now",
+    "viewPricing": "View Pricing",
+    "mission": {
+      "title": "Our Mission",
+      "description": "At SmartPhoto, we're on a mission to democratize advanced image editing technology. We believe that everyone should have access to powerful AI tools that can transform their photos and preserve memories in new and exciting ways. By combining cutting-edge research with intuitive design, we're making professional-grade image enhancement accessible to all."
+    },
+    "features": {
+      "title": "Our Features",
+      "aiColorization": {
+        "title": "AI Image Colorization",
+        "description": "Transform black and white photos into vibrant, realistic colorized images using our advanced AI technology."
+      },
+      "smartEditing": {
+        "title": "Smart Editing",
+        "description": "Edit and enhance your images with AI-powered tools for removing watermarks, expanding images, and more."
+      },
+      "videoAnimation": {
+        "title": "Video Animation",
+        "description": "Bring your still images to life with facial animation and lip-sync technology."
+      },
+      "emojiEffects": {
+        "title": "Emoji Effects",
+        "description": "Create fun emoji animations from your portraits with our specialized AI technology."
+      }
+    },
+    "team": {
+      "title": "Meet Our Team",
+      "alex": {
+        "name": "Alex Thompson",
+        "role": "Founder & CEO",
+        "bio": "Computer vision expert with 10+ years of experience in AI and machine learning."
+      },
+      "sophia": {
+        "name": "Sophia Chen",
+        "role": "Chief Technology Officer",
+        "bio": "PhD in Computer Science, specialized in deep learning and neural networks."
+      },
+      "marcus": {
+        "name": "Marcus Johnson",
+        "role": "Lead AI Engineer",
+        "bio": "Former research scientist at OpenAI with expertise in generative models."
+      },
+      "emma": {
+        "name": "Emma Rodriguez",
+        "role": "Product Manager",
+        "bio": "Passionate about creating intuitive user experiences for advanced technology."
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "colorization": {
+        "question": "How does the AI colorization work?",
+        "answer": "Our AI uses deep learning algorithms trained on millions of color images to intelligently analyze black and white photos and predict realistic colors. It recognizes objects, lighting conditions, and contextual information to apply appropriate colors to different parts of the image."
+      },
+      "formats": {
+        "question": "What image formats are supported?",
+        "answer": "We support JPG, PNG, and WEBP formats. Images should be less than 10MB in size for optimal processing."
+      },
+      "credits": {
+        "question": "How many credits do I need for different features?",
+        "answer": "Image colorization requires 6 credits per image. Video animations require 12-15 credits depending on the complexity. You can check the exact credit costs on our pricing page."
+      },
+      "refund": {
+        "question": "Can I get a refund if I'm not satisfied?",
+        "answer": "If you're not satisfied with the results, please contact our support team. We offer refunds for failed generations, and our team will review other requests on a case-by-case basis."
+      },
+      "privacy": {
+        "question": "How is my data handled?",
+        "answer": "We prioritize your privacy. Your images are processed securely and not used for training our AI without explicit consent. For more details, please refer to our Privacy Policy."
+      }
+    },
+    "contact": {
+      "title": "Contact Us",
+      "getInTouch": {
+        "title": "Get In Touch",
+        "description": "Have questions or feedback? We'd love to hear from you. Our team is always ready to assist with any inquiries about our services."
+      },
+      "businessHours": {
+        "title": "Business Hours",
+        "weekdays": "Monday - Friday:",
+        "weekdaysTime": "9:00 AM - 6:00 PM PST",
+        "saturday": "Saturday:",
+        "saturdayTime": "10:00 AM - 4:00 PM PST",
+        "sunday": "Sunday:",
+        "sundayTime": "Closed",
+        "supportNote": "Support tickets are monitored 24/7, and our team will respond as soon as possible, even outside business hours."
+      }
+    },
+    "cta": {
+      "title": "Ready to transform your photos?",
+      "description": "Join thousands of satisfied users who are already bringing their photos to life with SmartPhoto.",
+      "button": "Get Started Now"
+    }
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "intro": "Welcome to LivePhoto. Please read the following terms carefully. By using this platform, you agree to these terms.",
+    "lastUpdated": "Last Updated",
+    "lastUpdatedDate": "January 15, 2025",
+    "acceptanceTitle": "Acceptance of Terms",
+    "acceptance": "By registering an account or using our services, you confirm that you have read, understood, and agree to comply with these terms of service.",
+    "ageRequirementTitle": "Age Requirement",
+    "ageRequirement": "You must be at least 18 years old or have full legal capacity in your jurisdiction to use our services.",
+    "serviceDescriptionTitle": "Service Description",
+    "serviceDescription": "LivePhoto provides AI-powered image and video processing services, including but not limited to:",
+    "aiImageTitle": "AI Image Generation",
+    "aiImage": "Generate, edit, and enhance images using advanced AI technology",
+    "aiVideoTitle": "AI Video Generation",
+    "aiVideo": "Create emoji videos, lip-sync videos, and other AI-driven video content",
+    "colorizationTitle": "Image Colorization",
+    "colorization": "Add natural, realistic colors to black and white images",
+    "ttsTitle": "Text-to-Speech",
+    "tts": "Convert text to natural, fluent speech content",
+    "userObligationsTitle": "User Obligations",
+    "userObligations": "You must ensure that uploaded images/videos are legal, do not infringe others' rights, and are not used for illegal purposes.",
+    "contentRequirementsTitle": "Content Requirements",
+    "contentRequirements1": "Uploaded content must be original or you must have legal rights to use it",
+    "contentRequirements2": "Do not upload content containing violence, pornography, discrimination, or other illegal or inappropriate material",
+    "contentRequirements3": "Do not infringe on others' intellectual property, portrait rights, or other legal rights",
+    "contentRequirements4": "Do not use for fraud, harassment, or other illegal activities",
+    "accountSecurityTitle": "Account Security",
+    "accountSecurity1": "Keep your account information and login credentials secure",
+    "accountSecurity2": "Do not lend your account to others or engage in account trading",
+    "accountSecurity3": "Contact us immediately if you notice any account anomalies",
+    "serviceUsageTitle": "Service Usage",
+    "serviceUsage": "This platform is for lawful personal/commercial use only. AI-generated content is for reference only; the platform is not responsible for its accuracy.",
+    "personalUseTitle": "Personal Use",
+    "personalUse": "Can be used for personal creation, learning, entertainment, and other non-commercial purposes",
+    "commercialUseTitle": "Commercial Use",
+    "commercialUse": "Can be used for commercial projects, but must comply with relevant laws and regulations",
+    "prohibitedUseTitle": "Prohibited Uses",
+    "prohibitedUse": "Do not use for creating false information, deepfakes, or other illegal purposes",
+    "aiAccuracyTitle": "AI Accuracy",
+    "aiAccuracy": "AI-generated content may contain inaccuracies. Please use with caution and verify independently",
+    "paymentTitle": "Payment and Credits",
+    "payment": "We use a credit-based pricing model. Users need to purchase credits to use our services.",
+    "creditSystemTitle": "Credit System",
+    "creditSystem": "Different services consume different amounts of credits. Credits are non-refundable after purchase",
+    "refundPolicyTitle": "Refund Policy",
+    "refundPolicy": "Except for legally required circumstances, purchased credits are non-refundable",
+    "subscriptionTitle": "Subscription Services",
+    "subscription": "We offer monthly subscription services with more credits and benefits",
+    "priceChangesTitle": "Price Changes",
+    "priceChanges": "We reserve the right to adjust service prices and will notify users in advance of changes",
+    "intellectualPropertyTitle": "Intellectual Property",
+    "intellectualProperty": "Information about content ownership and platform rights.",
+    "userContentTitle": "User Content",
+    "userContent": "You retain ownership of uploaded content but grant us license to process and use this content",
+    "platformRightsTitle": "Platform Rights",
+    "platformRights": "We own the intellectual property rights to platform technology, algorithms, and services",
+    "limitationTitle": "Limitation of Liability",
+    "limitation": "The platform is not liable for service interruptions or data loss caused by force majeure or third parties.",
+    "serviceInterruptionTitle": "Service Interruption",
+    "serviceInterruption": "Service interruptions due to system maintenance, technical failures, or other reasons",
+    "dataLossTitle": "Data Loss",
+    "dataLoss": "Data loss or corruption due to technical failures, hacking attacks, or other reasons",
+    "thirdPartyTitle": "Third-Party Liability",
+    "thirdParty": "Service issues caused by third-party service provider problems",
+    "terminationTitle": "Service Termination",
+    "termination": "Terms regarding account and service termination.",
+    "userTerminationTitle": "User Termination",
+    "userTermination": "You may stop using our services and delete your account at any time",
+    "platformTerminationTitle": "Platform Termination",
+    "platformTermination": "We may terminate your account for terms violations or other reasons",
+    "contactTitle": "Contact Us",
+    "contact": "For questions about these terms, please contact us through the following methods:",
+    "contactMethodsTitle": "Contact Methods",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "companyAddress": "Room 1001, Building A, Innovation Plaza, Technology Park, Chaoyang District, Beijing"
+  },
+  "refundPolicy": {
+    "backToHome": "Back to Home",
+    "title": "Refund Policy",
+    "subtitle": "We are committed to providing you with a satisfactory service experience. Below are the details of our refund policy.",
+    "overview": {
+      "title": "Policy Overview",
+      "description": "We understand that you may be dissatisfied with the purchased service, so we have established a reasonable refund policy. Under specific conditions, we provide refund services to ensure your rights.",
+      "timeLimit": "Refund Time Limit",
+      "conditions": "Refund Conditions",
+      "conditionsDesc": "Refundable if conditions are met",
+      "refundMethod": "Refund Method",
+      "refundMethodDesc": "Original payment method"
+    },
+    "conditions": {
+      "title": "Refund Conditions",
+      "eligible": {
+        "title": "Eligible for Refund",
+        "description": "You can apply for a refund within 7 days of purchase, provided that the credits have not been used."
+      },
+      "unused": {
+        "title": "Unused Credits",
+        "description": "Purchased credits must be completely unused. Used credits are non-refundable."
+      },
+      "technical": {
+        "title": "Technical Issues",
+        "description": "If our technical failures prevent normal service use, you can apply for a full refund."
+      }
+    },
+    "nonRefundable": {
+      "title": "Non-Refundable Situations",
+      "usedCredits": {
+        "title": "Used Credits",
+        "description": "Used credits are non-refundable, including credits consumed for image generation, video production, and other services."
+      },
+      "subscription": {
+        "title": "Subscription Services",
+        "description": "Monthly subscription services are non-refundable during the subscription period, but you can cancel auto-renewal."
+      },
+      "promotional": {
+        "title": "Promotional Activities",
+        "description": "Credits obtained through promotional activities or services purchased at promotional prices are generally non-refundable."
+      },
+      "violation": {
+        "title": "Terms of Service Violation",
+        "description": "If users violate our terms of service or usage policies, refunds will not be provided."
+      }
+    },
+    "process": {
+      "title": "Refund Process",
+      "step1": {
+        "title": "Submit Application",
+        "description": "Contact us via email, explaining the refund reason and order information."
+      },
+      "step2": {
+        "title": "Review and Confirm",
+        "description": "We will review your refund application within 24 hours to confirm if it meets refund conditions."
+      },
+      "step3": {
+        "title": "Process Refund",
+        "description": "After approval, we will process the refund within 3-5 business days."
+      },
+      "step4": {
+        "title": "Refund Received",
+        "description": "The refund will be returned to your original payment account. The actual arrival time depends on the payment platform."
+      }
+    },
+    "contact": {
+      "title": "Contact Us",
+      "email": {
+        "title": "Email Contact",
+        "description": "To apply for a refund, please send an email to the following address:"
+      },
+      "response": {
+        "title": "Response Time",
+        "description": "We commit to responding to your refund application within 24 hours and completing the refund process within 3-5 business days."
+      }
+    }
+  }
 }

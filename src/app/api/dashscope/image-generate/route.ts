@@ -60,6 +60,7 @@ const ERROR_MESSAGES = {
   MISSING_FUNCTION: '缺少必要参数: function',
   MISSING_MASK_IMAGE: '使用inpainting功能时，mask_image_url是必需的',
   MISSING_PROMPT: '缺少必要参数: prompt',
+  INVALID_IMAGE_DIMENSIONS: '图片尺寸不符合要求。图片的宽度和高度必须在512-4096像素之间',
   DOWNLOAD_FAILED: '下载图片失败',
   UPLOAD_FAILED: '上传图片失败',
   TASK_UPDATE_FAILED: '更新任务状态失败',
@@ -367,18 +368,41 @@ async function processImageUploadAsync(
 }
 
 /**
+ * 验证图片尺寸（简化版本）
+ */
+async function validateImageDimensions(imageUrl: string): Promise<boolean> {
+  try {
+    // 对于服务器端验证，我们暂时跳过复杂的尺寸检测
+    // 让DashScope API自己处理尺寸验证，我们只在前端进行验证
+    return true;
+  } catch (error) {
+    console.error('验证图片尺寸失败:', error);
+    return true; // 验证失败时，让API自己处理
+  }
+}
+
+/**
  * 验证请求参数
  */
-function validateRequestData(requestData: DashscopeImageEditRequest): string | null {
+async function validateRequestData(requestData: DashscopeImageEditRequest): Promise<string | null> {
   if (!requestData.function) {
     return ERROR_MESSAGES.MISSING_FUNCTION;
+  }
+
+  if (!requestData.base_image_url) {
+    return '缺少必要参数: base_image_url';
   }
 
   if (requestData.function === 'description_edit_with_mask' && !requestData.mask_image_url) {
     return ERROR_MESSAGES.MISSING_MASK_IMAGE;
   }
 
-  if (!requestData.prompt) {
+  // 对于图像上色功能，如果没有提供提示词，设置默认提示词
+  if (requestData.function === 'colorization' && (!requestData.prompt || requestData.prompt.trim() === '')) {
+    requestData.prompt = '为这张黑白照片添加自然的色彩，保持真实感和细节';
+  }
+
+  if (!requestData.prompt || requestData.prompt.trim() === '') {
     return ERROR_MESSAGES.MISSING_PROMPT;
   }
 
@@ -539,25 +563,28 @@ export async function POST(request: NextRequest) {
 
     // 解析和验证请求数据
     const requestData: DashscopeImageEditRequest = (await request.json()) as DashscopeImageEditRequest;
-    const validationError = validateRequestData(requestData);
+    
+    // 添加调试日志
+    console.log('🔍 接收到的请求数据:', JSON.stringify(requestData, null, 2));
+    
+    const validationError = await validateRequestData(requestData);
 
     if (validationError) {
+      console.log('❌ 验证失败:', validationError);
       return createErrorResponse(validationError);
     }
 
     // 设置默认参数
     setDefaultParameters(requestData);
 
-    // 计算所需积分并进行扣除
-    // const creditCost = calculateCreditCost(requestData.function, {
-    //   count: requestData.parameters?.n || 1,
-    // });
+    // 固定扣除1积分
+    const creditCost = 1;
 
     // 扣除积分
     const creditResult = await consumeCreditsForImageEdit(
       user.id,
       requestData.function,
-      1,
+      creditCost,
       undefined,
     );
 
@@ -602,7 +629,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 立即返回结果，不等待上传完成
-    return createSuccessResponse(result, editTaskResult.data, 1);
+    return createSuccessResponse(result, editTaskResult.data, creditCost);
   } catch (error) {
     console.error('图像生成API错误:', error);
 

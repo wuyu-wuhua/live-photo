@@ -13,14 +13,7 @@ const nextConfig = {
     dirs: ['.'],
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'lzhygldaxzrhqoxjyymc.supabase.co',
-        port: '',
-        pathname: '/storage/v1/object/public/**',
-      },
-    ],
+    domains: ['randomuser.me', 'lzhygldaxzrhqoxjyymc.supabase.co'],
   },
 };
 

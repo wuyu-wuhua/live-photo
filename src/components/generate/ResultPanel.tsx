@@ -14,11 +14,18 @@ import {
   Image,
   Spinner,
   useDisclosure,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
 } from '@heroui/react';
 import { Download, ImageIcon, Sparkles, Wand2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { VideoParameterPanel } from '@/components/video-generate/VideoParameterPanel';
+import { TaskStatusMonitor } from '@/components/video-generate/TaskStatusMonitor';
 import { useUser } from '@/hooks/useUser';
 import { createSupabaseClient } from '@/lib/supabase';
 
@@ -28,6 +35,10 @@ type ResultPanelProps = {
   originalImageUrl?: string;
   onGenerate: () => void;
   imageEditResultId?: string; // 用于订阅数据库变化
+  // 302.AI上色结果
+  colorizedImage?: string | null;
+  isColorizing?: boolean;
+  colorizeError?: string | null;
 };
 
 const downloadImage = async (imageUrl: string, filename: string) => {
@@ -43,7 +54,8 @@ const downloadImage = async (imageUrl: string, filename: string) => {
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
   } catch (error) {
-    console.error('下载图片失败:', error);
+    const t = useTranslations('resultPanel');
+    console.error(t('downloadImageFailed'), error);
   }
 };
 
@@ -53,6 +65,9 @@ export function ResultPanel({
   originalImageUrl,
   onGenerate: _onGenerate,
   imageEditResultId,
+  colorizedImage,
+  isColorizing,
+  colorizeError,
 }: ResultPanelProps) {
   const t = useTranslations('resultPanel');
   const { user } = useUser();
@@ -64,13 +79,28 @@ export function ResultPanel({
   // 视频生成相关状态
   const [selectedVideoType, setSelectedVideoType] = useState<'emoji' | 'liveportrait'>('emoji');
   const [isVideoGenerating, setIsVideoGenerating] = useState(false);
-  const [generateError, setGenerateError] = useState<string | null>(null);
-  const [audioUrl, setAudioUrl] = useState('');
-  const [drivenId, setDrivenId] = useState('mengwa_kaixin');
+  const [videoError, setVideoError] = useState<string | null>(null);
+  const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string | null>(null);
+  const [isVideoModalOpen, setVideoModalOpen] = useState(false);
+  const [videoTaskId, setVideoTaskId] = useState<string | null>(null);
+  const [referenceImage, setReferenceImage] = useState<string>('');
+
+  // 先声明参考图片变量
+  const referenceImageUrl = colorizedImage || (generatedImages && generatedImages.length > 0 && generatedImages[0]);
+  const hasReferenceImage = !!referenceImageUrl;
+  const videoCreditCost = 10;
+
+  // 监控 generatedVideoUrl 变化
+  useEffect(() => {
+    console.log('generatedVideoUrl 状态变化:', generatedVideoUrl);
+  }, [generatedVideoUrl]);
 
   // 订阅 Supabase 实时更新
   useEffect(() => {
+    console.log('调试信息 - useEffect 触发，imageEditResultId:', imageEditResultId);
+    
     if (!imageEditResultId) {
+      console.log('调试信息 - imageEditResultId 为空，跳过订阅');
       return;
     }
 
@@ -78,6 +108,7 @@ export function ResultPanel({
 
     // 首次获取数据
     const fetchInitialData = async () => {
+      console.log('调试信息 - 开始获取数据，imageEditResultId:', imageEditResultId);
       const { data, error } = await supabase
         .from('image_edit_results')
         .select('*')
@@ -85,7 +116,10 @@ export function ResultPanel({
         .single();
 
       if (data && !error) {
+        console.log('调试信息 - 获取到数据:', data);
         setImageEditResult(data);
+      } else {
+        console.log('调试信息 - 获取数据失败:', error);
       }
     };
 
@@ -116,79 +150,198 @@ export function ResultPanel({
   }, [imageEditResultId]);
 
   // 处理视频生成
-  const handleVideoGeneration = useCallback((type: 'emoji' | 'liveportrait') => {
+  const handleVideoGeneration = useCallback((referenceImage: string) => {
     if (!user) {
       console.warn(t('loginRequired'));
       return;
     }
 
-    setSelectedVideoType(type);
+    setSelectedVideoType(referenceImage.includes('colorized') ? 'emoji' : 'liveportrait');
     // 重置状态
-    setGenerateError(null);
-    setAudioUrl('');
-    setDrivenId('mengwa_kaixin');
+    setVideoError(null);
+    setGeneratedVideoUrl(null);
+    setVideoTaskId(null);
     onDrawerOpen();
+    setReferenceImage(referenceImage);
   }, [user, onDrawerOpen, t]);
 
   // 处理Drawer关闭
   const handleDrawerClose = useCallback(() => {
     onDrawerClose();
     // 重置状态
-    setGenerateError(null);
-    setAudioUrl('');
-    setDrivenId('mengwa_kaixin');
+    setVideoError(null);
+    setGeneratedVideoUrl(null);
+    setVideoTaskId(null);
     setIsVideoGenerating(false);
   }, [onDrawerClose]);
 
-  // 处理视频生成
+  // 生成视频逻辑
   const handleVideoGenerate = useCallback(async () => {
-    if (!imageEditResult || !user) {
-      return;
-    }
-
+    if (isVideoGenerating) return;
     setIsVideoGenerating(true);
-    setGenerateError(null);
+    setVideoError(null);
+    setGeneratedVideoUrl(null);
+    setVideoTaskId(null);
 
     try {
-      const endpoint = selectedVideoType === 'emoji'
-        ? '/api/dashscope/emoji-video-generate'
-        : '/api/dashscope/liveportrait-generate';
+      // 必须要有 imageEditResult.id 才能生成视频
+      if (!imageEditResult || !imageEditResult.id) {
+        console.log('调试信息 - imageEditResult:', imageEditResult);
+        console.log('调试信息 - imageEditResultId:', imageEditResultId);
+        toast.error(t('missingImageId'));
+        setIsVideoGenerating(false);
+        return;
+      }
 
-      const requestBody = selectedVideoType === 'emoji'
-        ? {
-            imageId: imageEditResult.id,
-            drivenId,
-          }
-        : {
-            imageId: imageEditResult.id,
-            audioUrl,
-          };
+      console.log('调试信息 - 使用 imageId:', imageEditResult.id);
+      const requestBody = {
+        imageId: imageEditResult.id,
+      };
 
-      const response = await fetch(endpoint, {
+      const response = await fetch('/api/dashscope/video-synthesis', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody),
       });
 
-      const result: any = await response.json();
+      const result = await response.json() as any;
 
-      if (!response.ok) {
-        throw new Error(result.error || t('generateFailed'));
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || '生成失败');
       }
 
-      // 生成成功，关闭抽屉
-      handleDrawerClose();
+      setVideoTaskId(result.data.task_id);
+      toast.success(t('videoTaskCreated'));
+      // 不要关闭抽屉，让用户看到生成进度
     } catch (error: any) {
-      setGenerateError(error.message || t('generateVideoError'));
+      setVideoError(error.message || '生成视频失败');
+      toast.error(error.message || '生成视频失败');
     } finally {
       setIsVideoGenerating(false);
     }
-  }, [imageEditResult, selectedVideoType, drivenId, audioUrl, user, handleDrawerClose, t]);
+  }, [imageEditResult, handleDrawerClose, isVideoGenerating]);
 
+  // 处理视频生成成功
+  const handleVideoSuccess = useCallback((videoUrl: string) => {
+    console.log('ResultPanel - 视频生成成功，URL:', videoUrl);
+    console.log('ResultPanel - 设置 generatedVideoUrl 状态为:', videoUrl);
+    setGeneratedVideoUrl(videoUrl);
+    setVideoTaskId(null);
+    toast.success('视频生成完成！');
+    // 可以在这里添加其他成功后的逻辑
+  }, []);
+
+  // 处理视频生成失败
+  const handleVideoError = useCallback((error: string) => {
+    setVideoError(error);
+    setVideoTaskId(null);
+  }, []);
+
+  // VideoPreviewModal 组件
+  function VideoPreviewModal({
+    isOpen,
+    onClose,
+    referenceImage,
+    videoUrl,
+    isLoading,
+    error,
+  }: {
+    isOpen: boolean;
+    onClose: () => void;
+    referenceImage: string;
+    videoUrl: string | null;
+    isLoading: boolean;
+    error: string | null;
+  }) {
+    // 调试：打印videoUrl
+    console.log('videoUrl in modal', videoUrl);
+    // 判断videoUrl是否为有效外链
+    const isValidVideoUrl = typeof videoUrl === 'string' && videoUrl.trim() !== '' && /^https?:\/\//.test(videoUrl.trim());
+    return (
+      <Modal isOpen={isOpen} onClose={onClose} size="2xl">
+        <ModalContent>
+          <ModalHeader>视频生成结果</ModalHeader>
+          <ModalBody>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+              {/* 左侧参考图片 */}
+              <div className="flex flex-col items-center">
+                <h5 className="text-sm mb-2 text-gray-500">{t('referenceImage')}</h5>
+                <Image
+                  src={referenceImage}
+                  alt={t('referenceImage')}
+                  className="w-full rounded-lg object-contain"
+                />
+              </div>
+              {/* 右侧视频或loading */}
+              <div className="flex flex-col items-center">
+                <h5 className="text-sm mb-2 text-gray-500">{t('video')}</h5>
+                {isLoading ? (
+                  <div className="flex flex-col items-center justify-center h-64 w-full">
+                    <Spinner size="lg" />
+                    <span className="mt-4 text-gray-400 text-sm">{t('generatingVideo')}</span>
+                  </div>
+                ) : error ? (
+                  <div className="flex flex-col items-center justify-center h-64 w-full">
+                    <span className="text-red-500 text-sm">{error}</span>
+                  </div>
+                ) : isValidVideoUrl ? (
+                  <video
+                    src={videoUrl}
+                    controls
+                    className="w-full rounded-lg object-contain"
+                    style={{ background: '#000' }}
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-64 w-full">
+                    <span className="text-gray-400 text-sm">{t('videoNotStarted')}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" variant="light" onClick={onClose}>{t('close')}</Button>
+            {isValidVideoUrl && (
+              <Button color="secondary" variant="flat" startContent={<Download className="w-4 h-4" />} onClick={() => downloadVideo(videoUrl, `generated-video-${Date.now()}.mp4`)}>{t('downloadVideo')}</Button>
+            )}
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    );
+  }
+
+  // 下载视频
+  const downloadVideo = async (videoUrl: string, filename: string) => {
+    try {
+      const response = await fetch(videoUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(t('downloadVideoFailed'), error);
+    }
+  };
+
+  // 多张结果图网格显示
   return (
     <div className="h-fit">
+      {/* 视频生成预览弹窗 */}
+      <VideoPreviewModal
+        isOpen={isVideoModalOpen}
+        onClose={() => setVideoModalOpen(false)}
+        referenceImage={colorizedImage || generatedImages[0] || ''}
+        videoUrl={generatedVideoUrl}
+        isLoading={isVideoGenerating}
+        error={videoError}
+      />
+
+
       <Card className="backdrop-blur-md bg-white/10 dark:bg-black/10 border-0 shadow-2xl">
         <CardHeader>
           <div className="flex items-center justify-between w-full">
@@ -210,7 +363,7 @@ export function ResultPanel({
           </div>
         </CardHeader>
         <CardBody className="pt-0">
-          {isGenerating
+          {isGenerating || isColorizing
             ? (
                 <div className="flex flex-col items-center justify-center py-16 px-8 text-center">
                   <div className="relative mb-6">
@@ -225,10 +378,10 @@ export function ResultPanel({
                   </div>
                   <div className="space-y-2">
                     <h4 className="text-lg font-medium text-gray-800 dark:text-gray-200">
-                      {t('generating')}
+                      {isColorizing ? t('colorizing') : t('generating')}
                     </h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400 max-w-sm">
-                      {t('generatingDescription')}
+                      {isColorizing ? t('colorizingDescription') : t('generatingDescription')}
                     </p>
                   </div>
                   <div className="mt-4">
@@ -236,11 +389,11 @@ export function ResultPanel({
                   </div>
                 </div>
               )
-            : generatedImages.length > 0
+            : generatedImages.length > 0 || colorizedImage
               ? (
                   <div className="space-y-6">
                     {/* 原图与结果图对比 */}
-                    {originalImageUrl && (
+                    {(originalImageUrl && (generatedImages.length > 0 || colorizedImage)) && (
                       <div className="space-y-3">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                           {/* 原图 */}
@@ -265,7 +418,7 @@ export function ResultPanel({
                           <div className="space-y-3">
                             <div className="flex items-center justify-between">
                               <h5 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                                {t('generatedResult')}
+                                {colorizedImage ? t('colorizedResult') : t('generatedResult')}
                               </h5>
                               <div className="flex gap-2">
                                 <Button
@@ -273,35 +426,28 @@ export function ResultPanel({
                                   variant="flat"
                                   color="secondary"
                                   startContent={<Download className="w-4 h-4" />}
-                                  onPress={() => downloadImage(generatedImages[0]!, `generated-image-${Date.now()}.png`)}
+                                  onPress={() => {
+                                    const imageUrl = colorizedImage || generatedImages[0]!;
+                                    const filename = colorizedImage 
+                                      ? `colorized-image-${Date.now()}.png`
+                                      : `generated-image-${Date.now()}.png`;
+                                    downloadImage(imageUrl, filename);
+                                  }}
                                   className="text-xs"
                                 >
                                   {t('download')}
                                 </Button>
-
-                                {/* 当检测到兼容性时显示视频生成按钮 */}
-                                {(imageEditResult?.emoji_compatible || imageEditResult?.liveportrait_compatible) && (
-                                  <Button
-                                    color="primary"
-                                    variant="flat"
-                                    size="sm"
-                                    className="text-xs bg-gradient-to-r from-blue-500/70 to-purple-500/70 text-white"
-                                    onPress={() => {
-                                      // 优先选择表情视频，如果不支持则选择对口型视频
-                                      const videoType = imageEditResult.emoji_compatible ? 'emoji' : 'liveportrait';
-                                      handleVideoGeneration(videoType);
-                                    }}
-                                  >
-                                    <div
-                                      className="flex items-center justify-center gap-1"
-                                    >
-                                      <div className="animate-bounce">
-                                        <Wand2 size={12} />
-                                      </div>
-                                      {t('makeItMove')}
-                                    </div>
-                                  </Button>
-                                )}
+                                <Button
+                                  size="sm"
+                                  variant="flat"
+                                  color="primary"
+                                  startContent={<Wand2 className="w-4 h-4" />}
+                                  onPress={() => handleVideoGeneration(colorizedImage || generatedImages[0]!)}
+                                  isLoading={isVideoGenerating}
+                                  className="text-xs bg-gradient-to-r from-green-500/70 to-blue-500/70 text-white"
+                                >
+                                  {t('makePhotoMove')}
+                                </Button>
                               </div>
                             </div>
                             <div className="group relative">
@@ -309,8 +455,8 @@ export function ResultPanel({
                                 className="relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900"
                               >
                                 <Image
-                                  src={generatedImages[0]}
-                                  alt="Generated image"
+                                  src={colorizedImage || generatedImages[0]}
+                                  alt={colorizedImage ? "Colorized image" : "Generated image"}
                                   className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
                                 />
                                 <div
@@ -318,8 +464,31 @@ export function ResultPanel({
                                 />
                               </div>
                             </div>
+                            
+                            {/* 视频生成区域 - 在参考图片下方 */}
+                            {/* 删除生成视频相关区域 */}
                           </div>
                         </div>
+                      </div>
+                    )}
+
+
+
+                    {/* 显示视频生成错误 */}
+                    {videoError && (
+                      <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                        <p className="text-red-600 dark:text-red-400 text-sm">
+                          {videoError}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* 显示302.AI上色错误 */}
+                    {colorizeError && (
+                      <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                        <p className="text-red-600 dark:text-red-400 text-sm">
+                          {colorizeError}
+                        </p>
                       </div>
                     )}
 
@@ -367,25 +536,33 @@ export function ResultPanel({
                     )}
                   </div>
                 )
-              : (
-                  <div className="flex flex-col items-center justify-center py-16 px-8 text-center">
-                    <div className="relative mb-6">
+              : originalImageUrl ? (
+                  <div className="flex flex-col items-center justify-center py-8 px-8 text-center">
+                    <div className="relative mb-4">
                       <div
-                        className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-xl"
-                      />
-                      <div
-                        className="relative p-6 rounded-full bg-gradient-to-br from-blue-500/5 to-purple-500/5 backdrop-blur-sm border border-blue-500/10"
+                        className="relative p-4 rounded-full bg-gradient-to-br from-gray-100/50 to-gray-200/50 dark:from-gray-800/50 dark:to-gray-700/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
                       >
-                        <ImageIcon className="w-8 h-8 text-blue-400" />
+                        <ImageIcon className="w-6 h-6 text-gray-400 dark:text-gray-500" />
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <h4 className="text-lg font-medium text-gray-800 dark:text-gray-200">
+                    <div className="space-y-1">
+                      <h4 className="text-sm font-medium text-gray-600 dark:text-gray-400">
                         {t('waitingGenerate')}
                       </h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 max-w-sm">
+                      <p className="text-xs text-gray-500 dark:text-gray-500 max-w-xs">
                         {t('waitingDescription')}
                       </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center min-h-[300px] px-8 text-center">
+                    <div className="relative mb-4">
+                      <div className="relative p-4 rounded-full bg-gradient-to-br from-gray-100/30 to-gray-200/30 dark:from-gray-800/30 dark:to-gray-700/30 backdrop-blur-sm border border-gray-200/30 dark:border-gray-700/30">
+                        <ImageIcon className="w-6 h-6 text-gray-400 dark:text-gray-500" />
+                      </div>
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      {t('pleaseUploadImage')}
                     </div>
                   </div>
                 )}
@@ -397,25 +574,73 @@ export function ResultPanel({
         <DrawerContent>
           <DrawerHeader className="flex flex-col gap-1">
             <h4 className="text-lg font-semibold">
-              {t('generateVideoTitle', { type: selectedVideoType === 'emoji' ? t('emojiVideo') : t('lipsyncVideo') })}
+              {t('generateVideoTitle')}
             </h4>
             <p className="text-sm text-gray-500">
               {t('configureParameters')}
             </p>
           </DrawerHeader>
           <DrawerBody className="px-6">
-            <VideoParameterPanel
-              imageData={imageEditResult}
-              isLoading={false}
-              isGenerating={isVideoGenerating}
-              error={generateError}
-              videoType={selectedVideoType}
-              audioUrl={audioUrl}
-              drivenId={drivenId}
-              onVideoTypeChange={setSelectedVideoType}
-              onAudioUrlChange={setAudioUrl}
-              onDrivenIdChange={setDrivenId}
-            />
+            {/* 参考图片显示 */}
+            <div className="w-full mb-6">
+              <h4 className="text-base font-semibold mb-3">{t('referenceImage')}</h4>
+              <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
+                <img
+                  src={colorizedImage || generatedImages[0] || ''}
+                  alt={t('referenceImage')}
+                  className="w-full h-auto object-cover"
+                  onError={(e) => console.error('参考图片加载错误:', e)}
+                />
+              </div>
+            </div>
+            
+            {/* 视频预览标题 */}
+            <h4 className="text-base font-semibold mb-2">{t('videoPreview')}</h4>
+            
+            {/* 视频生成状态监控 */}
+            {videoTaskId && (
+              <div className="w-full mt-6">
+                <TaskStatusMonitor
+                  taskId={videoTaskId}
+                  onSuccess={handleVideoSuccess}
+                  onError={handleVideoError}
+                />
+              </div>
+            )}
+            
+            {/* 视频展示区 */}
+            {generatedVideoUrl && (
+              <div className="w-full flex flex-col items-center mt-6">
+                <h5 className="text-base font-semibold mb-2 text-white/90">{t('videoResult')}</h5>
+                <video 
+                  src={generatedVideoUrl} 
+                  controls 
+                  autoPlay 
+                  loop 
+                  className="w-full max-w-md rounded-lg shadow-lg bg-black" 
+                  onError={(e) => console.error('视频加载错误:', e)}
+                />
+                <Button
+                  size="sm"
+                  variant="flat"
+                  color="secondary"
+                  startContent={<Download className="w-4 h-4" />}
+                  onPress={() => downloadVideo(generatedVideoUrl, `generated-video-${Date.now()}.mp4`)}
+                  className="mt-2"
+                >
+                  {t('downloadVideo')}
+                </Button>
+              </div>
+            )}
+            
+            {/* 视频生成错误显示 */}
+            {videoError && (
+              <div className="w-full mt-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                <p className="text-red-600 dark:text-red-400 text-sm">
+                  {videoError}
+                </p>
+              </div>
+            )}
           </DrawerBody>
           <DrawerFooter>
             <Button color="danger" variant="light" onClick={handleDrawerClose}>
@@ -426,19 +651,14 @@ export function ResultPanel({
               variant="shadow"
               onPress={handleVideoGenerate}
               isLoading={isVideoGenerating}
-              isDisabled={(() => {
-                if (isVideoGenerating || !imageEditResult) {
-                  return true;
-                }
-                if (selectedVideoType === 'emoji') {
-                  return !imageEditResult.emoji_compatible;
-                } else {
-                  return !imageEditResult.liveportrait_compatible || !audioUrl;
-                }
-              })()}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium"
+              isDisabled={isVideoGenerating || !hasReferenceImage}
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium flex items-center gap-2 px-8 py-4 text-lg font-semibold"
             >
-              {isVideoGenerating ? t('generating') : t('startGenerate')}
+              {isVideoGenerating ? t('generating') : (generatedVideoUrl ? t('regenerate') : t('startGenerate'))}
+              <span className="ml-2 flex items-center bg-white/20 rounded-full px-2 py-0.5 text-xs font-medium">
+                <Sparkles className="w-4 h-4 mr-1 text-yellow-400" />
+                {videoCreditCost}{t('credits')}
+              </span>
             </Button>
           </DrawerFooter>
         </DrawerContent>
