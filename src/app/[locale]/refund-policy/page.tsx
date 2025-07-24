@@ -1,13 +1,13 @@
 'use client';
 
+import { ArrowLeft, CheckCircle, Clock, CreditCard, Mail, Shield, XCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { ArrowLeft, CreditCard, Clock, Shield, XCircle, Mail, CheckCircle} from 'lucide-react';
 
 export default function RefundPolicyPage() {
   const t = useTranslations('refundPolicy');
   const commonT = useTranslations('common');
-  
+
   return (
     <div className="min-h-screen bg-background">
       <main className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
@@ -204,8 +204,8 @@ export default function RefundPolicyPage() {
                 <div className="bg-white/50 dark:bg-gray-800/50 rounded-2xl p-6 border border-white/20">
                   <h3 className="font-semibold mb-3 text-lg">{t('contact.email.title')}</h3>
                   <p className="text-gray-600 dark:text-gray-400 mb-3">{t('contact.email.description')}</p>
-                  <a 
-                    href="mailto:q9425916@gmail.com" 
+                  <a
+                    href="mailto:q9425916@gmail.com"
                     className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
                   >
                     q9425916@gmail.com
@@ -222,4 +222,4 @@ export default function RefundPolicyPage() {
       </main>
     </div>
   );
-} 
+}

@@ -160,7 +160,10 @@ export default function PricingPage() {
             {plan.popular && (
               <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-20">
                 <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold px-4 py-2 rounded-full shadow-lg border border-white/20 backdrop-blur-sm">
-                  <span className="text-sm">⭐ {plan.savingLabel}</span>
+                  <span className="text-sm">
+                    ⭐
+                    {plan.savingLabel}
+                  </span>
                 </div>
               </div>
             )}
@@ -214,8 +217,8 @@ export default function PricingPage() {
             <CardFooter className="mt-6">
               <Button
                 className={`w-full transition-all duration-300 ${
-                  plan.popular 
-                    ? 'bg-gradient-to-r from-primary to-primary-600 hover:from-primary-600 hover:to-primary-700 shadow-lg hover:shadow-xl' 
+                  plan.popular
+                    ? 'bg-gradient-to-r from-primary to-primary-600 hover:from-primary-600 hover:to-primary-700 shadow-lg hover:shadow-xl'
                     : 'hover:bg-primary hover:text-white hover:border-primary hover:shadow-md'
                 }`}
                 color={plan.popular ? 'primary' : 'default'}

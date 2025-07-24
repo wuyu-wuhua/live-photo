@@ -24,7 +24,7 @@ export function LanguageSwitcher() {
   };
 
   return (
-        <Button
+    <Button
       isIconOnly
       variant="light"
       color="default"
@@ -34,7 +34,7 @@ export function LanguageSwitcher() {
       title={locale === 'zh' ? '切换为英文' : 'Switch to Chinese'}
     >
       <Languages className="w-5 h-5" />
-        </Button>
+    </Button>
   );
 }
 

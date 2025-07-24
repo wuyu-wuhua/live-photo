@@ -31,8 +31,8 @@ export default function TtsPlayer({ initialText = '', className = '' }: TtsPlaye
         if (data.success && data.data.voices) {
           setVoices(data.data.voices);
         } else {
-                  setError(t('getVoicesFailed'));
-        toast.error(t('getVoicesFailed'));
+          setError(t('getVoicesFailed'));
+          toast.error(t('getVoicesFailed'));
         }
       } catch (err) {
         setError(t('getVoicesError'));
@@ -56,8 +56,8 @@ export default function TtsPlayer({ initialText = '', className = '' }: TtsPlaye
   // 生成语音
   const handleGenerateSpeech = async () => {
     if (!text.trim()) {
-              setError(t('pleaseEnterText'));
-        toast.error(t('pleaseEnterText'));
+      setError(t('pleaseEnterText'));
+      toast.error(t('pleaseEnterText'));
       return;
     }
 
@@ -90,12 +90,12 @@ export default function TtsPlayer({ initialText = '', className = '' }: TtsPlaye
           });
         }
       } else {
-                  setError(data.error || t('generateFailed'));
-          toast.error(data.error || t('generateFailed'));
+        setError(data.error || t('generateFailed'));
+        toast.error(data.error || t('generateFailed'));
       }
     } catch (err) {
-              setError(t('requestFailed'));
-        toast.error(t('requestFailed'));
+      setError(t('requestFailed'));
+      toast.error(t('requestFailed'));
       console.error('生成语音错误:', err);
     } finally {
       setIsLoading(false);
@@ -123,20 +123,20 @@ export default function TtsPlayer({ initialText = '', className = '' }: TtsPlaye
     <div className={`w-full max-w-3xl mx-auto ${className}`}>
       <div className="mb-4">
         <label htmlFor="tts-text" className="block text-lg font-medium mb-2">
-                      {t('enterText')}
+          {t('enterText')}
         </label>
         <textarea
           id="tts-text"
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[120px]"
           value={text}
           onChange={e => setText(e.target.value)}
-                      placeholder={t('enterTextPlaceholder')}
+          placeholder={t('enterTextPlaceholder')}
         />
       </div>
 
       <div className="mb-4">
         <label htmlFor="voice-select" className="block text-lg font-medium mb-2">
-                      {t('selectVoice')}
+          {t('selectVoice')}
         </label>
         <select
           id="voice-select"
@@ -211,9 +211,9 @@ export default function TtsPlayer({ initialText = '', className = '' }: TtsPlaye
 
       {audioUrl && (
         <audio ref={audioRef} className="hidden">
-                        <track kind="captions" src="" label={t('captions')} />
+          <track kind="captions" src="" label={t('captions')} />
           <source src={audioUrl} type="audio/mpeg" />
-                      {t('browserNotSupported')}
+          {t('browserNotSupported')}
         </audio>
       )}
     </div>

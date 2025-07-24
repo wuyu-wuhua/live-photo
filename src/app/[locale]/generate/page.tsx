@@ -11,9 +11,9 @@ import { ParameterPanel } from '@/components/generate/ParameterPanel';
 import { ResultPanel } from '@/components/generate/ResultPanel';
 import StripePayment from '@/components/payments/StripePayment';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+import { use302AIColorize } from '@/hooks/use302AIColorize';
 import { useCredits } from '@/hooks/useCredits';
 import { useUser } from '@/hooks/useUser';
-import { use302AIColorize } from '@/hooks/use302AIColorize';
 
 export default function GeneratePage() {
   const t = useTranslations();
@@ -161,7 +161,7 @@ export default function GeneratePage() {
 
         // 调用302.AI上色接口
         const taskId = await colorizeImage({ image: imageFile });
-        
+
         // 保存 task_id 用于视频生成
         if (taskId) {
           setImageEditResultId(taskId);
@@ -172,7 +172,7 @@ export default function GeneratePage() {
 
         // 显示成功提示
         toast.success(t('generate.generateSuccess'));
-        
+
         // 重置其他状态
         setGeneratedImages([]);
       } catch (error) {

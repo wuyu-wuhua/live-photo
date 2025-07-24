@@ -83,9 +83,9 @@ src/
 
 - **端点**: `/api/302ai/colorize`
 - **方法**: `POST`
-- **参数**: 
+- **参数**:
   - `image`: 图片文件 (multipart/form-data)
-- **响应**: 
+- **响应**:
   ```json
   {
     "success": true,
@@ -118,4 +118,4 @@ src/
 
 ## 许可证
 
-MIT License 
+MIT License

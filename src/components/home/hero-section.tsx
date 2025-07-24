@@ -3,10 +3,10 @@
 import { Button } from '@heroui/react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUser } from '@/hooks/useUser';
+import { useState } from 'react';
 import { toast } from 'sonner';
+import { useUser } from '@/hooks/useUser';
 
 // 示例图片数据
 const sampleImages = [
@@ -26,7 +26,7 @@ export function HeroSection() {
     if (loading) {
       return;
     }
-    
+
     if (!user) {
       toast.info('请先登录后再使用照片上色功能');
       router.push('/auth/sign-in');

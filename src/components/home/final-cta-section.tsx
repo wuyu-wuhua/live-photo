@@ -3,8 +3,8 @@
 import { Button } from '@heroui/react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { useUser } from '@/hooks/useUser';
 import { toast } from 'sonner';
+import { useUser } from '@/hooks/useUser';
 
 export function FinalCTASection() {
   const t = useTranslations();
@@ -16,7 +16,7 @@ export function FinalCTASection() {
       // 如果还在加载用户状态，等待一下
       return;
     }
-    
+
     if (!user) {
       // 用户未登录，显示提示并跳转到登录页面
       toast.info('请先登录后再使用照片上色功能');

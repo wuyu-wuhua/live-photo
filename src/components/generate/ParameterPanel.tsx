@@ -53,7 +53,7 @@ const validateAndResizeImage = async (file: File, t: ReturnType<typeof useTransl
   }
   if (file.size > maxSize) {
     return { valid: false, error: t('parameterPanel.errors.fileSizeExceeded', { size: (maxSize / 1024 / 1024).toFixed(1) }) };
-      }
+  }
   return { valid: true, resizedFile: file };
 };
 
@@ -109,60 +109,64 @@ export function ParameterPanel({
           {t('parameterPanel.referenceImage')}
           <span className="text-danger ml-1">*</span>
         </Label>
-        <div className="min-h-[400px] flex items-center justify-center"> {/* 减少整体高度 */}
-          <div className="w-full max-w-2xl"> {/* 进一步增加上传区域宽度 */}
-        <PictureCardForm
-          value={baseImageFiles}
+        <div className="min-h-[400px] flex items-center justify-center">
+          {' '}
+          {/* 减少整体高度 */}
+          <div className="w-full max-w-2xl">
+            {' '}
+            {/* 进一步增加上传区域宽度 */}
+            <PictureCardForm
+              value={baseImageFiles}
               onChange={async (files) => {
-            // 如果是新上传的文件，进行验证
-            if (files.length > baseImageFiles.length) {
-              const { file }: any = files[files.length - 1];
-              if (file) {
+                // 如果是新上传的文件，进行验证
+                if (files.length > baseImageFiles.length) {
+                  const { file }: any = files[files.length - 1];
+                  if (file) {
                   // 基本验证
-                const validation = validateImage(file, t);
-                if (!validation.valid) {
-                  setImageValidationError(validation.error || null);
-                  return; // 不更新状态，阻止上传
-                  }
+                    const validation = validateImage(file, t);
+                    if (!validation.valid) {
+                      setImageValidationError(validation.error || null);
+                      return; // 不更新状态，阻止上传
+                    }
 
-                  // 尺寸验证和调整
-                  const dimensionValidation = await validateAndResizeImage(file, t);
-                  if (!dimensionValidation.valid) {
-                    setImageValidationError(dimensionValidation.error || null);
-                    return; // 不更新状态，阻止上传
+                    // 尺寸验证和调整
+                    const dimensionValidation = await validateAndResizeImage(file, t);
+                    if (!dimensionValidation.valid) {
+                      setImageValidationError(dimensionValidation.error || null);
+                      return; // 不更新状态，阻止上传
+                    }
+
+                    // 如果有调整后的文件，显示提示信息
+                    if (dimensionValidation.resizedFile) {
+                      console.log('图片已自动调整尺寸');
+                      setImageResizeNotice(t('parameterPanel.notices.imageResized'));
+                    } else {
+                      setImageResizeNotice(null);
+                    }
                   }
-                  
-                  // 如果有调整后的文件，显示提示信息
-                  if (dimensionValidation.resizedFile) {
-                    console.log('图片已自动调整尺寸');
-                    setImageResizeNotice(t('parameterPanel.notices.imageResized'));
-                  } else {
-                    setImageResizeNotice(null);
+                }
+                // 清除错误
+                setImageValidationError(null);
+                setImageResizeNotice(null);
+                onBaseImageChange(files);
+              }}
+              maxCount={1}
+              className="w-full h-full"
+              onUploadComplete={(result) => {
+                if (result.success) {
+                  if (result.file?.url) {
+                    onFormDataChange({
+                      ...formData,
+                      base_image_url: result.file.url,
+                    });
                   }
-              }
-            }
-            // 清除错误
-            setImageValidationError(null);
-              setImageResizeNotice(null);
-            onBaseImageChange(files);
-          }}
-          maxCount={1}
-            className="w-full h-full"
-          onUploadComplete={(result) => {
-            if (result.success) {
-              if (result.file?.url) {
-                onFormDataChange({
-                  ...formData,
-                  base_image_url: result.file.url,
-                });
-              }
-            }
-          }}
-          onUploadError={(error, file) => {
-            console.error('上传失败:', error, file);
-            setUploadError(error);
-          }}
-        />
+                }
+              }}
+              onUploadError={(error, file) => {
+                console.error('上传失败:', error, file);
+                setUploadError(error);
+              }}
+            />
           </div>
         </div>
         <p className="text-xs text-default-500 text-center">
@@ -204,4 +208,3 @@ export function ParameterPanel({
     </div>
   );
 }
-

@@ -2,12 +2,12 @@ import type { ImageEditResult } from '@/types/database';
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@heroui/react';
 import { useTranslations } from 'next-intl';
 
-interface VideoDetailModalProps {
+type VideoDetailModalProps = {
   isOpen: boolean;
   onClose: () => void;
   videoResult: ImageEditResult | null;
   formatTime: (date: string) => string;
-}
+};
 
 export default function VideoDetailModal({
   isOpen,
@@ -16,7 +16,9 @@ export default function VideoDetailModal({
   formatTime,
 }: VideoDetailModalProps) {
   const t = useTranslations('gallery');
-  if (!videoResult) return null;
+  if (!videoResult) {
+    return null;
+  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="4xl" scrollBehavior="inside">
@@ -26,7 +28,9 @@ export default function VideoDetailModal({
             <span className="text-xl font-bold">{t('video')}</span>
           </div>
           <div className="text-sm text-gray-500">
-            {t('createTime')}: {formatTime(videoResult.created_at)}
+            {t('createTime')}
+            :
+            {formatTime(videoResult.created_at)}
           </div>
         </ModalHeader>
         <ModalBody>
@@ -35,37 +39,43 @@ export default function VideoDetailModal({
             {/* 左侧上色/处理后图片 */}
             <div className="flex flex-col items-center">
               <h5 className="text-sm mb-2 text-gray-500">{t('originalImage')}</h5>
-              {(videoResult.result_image_url && videoResult.result_image_url.length > 0) ? (
-                <img
-                  src={videoResult.result_image_url[0]}
-                  alt={t('originalImage')}
-                  className="w-full rounded-lg object-contain"
-                  style={{ maxHeight: 360, background: '#222' }}
-                />
-              ) : videoResult.source_image_url ? (
-                <img
-                  src={videoResult.source_image_url}
-                  alt={t('originalImage')}
-                  className="w-full rounded-lg object-contain"
-                  style={{ maxHeight: 360, background: '#222' }}
-                />
-              ) : (
-                <div className="text-gray-400 text-center">{t('noOriginalImage')}</div>
-              )}
+              {(videoResult.result_image_url && videoResult.result_image_url.length > 0)
+                ? (
+                    <img
+                      src={videoResult.result_image_url[0]}
+                      alt={t('originalImage')}
+                      className="w-full rounded-lg object-contain"
+                      style={{ maxHeight: 360, background: '#222' }}
+                    />
+                  )
+                : videoResult.source_image_url
+                  ? (
+                      <img
+                        src={videoResult.source_image_url}
+                        alt={t('originalImage')}
+                        className="w-full rounded-lg object-contain"
+                        style={{ maxHeight: 360, background: '#222' }}
+                      />
+                    )
+                  : (
+                      <div className="text-gray-400 text-center">{t('noOriginalImage')}</div>
+                    )}
             </div>
             {/* 右侧视频 */}
             <div className="flex flex-col items-center">
               <h5 className="text-sm mb-2 text-gray-500">{t('videoResult')}</h5>
-              {videoResult.video_result_url || videoResult.emoji_result_url || videoResult.liveportrait_result_url ? (
-                <video
-                  src={videoResult.video_result_url || videoResult.emoji_result_url || videoResult.liveportrait_result_url || ''}
-                  controls
-                  className="w-full rounded-lg object-contain"
-                  style={{ maxHeight: 360, background: '#000' }}
-                />
-              ) : (
-                <div className="text-gray-400 text-center">{t('noResultVideo')}</div>
-              )}
+              {videoResult.video_result_url || videoResult.emoji_result_url || videoResult.liveportrait_result_url
+                ? (
+                    <video
+                      src={videoResult.video_result_url || videoResult.emoji_result_url || videoResult.liveportrait_result_url || ''}
+                      controls
+                      className="w-full rounded-lg object-contain"
+                      style={{ maxHeight: 360, background: '#000' }}
+                    />
+                  )
+                : (
+                    <div className="text-gray-400 text-center">{t('noResultVideo')}</div>
+                  )}
             </div>
           </div>
           {/* 下载按钮 */}
@@ -78,4 +88,4 @@ export default function VideoDetailModal({
       </ModalContent>
     </Modal>
   );
-} 
+}

@@ -7,4 +7,4 @@ export async function GET() {
     supabaseServiceKey: process.env.SUPABASE_SERVICE_ROLE_KEY ? '已设置' : '未设置',
     nodeEnv: process.env.NODE_ENV,
   });
-} 
+}

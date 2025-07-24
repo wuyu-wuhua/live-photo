@@ -3,12 +3,12 @@ import clsx from 'clsx';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import React from 'react';
+import { ContactModalProvider } from '@/components/FloatingContactModal';
 import { Footer } from '@/components/footer';
 import Navbar from '@/components/Navigation';
 import { Toaster } from '@/components/ui/sonner';
 import { fontSans } from '@/config/fonts';
 import { RootProvider } from '@/provider/RootProvider';
-import { ContactModalProvider } from '@/components/FloatingContactModal';
 import '@/styles/globals.css';
 
 type Props = {

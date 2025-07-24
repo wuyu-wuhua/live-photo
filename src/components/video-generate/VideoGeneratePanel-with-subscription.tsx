@@ -27,8 +27,8 @@ export function VideoGeneratePanel({
     // 如果有taskId，使用TaskStatusMonitor组件
     if (taskId) {
       return (
-        <TaskStatusMonitor 
-          taskId={taskId} 
+        <TaskStatusMonitor
+          taskId={taskId}
           onSuccess={(videoUrl) => {
             // 处理成功回调
             console.log('Video generation success:', videoUrl);

@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useRef, useEffect, createContext, useContext } from 'react';
+import { Headphones, Mail, Phone, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { X, Mail, Phone, Headphones } from 'lucide-react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 // 创建全局上下文
 const ContactModalContext = createContext<{
@@ -18,10 +18,10 @@ export const useContactModal = () => {
   return context;
 };
 
-interface Position {
+type Position = {
   x: number;
   y: number;
-}
+};
 
 // Provider组件
 export function ContactModalProvider({ children }: { children: React.ReactNode }) {
@@ -32,7 +32,7 @@ export function ContactModalProvider({ children }: { children: React.ReactNode }
   const [buttonPosition, setButtonPosition] = useState<Position>({ x: 0, y: 0 });
   const [modalPosition, setModalPosition] = useState<Position>({ x: 0, y: 0 });
   const [dragOffset, setDragOffset] = useState<Position>({ x: 0, y: 0 });
-  
+
   const modalRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -48,14 +48,18 @@ export function ContactModalProvider({ children }: { children: React.ReactNode }
   const calculateModalPosition = () => {
     const modalWidth = 320; // w-80 = 320px
     const margin = 16; // 16px 间距
-    
+
     let x = buttonPosition.x - margin - modalWidth;
     let y = buttonPosition.y - 200; // 弹窗垂直居中于悬浮球
-    
+
     // 确保弹窗不会超出屏幕边界
-    if (x < 0) x = buttonPosition.x + 40 + margin; // 如果左侧空间不够，放在右侧
-    if (y < 0) y = 16; // 如果上方空间不够，放在顶部
-    
+    if (x < 0) {
+      x = buttonPosition.x + 40 + margin;
+    } // 如果左侧空间不够，放在右侧
+    if (y < 0) {
+      y = 16;
+    } // 如果上方空间不够，放在顶部
+
     return { x, y };
   };
 
@@ -94,48 +98,52 @@ export function ContactModalProvider({ children }: { children: React.ReactNode }
   const handleMouseMove = (e: MouseEvent | TouchEvent) => {
     const clientX = 'touches' in e && e.touches[0] ? e.touches[0].clientX : (e as MouseEvent).clientX;
     const clientY = 'touches' in e && e.touches[0] ? e.touches[0].clientY : (e as MouseEvent).clientY;
-    
+
     if (isDragging && modalRef.current) {
       const newX = clientX - dragOffset.x;
       const newY = clientY - dragOffset.y;
-      
+
       // 确保弹窗不会拖出屏幕
       const maxX = window.innerWidth - modalRef.current.offsetWidth;
       const maxY = window.innerHeight - modalRef.current.offsetHeight;
-      
+
       setModalPosition({
         x: Math.max(0, Math.min(newX, maxX)),
         y: Math.max(0, Math.min(newY, maxY)),
       });
     }
-    
+
     if (isDraggingButton && buttonRef.current) {
       const newX = clientX - dragOffset.x;
       const newY = clientY - dragOffset.y;
-      
+
       // 确保悬浮球不会拖出屏幕
       const maxX = window.innerWidth - buttonRef.current.offsetWidth;
       const maxY = window.innerHeight - buttonRef.current.offsetHeight;
-      
+
       const newButtonPosition = {
         x: Math.max(0, Math.min(newX, maxX)),
         y: Math.max(0, Math.min(newY, maxY)),
       };
-      
+
       setButtonPosition(newButtonPosition);
-      
+
       // 如果弹窗是打开的，同时更新弹窗位置
       if (isOpen) {
         const modalWidth = 320; // w-80 = 320px
         const margin = 16; // 16px 间距
-        
+
         let modalX = newButtonPosition.x - margin - modalWidth;
         let modalY = newButtonPosition.y - 200; // 弹窗垂直居中于悬浮球
-        
+
         // 确保弹窗不会超出屏幕边界
-        if (modalX < 0) modalX = newButtonPosition.x + 40 + margin; // 如果左侧空间不够，放在右侧
-        if (modalY < 0) modalY = 16; // 如果上方空间不够，放在顶部
-        
+        if (modalX < 0) {
+          modalX = newButtonPosition.x + 40 + margin;
+        } // 如果左侧空间不够，放在右侧
+        if (modalY < 0) {
+          modalY = 16;
+        } // 如果上方空间不够，放在顶部
+
         setModalPosition({ x: modalX, y: modalY });
       }
     }
@@ -154,7 +162,7 @@ export function ContactModalProvider({ children }: { children: React.ReactNode }
       document.addEventListener('mouseup', handleMouseUp);
       document.addEventListener('touchmove', handleMouseMove, { passive: false });
       document.addEventListener('touchend', handleMouseUp);
-      
+
       return () => {
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
@@ -162,7 +170,7 @@ export function ContactModalProvider({ children }: { children: React.ReactNode }
         document.removeEventListener('touchend', handleMouseUp);
       };
     }
-    
+
     // 当不在拖拽状态时，返回一个空的清理函数
     return () => {};
   }, [isDragging, isDraggingButton, dragOffset]);
@@ -191,7 +199,7 @@ export function ContactModalProvider({ children }: { children: React.ReactNode }
   };
 
   return (
-    <ContactModalContext.Provider value={{ openContactModal }}>
+    <ContactModalContext value={{ openContactModal }}>
       {children}
       {/* 悬浮按钮 */}
       <button
@@ -279,6 +287,6 @@ export function ContactModalProvider({ children }: { children: React.ReactNode }
           </div>
         </div>
       )}
-    </ContactModalContext.Provider>
+    </ContactModalContext>
   );
-} 
+}

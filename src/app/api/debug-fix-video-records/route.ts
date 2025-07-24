@@ -37,14 +37,14 @@ export async function GET() {
     }
 
     // 修复需要修复的记录
-    const recordsToFix = records?.filter(record => {
+    const recordsToFix = records?.filter((record) => {
       const hasVideoUrl = record.video_result_url || record.emoji_result_url || record.liveportrait_result_url;
       return hasVideoUrl && record.result_type !== 'video';
     }) || [];
 
     if (recordsToFix.length > 0) {
       console.log(`找到 ${recordsToFix.length} 条需要修复的记录`);
-      
+
       // 批量更新这些记录
       for (const record of recordsToFix) {
         const { error: updateError } = await supabase
@@ -54,7 +54,7 @@ export async function GET() {
             updated_at: new Date().toISOString(),
           })
           .eq('id', record.id);
-        
+
         if (updateError) {
           console.error(`修复记录 ${record.id} 失败:`, updateError);
         } else {
@@ -81,4 +81,4 @@ export async function GET() {
       { status: 500 },
     );
   }
-} 
+}

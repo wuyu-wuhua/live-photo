@@ -549,10 +549,10 @@ export async function POST(request: NextRequest) {
 
     // 解析和验证请求数据
     const requestData: DashscopeImageEditRequest = (await request.json()) as DashscopeImageEditRequest;
-    
+
     // 添加调试日志
     console.log('🔍 接收到的请求数据:', JSON.stringify(requestData, null, 2));
-    
+
     const validationError = await validateRequestData(requestData);
 
     if (validationError) {

@@ -36,10 +36,10 @@ type MockColorizeResponse = {
 async function mockColorizeProcessing(): Promise<MockColorizeResponse> {
   // 模拟处理时间
   await new Promise(resolve => setTimeout(resolve, MOCK_CONFIG.PROCESSING_TIME_MS));
-  
+
   const now = new Date();
   const completedAt = new Date(now.getTime() + MOCK_CONFIG.PROCESSING_TIME_MS);
-  
+
   return {
     id: uuidv4(),
     model: 'Mock DDColor',
@@ -61,7 +61,7 @@ async function safeUpdateTaskStatus(
 ): Promise<void> {
   try {
     console.log(`更新任务状态 - ID: ${editTaskId}, Status: ${status}`);
-    
+
     // 简化更新数据，只包含必要的字段
     const updateData = {
       status,
@@ -90,7 +90,7 @@ async function safeUpdateTaskStatus(
 function createErrorResponse(error: string, status: number = 400) {
   return NextResponse.json(
     { error, success: false },
-    { status }
+    { status },
   );
 }
 
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
     // 1. 验证用户身份
     const supabaseClient = await createClient();
     const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
-    
+
     if (authError || !user) {
       return createErrorResponse(ERROR_MESSAGES.UNAUTHORIZED, 401);
     }
@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
     // 3. 解析请求数据
     const formData = await request.formData();
     const imageFile = formData.get('image') as File;
-    
+
     if (!imageFile) {
       if (creditCheck.transactionId) {
         await refundCreditsForFailedTask(creditCheck.transactionId, '缺少图片文件');
@@ -171,7 +171,7 @@ export async function POST(request: NextRequest) {
       if (creditCheck.transactionId) {
         await refundCreditsForFailedTask(creditCheck.transactionId, '创建任务失败');
       }
-      return createErrorResponse('创建任务失败: ' + createResult.error);
+      return createErrorResponse(`创建任务失败: ${createResult.error}`);
     }
 
     try {
@@ -198,11 +198,11 @@ export async function POST(request: NextRequest) {
       console.log('模拟处理完成，结果URL:', mockResult.output);
 
       // 7. 上传结果图片到我们的存储
-      
+
       // 创建一个模拟的图片文件
       const mockImageBlob = await fetch(mockResult.output).then(r => r.blob());
       const mockImageFile = new File([mockImageBlob], `mock-colorized-${editTaskId}.jpg`, { type: 'image/jpeg' });
-      
+
       const uploadResult = await fileUploadService.uploadFile(
         mockImageFile,
         user.id,
@@ -223,15 +223,14 @@ export async function POST(request: NextRequest) {
           strength: 1.0,
         },
       };
-      
+
       await safeUpdateTaskStatus(editTaskId, 'SUCCEEDED', updateData, supabaseClient);
 
       // 9. 返回成功响应
       return createSuccessResponse(mockResult, editTaskId, MOCK_CONFIG.CREDIT_COST);
-
     } catch (processingError) {
       console.error('处理过程中出错:', processingError);
-      
+
       // 退款并更新任务状态
       if (creditCheck.transactionId) {
         await refundCreditsForFailedTask(creditCheck.transactionId, '处理失败');
@@ -242,15 +241,14 @@ export async function POST(request: NextRequest) {
 
       return createErrorResponse(
         processingError instanceof Error ? processingError.message : ERROR_MESSAGES.INTERNAL_ERROR,
-        500
+        500,
       );
     }
-
   } catch (error) {
     console.error('模拟302.AI上色API错误:', error);
     return createErrorResponse(
       error instanceof Error ? error.message : ERROR_MESSAGES.INTERNAL_ERROR,
-      500
+      500,
     );
   }
-} 
+}

@@ -118,8 +118,6 @@ export default function VideoGeneratePage() {
     fetchImageData();
   }, [imageId]);
 
-
-
   // Check if credits are sufficient
   const checkCredits = () => {
     if (!user) {
@@ -140,7 +138,6 @@ export default function VideoGeneratePage() {
   };
 
   // Check if current video type has enough credits
-
 
   // Generate video
   const generateVideo = async () => {
@@ -327,7 +324,8 @@ export default function VideoGeneratePage() {
           <ModalBody className="pb-6 pt-4">
             <div className="space-y-4">
               <p className="text-sm">
-                {t('common.currentBalance')}:
+                {t('common.currentBalance')}
+                :
                 {' '}
                 <span className="font-medium">
                   {credits?.balance || 0}
@@ -336,7 +334,8 @@ export default function VideoGeneratePage() {
                 </span>
               </p>
               <p className="text-sm">
-                {t('common.requiredCredits')}:
+                {t('common.requiredCredits')}
+                :
                 {' '}
                 <span className="font-medium text-blue-600">
                   {requiredCredits}
@@ -345,7 +344,8 @@ export default function VideoGeneratePage() {
                 </span>
               </p>
               <p className="text-sm">
-                {t('common.difference')}:
+                {t('common.difference')}
+                :
                 {' '}
                 <span className="font-medium text-red-500">
                   {Math.max(0, requiredCredits - (credits?.balance || 0))}

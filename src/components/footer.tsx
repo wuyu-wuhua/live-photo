@@ -2,8 +2,8 @@
 
 import { Button } from '@heroui/react';
 import { Facebook, Github, Instagram, Linkedin, Twitter } from 'lucide-react';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 import { SEO_CONFIG } from '@/app';
 import { cn } from '@/lib/cn';

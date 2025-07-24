@@ -12,11 +12,11 @@ export async function GET(request: NextRequest) {
     // 1. 验证用户身份
     const supabaseClient = await createClient();
     const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
-    
+
     if (authError || !user) {
       return NextResponse.json(
         { success: false, error: '未授权访问' },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     if (!taskId) {
       return NextResponse.json(
         { success: false, error: '缺少任务ID' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -35,14 +35,14 @@ export async function GET(request: NextRequest) {
     if (!DASHSCOPE_CONFIG.API_KEY) {
       return NextResponse.json(
         { success: false, error: '缺少DashScope API密钥配置' },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
     const response = await fetch(`https://dashscope.aliyuncs.com/api/v1/tasks/${taskId}`, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${DASHSCOPE_CONFIG.API_KEY}`,
+        Authorization: `Bearer ${DASHSCOPE_CONFIG.API_KEY}`,
       },
     });
 
@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
       console.error('DashScope API错误响应:', errorText);
       return NextResponse.json(
         { success: false, error: `查询任务状态失败: ${response.status}` },
-        { status: response.status }
+        { status: response.status },
       );
     }
 
@@ -101,12 +101,11 @@ export async function GET(request: NextRequest) {
         usage: result.usage,
       },
     });
-
   } catch (error) {
     console.error('查询任务状态API错误:', error);
     return NextResponse.json(
       { success: false, error: '服务器内部错误' },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}

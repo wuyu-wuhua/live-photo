@@ -36,8 +36,6 @@ type StripePaymentProps = {
   onSuccess: (credits: number) => void;
 };
 
-
-
 function CheckoutForm({ plan, onSuccess, onClose }: Omit<StripePaymentProps, 'isOpen'>) {
   const stripe = useStripe();
   const elements = useElements();
@@ -48,19 +46,19 @@ function CheckoutForm({ plan, onSuccess, onClose }: Omit<StripePaymentProps, 'is
 
   // 动态配置 CardElement 选项
   const cardElementOptions = {
-  style: {
-    base: {
-      'fontSize': '16px',
-      'color': '#424770',
-      '::placeholder': {
-        color: '#aab7c4',
+    style: {
+      base: {
+        'fontSize': '16px',
+        'color': '#424770',
+        '::placeholder': {
+          color: '#aab7c4',
+        },
+      },
+      invalid: {
+        color: '#9e2146',
       },
     },
-    invalid: {
-      color: '#9e2146',
-    },
-  },
-};
+  };
 
   // 创建支付意图
   useEffect(() => {
@@ -235,7 +233,7 @@ export default function StripePayment({ plan, isOpen, onClose, onSuccess }: Stri
   const t = useTranslations();
   const params = useParams();
   const locale = params.locale as string;
-  
+
   const [stripePromise] = useState(() => {
     // 根据当前语言环境设置 Stripe 语言
     return getStripe(locale === 'zh' ? 'zh' : 'en');

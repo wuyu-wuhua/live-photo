@@ -1,9 +1,9 @@
 import type { NextRequest } from 'next/server';
+import { randomUUID } from 'node:crypto';
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
 import { consumeCreditsForImageEdit, refundCreditsForFailedTask } from '@/lib/credits';
+import { createClient } from '@/lib/supabase/server';
 import { ImageEditService } from '@/services/databaseService';
-import { randomUUID } from 'crypto';
 
 // DashScope API配置
 const DASHSCOPE_CONFIG = {
@@ -44,7 +44,7 @@ type VideoSynthesisResponse = {
 async function callDashScopeVideoSynthesisAPI(
   imageUrl: string,
   prompt: string = '让图片动起来，自然的动作和表情',
-  resolution: string = '720P'
+  resolution: string = '720P',
 ): Promise<VideoSynthesisResponse> {
   if (!DASHSCOPE_CONFIG.API_KEY) {
     throw new Error(ERROR_MESSAGES.MISSING_API_KEY);
@@ -56,20 +56,20 @@ async function callDashScopeVideoSynthesisAPI(
   const requestBody = {
     model: 'wanx2.1-i2v-turbo',
     input: {
-      prompt: prompt,
+      prompt,
       img_url: finalImageUrl, // 使用验证过的图片URL
     },
     parameters: {
-      resolution: resolution,
+      resolution,
       prompt_extend: true,
     },
   };
 
   console.log('DashScope视频合成API调用信息:', {
-    apiKey: DASHSCOPE_CONFIG.API_KEY.substring(0, 10) + '...',
+    apiKey: `${DASHSCOPE_CONFIG.API_KEY.substring(0, 10)}...`,
     imageUrl: finalImageUrl.substring(0, 100) + (finalImageUrl.length > 100 ? '...' : ''),
-    prompt: prompt,
-    resolution: resolution,
+    prompt,
+    resolution,
     isBase64: finalImageUrl.startsWith('data:'),
   });
 
@@ -93,7 +93,7 @@ async function callDashScopeVideoSynthesisAPI(
 
   const result = await response.json() as VideoSynthesisResponse;
   console.log('DashScope API成功响应:', result);
-  
+
   return result;
 }
 
@@ -117,14 +117,14 @@ export async function POST(request: NextRequest) {
     // 1. 验证用户身份
     const supabaseClient = await createClient();
     const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
-    
+
     if (authError || !user) {
       return createErrorResponse(ERROR_MESSAGES.UNAUTHORIZED, 401);
     }
 
     // 2. 解析请求数据
     const requestData = await request.json() as VideoSynthesisRequest;
-    
+
     if (!requestData.imageId) {
       return createErrorResponse(ERROR_MESSAGES.MISSING_IMAGE_ID);
     }
@@ -137,11 +137,11 @@ export async function POST(request: NextRequest) {
 
     // 4. 检查积分余额
     const creditCheck = await consumeCreditsForImageEdit(
-      user.id, 
-      'video_synthesis', 
-      DASHSCOPE_CONFIG.CREDIT_COST
+      user.id,
+      'video_synthesis',
+      DASHSCOPE_CONFIG.CREDIT_COST,
     );
-    
+
     if (!creditCheck.success) {
       return createErrorResponse(creditCheck.message || ERROR_MESSAGES.INSUFFICIENT_CREDITS, 402);
     }
@@ -149,10 +149,10 @@ export async function POST(request: NextRequest) {
     transactionId = creditCheck.transactionId;
 
     // 5. 使用上色后的图片URL，而不是原图
-    const imageUrl = imageEditResult.data.result_image_url && imageEditResult.data.result_image_url.length > 0 
-      ? imageEditResult.data.result_image_url[0] 
+    const imageUrl = imageEditResult.data.result_image_url && imageEditResult.data.result_image_url.length > 0
+      ? imageEditResult.data.result_image_url[0]
       : imageEditResult.data.source_image_url;
-      
+
     if (!imageUrl) {
       if (transactionId) {
         await refundCreditsForFailedTask(transactionId, '图片URL不存在');
@@ -165,59 +165,58 @@ export async function POST(request: NextRequest) {
     // 6. 强制下载图片并转换为base64，避免DashScope API无法访问URL的问题
     console.log('开始下载图片并转换为base64...');
     let finalImageUrl = '';
-    
+
     try {
       // 下载图片
       const imageResponse = await fetch(imageUrl);
       if (!imageResponse.ok) {
         throw new Error(`无法下载图片: ${imageResponse.status}`);
       }
-      
+
       const imageBuffer = await imageResponse.arrayBuffer();
       const buffer = Buffer.from(imageBuffer);
-      
+
       // 检查图片大小
       const imageSizeInMB = buffer.length / (1024 * 1024);
       console.log(`图片大小: ${imageSizeInMB.toFixed(2)} MB`);
-      
+
       // 如果图片太大，尝试重新上传到公开存储
       if (imageSizeInMB > 3) {
         console.log('图片过大，尝试重新上传到公开存储...');
-      
-      // 创建FormData
-      const formData = new FormData();
-      const blob = new Blob([imageBuffer], { type: 'image/jpeg' });
-      formData.append('file', blob, 'image.jpg');
-      
+
+        // 创建FormData
+        const formData = new FormData();
+        const blob = new Blob([imageBuffer], { type: 'image/jpeg' });
+        formData.append('file', blob, 'image.jpg');
+
         // 上传到公开API
-      console.log('上传图片到公开API...');
-      const uploadResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/upload-image`, {
-        method: 'POST',
-        body: formData,
-      });
-      
-      if (!uploadResponse.ok) {
-        throw new Error(`上传API失败: ${uploadResponse.status}`);
-      }
-      
-      const uploadResult = await uploadResponse.json() as { success: boolean; url: string };
-      if (!uploadResult.success) {
-        throw new Error('上传失败');
-      }
-      
+        console.log('上传图片到公开API...');
+        const uploadResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/upload-image`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!uploadResponse.ok) {
+          throw new Error(`上传API失败: ${uploadResponse.status}`);
+        }
+
+        const uploadResult = await uploadResponse.json() as { success: boolean; url: string };
+        if (!uploadResult.success) {
+          throw new Error('上传失败');
+        }
+
         finalImageUrl = uploadResult.url;
         console.log('获取到新的公开访问URL:', finalImageUrl);
-      
-      // 等待一段时间确保文件可访问
+
+        // 等待一段时间确保文件可访问
         await new Promise(resolve => setTimeout(resolve, 5000));
-      
+
         // 再次验证URL
         const testResponse = await fetch(finalImageUrl, { method: 'HEAD' });
-      if (!testResponse.ok) {
+        if (!testResponse.ok) {
           throw new Error(`新URL不可访问: ${testResponse.status}`);
-      }
+        }
         console.log('新URL验证成功');
-        
       } else {
         // 图片大小合适，直接转换为base64
         console.log('图片大小合适，转换为base64格式...');
@@ -225,7 +224,6 @@ export async function POST(request: NextRequest) {
         finalImageUrl = `data:image/jpeg;base64,${base64}`;
         console.log('成功转换为base64格式，大小:', (base64.length / 1024 / 1024).toFixed(2), 'MB');
       }
-      
     } catch (error) {
       console.error('处理图片失败:', error);
       if (transactionId) {
@@ -239,7 +237,7 @@ export async function POST(request: NextRequest) {
     const synthesisResult = await callDashScopeVideoSynthesisAPI(
       finalImageUrl,
       requestData.prompt,
-      requestData.resolution
+      requestData.resolution,
     );
 
     console.log('DashScope API调用成功，任务ID:', synthesisResult.output.task_id);
@@ -296,14 +294,14 @@ export async function POST(request: NextRequest) {
       requestData.imageId,
       'RUNNING',
       updateData,
-      supabaseClient
+      supabaseClient,
     );
 
     if (!updateResult.success) {
       if (transactionId) {
         await refundCreditsForFailedTask(transactionId, '更新任务状态失败');
       }
-      return createErrorResponse('更新任务状态失败: ' + updateResult.error);
+      return createErrorResponse(`更新任务状态失败: ${updateResult.error}`);
     }
 
     // 8. 返回成功响应
@@ -316,21 +314,20 @@ export async function POST(request: NextRequest) {
         credit_cost: DASHSCOPE_CONFIG.CREDIT_COST,
       },
     });
-
   } catch (error) {
     console.error('视频合成API错误:', error);
 
     // 如果已经扣除了积分，尝试退款
     if (transactionId) {
       await refundCreditsForFailedTask(
-        transactionId, 
-        error instanceof Error ? error.message : '未知错误'
+        transactionId,
+        error instanceof Error ? error.message : '未知错误',
       );
     }
 
     return createErrorResponse(
       error instanceof Error ? error.message : ERROR_MESSAGES.INTERNAL_ERROR,
-      500
+      500,
     );
   }
 }
@@ -345,8 +342,8 @@ export async function GET(request: NextRequest) {
     const res = await fetch(`https://dashscope.aliyuncs.com/api/v1/tasks/${task_id}`, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${DASHSCOPE_CONFIG.API_KEY}`,
-      }
+        Authorization: `Bearer ${DASHSCOPE_CONFIG.API_KEY}`,
+      },
     });
     const json = await res.json();
     if (!res.ok) {
@@ -357,4 +354,4 @@ export async function GET(request: NextRequest) {
   } catch (e: any) {
     return NextResponse.json({ success: false, error: e?.message || '服务器错误' }, { status: 500 });
   }
-} 
+}

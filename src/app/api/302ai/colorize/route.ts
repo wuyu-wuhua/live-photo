@@ -58,7 +58,7 @@ async function call302AIColorizeAPI(imageFile: File): Promise<ColorizeResponse> 
   formData.append('image', imageFile);
 
   console.log('302.AI API调用信息:', {
-    apiKey: API_302AI_CONFIG.API_KEY.substring(0, 10) + '...',
+    apiKey: `${API_302AI_CONFIG.API_KEY.substring(0, 10)}...`,
     imageSize: imageFile.size,
     imageType: imageFile.type,
   });
@@ -68,7 +68,7 @@ async function call302AIColorizeAPI(imageFile: File): Promise<ColorizeResponse> 
     const response = await fetch('https://api.302.ai/302/submit/colorize', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${API_302AI_CONFIG.API_KEY}`,
+        Authorization: `Bearer ${API_302AI_CONFIG.API_KEY}`,
       },
       body: formData,
     });
@@ -78,24 +78,24 @@ async function call302AIColorizeAPI(imageFile: File): Promise<ColorizeResponse> 
     if (response.ok) {
       const result = await response.json() as any;
       console.log('302.AI API成功响应:', result);
-      
+
       // 检查是否已经完成
       if (result.status === 'succeeded' && result.output) {
         console.log('302.AI API直接返回完成结果，无需轮询');
         return result as ColorizeResponse;
       }
-      
+
       // 如果返回的是任务ID，需要轮询
       if (result.id) {
         console.log('302.AI API返回任务ID，需要轮询:', result.id);
         return result as ColorizeResponse;
       }
-      
+
       throw new Error('302.AI API返回格式异常');
     } else {
       const errorText = await response.text();
       console.error('302.AI API错误响应:', errorText);
-      
+
       // 如果Bearer认证失败，尝试其他认证方式
       const response2 = await fetch('https://api.302.ai/302/submit/colorize', {
         method: 'POST',
@@ -133,7 +133,7 @@ async function pollTaskResult(taskId: string, maxAttempts: number = 60): Promise
     const response = await fetch(`${API_302AI_CONFIG.BASE_URL}${API_302AI_CONFIG.FETCH_ENDPOINT}?id=${taskId}`, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${API_302AI_CONFIG.API_KEY}`,
+        Authorization: `Bearer ${API_302AI_CONFIG.API_KEY}`,
       },
     });
 
@@ -143,12 +143,12 @@ async function pollTaskResult(taskId: string, maxAttempts: number = 60): Promise
 
     const result = await response.json();
     const typedResult = result as ColorizeResponse;
-    
+
     // 检查任务是否完成
     if (typedResult.completed_at && typedResult.output) {
       return typedResult;
     }
-    
+
     // 检查是否有错误
     if (typedResult.error) {
       throw new Error(`302.AI处理失败: ${typedResult.error}`);
@@ -212,7 +212,7 @@ async function safeUpdateTaskStatus(
 ): Promise<void> {
   try {
     console.log(`更新任务状态 - ID: ${editTaskId}, Status: ${status}`);
-    
+
     // 简化更新数据，只包含必要的字段
     const updateData = {
       status,
@@ -243,7 +243,7 @@ async function safeUpdateTaskStatus(
 function createErrorResponse(error: string, status: number = 400) {
   return NextResponse.json(
     { error, success: false },
-    { status }
+    { status },
   );
 }
 
@@ -273,7 +273,7 @@ export async function POST(request: NextRequest) {
     // 1. 验证用户身份
     const supabaseClient = await createClient();
     const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
-    
+
     if (authError || !user) {
       return createErrorResponse(ERROR_MESSAGES.UNAUTHORIZED, 401);
     }
@@ -287,7 +287,7 @@ export async function POST(request: NextRequest) {
     // 3. 解析请求数据
     const formData = await request.formData();
     const imageFile = formData.get('image') as File;
-    
+
     if (!imageFile) {
       if (creditCheck.transactionId) {
         await refundCreditsForFailedTask(creditCheck.transactionId, '缺少图片文件');
@@ -324,7 +324,7 @@ export async function POST(request: NextRequest) {
       if (creditCheck.transactionId) {
         await refundCreditsForFailedTask(creditCheck.transactionId, '创建任务失败');
       }
-      return createErrorResponse('创建任务失败: ' + createResult.error);
+      return createErrorResponse(`创建任务失败: ${createResult.error}`);
     }
 
     try {
@@ -382,15 +382,14 @@ export async function POST(request: NextRequest) {
           strength: 1.0,
         },
       };
-      
+
       await safeUpdateTaskStatus(editTaskId, 'SUCCEEDED', updateData, supabaseClient);
 
       // 11. 返回成功响应
       return createSuccessResponse(finalResult, { id: editTaskId }, API_302AI_CONFIG.CREDIT_COST);
-
     } catch (processingError) {
       console.error('处理过程中出错:', processingError);
-      
+
       // 退款并更新任务状态
       if (creditCheck.transactionId) {
         await refundCreditsForFailedTask(creditCheck.transactionId, '处理失败');
@@ -401,15 +400,14 @@ export async function POST(request: NextRequest) {
 
       return createErrorResponse(
         processingError instanceof Error ? processingError.message : ERROR_MESSAGES.INTERNAL_ERROR,
-        500
+        500,
       );
     }
-
   } catch (error) {
     console.error('302.AI上色API错误:', error);
     return createErrorResponse(
       error instanceof Error ? error.message : ERROR_MESSAGES.INTERNAL_ERROR,
-      500
+      500,
     );
   }
-} 
+}

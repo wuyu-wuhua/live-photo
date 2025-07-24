@@ -84,7 +84,7 @@ export function HomeTestimonialsSection() {
   // 将翻译键转换为实际文本
   const translatedTestimonials = testimonials.map(testimonial => ({
     ...testimonial,
-    text: t(testimonial.text)
+    text: t(testimonial.text),
   }));
 
   return (

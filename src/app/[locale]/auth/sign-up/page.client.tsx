@@ -2,13 +2,13 @@
 
 import { Button, Card, CardBody, Divider, Image } from '@heroui/react';
 
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useState } from 'react';
 import { SEO_CONFIG } from '@/app';
 import { GitHubIcon } from '@/components/icons/github';
 import { GoogleIcon } from '@/components/icons/google';
 import { signInWithGitHub, signInWithGoogle } from '@/lib/auth-client';
-import { useTranslations } from 'next-intl';
 
 export function SignUpPageClient() {
   const t = useTranslations();
@@ -93,26 +93,26 @@ export function SignUpPageClient() {
                     {error}
                   </div>
                 )}
-                
+
                 <div className="grid grid-cols-2 gap-4">
-                <Button
-                  className="flex items-center gap-2"
-                  disabled={loading}
-                  onClick={handleGitHubSignUp}
-                >
-                  <GitHubIcon className="h-5 w-5" />
+                  <Button
+                    className="flex items-center gap-2"
+                    disabled={loading}
+                    onClick={handleGitHubSignUp}
+                  >
+                    <GitHubIcon className="h-5 w-5" />
                     {t('auth.github')}
-                </Button>
-                <Button
-                  className="flex items-center gap-2"
-                  disabled={loading}
-                  onClick={handleGoogleSignUp}
-                >
-                  <GoogleIcon className="h-5 w-5" />
+                  </Button>
+                  <Button
+                    className="flex items-center gap-2"
+                    disabled={loading}
+                    onClick={handleGoogleSignUp}
+                  >
+                    <GoogleIcon className="h-5 w-5" />
                     {t('auth.google')}
-                </Button>
-              </div>
-                
+                  </Button>
+                </div>
+
                 <div className="relative mt-6">
                   <div className="absolute inset-0 flex items-center">
                     <Divider className="w-full" />
@@ -123,16 +123,16 @@ export function SignUpPageClient() {
                     </span>
                   </div>
                 </div>
-                
-              <div className="mt-6 text-center text-sm text-muted-foreground">
+
+                <div className="mt-6 text-center text-sm text-muted-foreground">
                   {t('auth.alreadyHaveAccount')}
-                {' '}
-                <Link
-                  className="text-primary underline-offset-4 hover:underline"
-                  href="/auth/sign-in"
-                >
+                  {' '}
+                  <Link
+                    className="text-primary underline-offset-4 hover:underline"
+                    href="/auth/sign-in"
+                  >
                     {t('auth.signInLink')}
-                </Link>
+                  </Link>
                 </div>
               </div>
             </CardBody>

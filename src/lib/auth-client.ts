@@ -96,7 +96,7 @@ export async function signInWithGitHub(): Promise<AuthResponse> {
     console.log('开始GitHub OAuth登录...');
     console.log('当前域名:', window.location.origin);
     console.log('重定向URL:', `${window.location.origin}/auth/callback`);
-    
+
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
@@ -134,7 +134,7 @@ export async function signInWithGoogle(): Promise<AuthResponse> {
     console.log('开始Google OAuth登录...');
     console.log('当前域名:', window.location.origin);
     console.log('重定向URL:', `${window.location.origin}/auth/callback`);
-    
+
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {

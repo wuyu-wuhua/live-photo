@@ -2,7 +2,7 @@
 
 import type { CreditPlan } from '@/types/database';
 import { Button, Card, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, Spinner, useDisclosure } from '@heroui/react';
-import {  Wallet } from 'lucide-react';
+import { Wallet } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useCredits } from '@/hooks/useCredits';
@@ -220,7 +220,7 @@ export default function CreditsUI() {
             {activeTab === 'buy' && (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {creditPlans.map((plan) => (
+                  {creditPlans.map(plan => (
                     <Card key={plan.id} className="p-4">
                       <div className="flex justify-between items-start mb-2">
                         <div>
@@ -235,11 +235,19 @@ export default function CreditsUI() {
                       </div>
                       <div className="mb-4">
                         <div className="text-2xl font-bold">
-                          ${plan.price}
-                          {plan.is_subscription && <span className="text-sm font-normal text-gray-500">/{t('credits.month')}</span>}
+                          $
+                          {plan.price}
+                          {plan.is_subscription && (
+                            <span className="text-sm font-normal text-gray-500">
+                              /
+                              {t('credits.month')}
+                            </span>
+                          )}
                         </div>
                         <div className="text-sm text-gray-600 dark:text-gray-400">
-                          {plan.credits} {t('credits.credits')}
+                          {plan.credits}
+                          {' '}
+                          {t('credits.credits')}
                         </div>
                       </div>
                       <Button
@@ -273,9 +281,9 @@ export default function CreditsUI() {
                     <SelectItem key="out">{t('credits.expense')}</SelectItem>
                   </Select>
                 </div>
-                
+
                 <div className="space-y-2">
-                  {recentTransactions.map((transaction) => (
+                  {recentTransactions.map(transaction => (
                     <Card key={transaction.id} className="p-4">
                       <div className="flex justify-between items-center">
                         <div>
@@ -286,7 +294,8 @@ export default function CreditsUI() {
                         </div>
                         <div className="text-right">
                           <div className={getAmountClass(transaction.amount)}>
-                            {transaction.amount > 0 ? '+' : ''}{transaction.amount}
+                            {transaction.amount > 0 ? '+' : ''}
+                            {transaction.amount}
                           </div>
                           <div className="text-xs text-gray-500">
                             {getTransactionStatusLabel(transaction.status)}

@@ -126,25 +126,25 @@ export default function ImageDetailModal({
             <div>
               <div className="font-medium mb-2">{t('generatedResult')}</div>
               {imageResult.result_image_url && imageResult.result_image_url.length > 0 && (
-                    <div className="relative group">
-                              <Image
+                <div className="relative group">
+                  <Image
                     src={imageResult.result_image_url[0] ? String(imageResult.result_image_url[0]) : ''}
-                                alt={t('generatedResult')}
-                                className="w-full rounded-lg object-contain"
-                              />
-                              <div className="absolute inset-0 flex items-center justify-center opacity-0 bg-black/50 transition-opacity group-hover:opacity-100 rounded-lg">
-                                <Button
-                                  isIconOnly
-                                  color="default"
-                                  variant="flat"
-                                  radius="full"
-                                  onClick={() => handleDownload(imageResult.result_image_url[0] || '')}
-                                >
-                                  <Download size={20} />
-                                </Button>
-                              </div>
-                    </div>
-                  )}
+                    alt={t('generatedResult')}
+                    className="w-full rounded-lg object-contain"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 bg-black/50 transition-opacity group-hover:opacity-100 rounded-lg">
+                    <Button
+                      isIconOnly
+                      color="default"
+                      variant="flat"
+                      radius="full"
+                      onClick={() => handleDownload(imageResult.result_image_url[0] || '')}
+                    >
+                      <Download size={20} />
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           {/* 额外的图片结果 */}
@@ -154,22 +154,22 @@ export default function ImageDetailModal({
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                 {imageResult.result_image_url.slice(1).map((url, index) => (
                   <div key={index} className="relative group">
-                            <Image
+                    <Image
                       src={url ? String(url) : ''}
-                              alt={`${t('generatedResult')} ${index + 2}`}
-                              className="w-full aspect-square object-cover rounded-lg"
-                            />
-                            <div className="absolute inset-0 flex items-center justify-center opacity-0 bg-black/50 transition-opacity group-hover:opacity-100 rounded-lg">
-                              <Button
-                                isIconOnly
-                                color="default"
-                                variant="flat"
-                                radius="full"
-                                onClick={() => handleDownload(url)}
-                              >
-                                <Download size={20} />
-                              </Button>
-                            </div>
+                      alt={`${t('generatedResult')} ${index + 2}`}
+                      className="w-full aspect-square object-cover rounded-lg"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 bg-black/50 transition-opacity group-hover:opacity-100 rounded-lg">
+                      <Button
+                        isIconOnly
+                        color="default"
+                        variant="flat"
+                        radius="full"
+                        onClick={() => handleDownload(url)}
+                      >
+                        <Download size={20} />
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>

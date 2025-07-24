@@ -4,12 +4,12 @@ import type { FileUploadConfig, FileUploadResult } from '@/services/fileUploadSe
 import { Button } from '@heroui/react';
 import { Loader2, Upload, X } from 'lucide-react';
 
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ImageUploading, { type ImageListType } from 'react-images-uploading';
 import { useImageUpload } from '@/hooks/useFileUpload';
 import { cn } from '@/lib/utils';
-import { useTranslations } from 'next-intl';
 
 // 常量定义
 const ACCEPTED_FILE_TYPES = ['jpg', 'gif', 'png', 'jpeg', 'webp']; // 移除 as const 断言

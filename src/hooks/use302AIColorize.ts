@@ -100,4 +100,4 @@ export function use302AIColorize(): Use302AIColorizeReturn {
     colorizeImage,
     reset,
   };
-} 
+}

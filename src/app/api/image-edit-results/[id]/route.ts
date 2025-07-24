@@ -1,27 +1,27 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
-type RouteContext = { params: { id: string } }
+type RouteContext = { params: { id: string } };
 
 export async function DELETE(
   // request: NextRequest, // 未使用，彻底移除
-  { params }: RouteContext
+  { params }: RouteContext,
 ) {
   try {
     const supabaseClient = await createClient();
     const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
-    
+
     if (authError || !user) {
       console.log('删除API - 认证失败:', authError);
       return NextResponse.json(
         { error: 'Unauthorized access' },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     const resultId = params.id;
     console.log('删除API - 开始删除记录:', resultId, '用户ID:', user.id);
-    
+
     // 获取要删除的记录
     const { data: result, error: fetchError } = await supabaseClient
       .from('image_edit_results')
@@ -34,7 +34,7 @@ export async function DELETE(
       console.log('删除API - 记录不存在:', { resultId, fetchError, result });
       return NextResponse.json(
         { error: 'Record not found or no permission to delete' },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -49,20 +49,19 @@ export async function DELETE(
       console.error('删除记录失败:', deleteError);
       return NextResponse.json(
         { error: 'Failed to delete' },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
     return NextResponse.json(
       { success: true, message: 'Deleted successfully' },
-      { status: 200 }
+      { status: 200 },
     );
-
   } catch (error) {
     console.error('删除图片编辑结果错误:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}

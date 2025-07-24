@@ -7,12 +7,12 @@
  */
 export async function compressImage(
   imageBuffer: ArrayBuffer,
-  maxSizeInMB: number = 2
+  maxSizeInMB: number = 2,
 ): Promise<ArrayBuffer> {
   return new Promise((resolve, reject) => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    
+
     if (!ctx) {
       reject(new Error('无法创建canvas上下文'));
       return;
@@ -23,7 +23,7 @@ export async function compressImage(
       // 计算压缩比例
       const originalSize = imageBuffer.byteLength / (1024 * 1024);
       let quality = 0.8;
-      
+
       if (originalSize > maxSizeInMB) {
         quality = Math.max(0.1, maxSizeInMB / originalSize);
       }
@@ -45,12 +45,12 @@ export async function compressImage(
           }
         },
         'image/jpeg',
-        quality
+        quality,
       );
     };
 
     img.onerror = () => reject(new Error('图片加载失败'));
-    
+
     const blob = new Blob([imageBuffer]);
     img.src = URL.createObjectURL(blob);
   });
@@ -75,10 +75,10 @@ export function getImageInfo(imageBuffer: ArrayBuffer): {
   const sizeInBytes = imageBuffer.byteLength;
   const sizeInKB = sizeInBytes / 1024;
   const sizeInMB = sizeInKB / 1024;
-  
+
   return {
     sizeInBytes,
     sizeInKB,
-    sizeInMB
+    sizeInMB,
   };
-} 
+}

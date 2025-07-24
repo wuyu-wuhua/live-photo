@@ -1,12 +1,11 @@
+import { ArrowLeft, Database, Eye, FileText, Lock, Server, Shield, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { ArrowLeft, Shield, Eye, Lock, Users, Database, Server, FileText } from 'lucide-react';
-
 
 export default function PrivacyPolicyPage() {
   const t = useTranslations('privacy');
   const commonT = useTranslations('common');
-  
+
   return (
     <div className="min-h-screen bg-background">
       <main className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
@@ -38,7 +37,9 @@ export default function PrivacyPolicyPage() {
           </p>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-full text-sm text-muted-foreground">
             <FileText className="w-4 h-4" />
-            {t('lastUpdated')}: {t('lastUpdatedDate')}
+            {t('lastUpdated')}
+            :
+            {t('lastUpdatedDate')}
           </div>
         </section>
 
@@ -91,7 +92,7 @@ export default function PrivacyPolicyPage() {
                       <div className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
                       {t('usageData3')}
                     </li>
-                </ul>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -225,4 +226,4 @@ export default function PrivacyPolicyPage() {
       </main>
     </div>
   );
-} 
+}

@@ -410,12 +410,10 @@
       }
     },
     "errors": {
-      "fileSizeExceeded": "File size exceeds limit ({size}MB)",
-      "unsupportedFileType": "Unsupported file type: {type}",
-      "invalidImageDimensions": "Image dimensions do not meet requirements. Image width and height must be between 512-4096 pixels. Current dimensions: {width} x {height} pixels. System will automatically adjust image dimensions.",
-      "imageLoadError": "Unable to read image dimensions, please check if the image file is corrupted",
+      "fileSizeExceeded": "File is too large, max {size}MB",
       "unsupportedFileType": "Unsupported file format. Only JPEG, PNG, WebP are supported",
-      "fileSizeExceeded": "File is too large, max {size}MB"
+      "invalidImageDimensions": "Image dimensions do not meet requirements. Image width and height must be between 512-4096 pixels. Current dimensions: {width} x {height} pixels. System will automatically adjust image dimensions.",
+      "imageLoadError": "Unable to read image dimensions, please check if the image file is corrupted"
     },
     "notices": {
       "imageResized": "Image dimensions have been automatically adjusted to meet requirements"
@@ -531,16 +529,16 @@
     "currentBalance": "Current Balance",
     "requiredCredits": "Required Credits",
     "difference": "Difference",
-    "credits": "Credits",
+    "creditLabel": "Credits",
     "goToRecharge": "Go to Recharge",
-    "cancel": "Cancel",
+    "cancelAction": "Cancel",
     "generating": "Generating...",
     "startGenerate": "Start Generate"
   },
-  "nav": {
+  "navigation": {
     "gallery": "Gallery"
   },
-  "auth": {
+  "authentication": {
     "signInTitle": "Sign in to your account",
     "signInSubtitle": "Sign in with your social account",
     "signUpTitle": "Create your account",
@@ -862,7 +860,7 @@
     "refund": "Refund",
     "expiration": "Credit Expiration",
     "promotional": "Promotional Gift",
-    "credits": "Credits",
+    "creditLabel": "Credits",
     "balance": "Balance",
     "noTransactions": "No transactions yet",
     "noGenerations": "No generations yet",
@@ -924,7 +922,7 @@
     "loadMore": "Load More",
     "noData": "No data"
   },
-  "credits": "Credits",
+  "creditLabel": "Credits",
   "privacy": {
     "title": "Privacy Policy",
     "intro": "We value your privacy. This policy explains how we collect, use, and protect your information.",

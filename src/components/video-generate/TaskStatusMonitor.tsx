@@ -1,17 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { Button, Card, CardBody, CardHeader, Progress, Spinner } from '@heroui/react';
 import { AlertCircle, CheckCircle, Clock, RefreshCw, XCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 type TaskStatus = 'PENDING' | 'RUNNING' | 'SUCCEEDED' | 'FAILED';
 
-interface TaskStatusMonitorProps {
+type TaskStatusMonitorProps = {
   taskId: string;
   onSuccess: (videoUrl: string) => void;
   onError: (error: string) => void;
-}
+};
 
 export function TaskStatusMonitor({ taskId, onSuccess, onError }: TaskStatusMonitorProps) {
   const [status, setStatus] = useState<TaskStatus>('PENDING');
@@ -21,7 +21,9 @@ export function TaskStatusMonitor({ taskId, onSuccess, onError }: TaskStatusMoni
 
   // 轮询任务状态
   useEffect(() => {
-    if (!taskId) return;
+    if (!taskId) {
+      return;
+    }
 
     const pollTaskStatus = async () => {
       try {
@@ -126,14 +128,20 @@ export function TaskStatusMonitor({ taskId, onSuccess, onError }: TaskStatusMoni
         {getStatusIcon()}
         <div className="flex flex-col">
           <h4 className="text-sm font-medium">视频生成状态</h4>
-          <p className="text-xs text-gray-500">任务ID: {taskId}</p>
+          <p className="text-xs text-gray-500">
+            任务ID:
+            {taskId}
+          </p>
         </div>
       </CardHeader>
       <CardBody className="space-y-4">
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span>{getStatusText()}</span>
-            <span className="text-gray-500">{Math.round(progress)}%</span>
+            <span className="text-gray-500">
+              {Math.round(progress)}
+              %
+            </span>
           </div>
           <Progress
             value={progress}

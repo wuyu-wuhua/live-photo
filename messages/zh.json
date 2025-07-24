@@ -16,7 +16,7 @@
     "logout": "退出",
     "pricing": "价格",
     "profile": "个人中心",
-    "gallery": "画廊"
+    "galleryLabel": "画廊"
   },
   "Navigation": {
     "home": "首页",
@@ -33,7 +33,6 @@
     "description": "抱歉，您访问的页面不存在。",
     "backToHome": "返回首页"
   },
-
 
   "footer": {
     "brandName": "LivePhoto",
@@ -384,12 +383,10 @@
       }
     },
     "errors": {
-      "fileSizeExceeded": "文件大小超出限制（{size}MB）",
-      "unsupportedFileType": "不支持的文件类型：{type}",
-      "invalidImageDimensions": "图片尺寸不符合要求。图片的宽度和高度必须在 512-4096 像素之间。当前尺寸：{width} x {height} 像素。系统将自动调整图片尺寸。",
-      "imageLoadError": "无法读取图片尺寸，请检查图片文件是否损坏",
+      "fileSizeExceeded": "文件过大，最大{size}MB",
       "unsupportedFileType": "文件格式不支持。支持JPEG、PNG、WebP",
-      "fileSizeExceeded": "文件过大，最大{size}MB"
+      "invalidImageDimensions": "图片尺寸不符合要求。图片的宽度和高度必须在 512-4096 像素之间。当前尺寸：{width} x {height} 像素。系统将自动调整图片尺寸。",
+      "imageLoadError": "无法读取图片尺寸，请检查图片文件是否损坏"
     },
     "notices": {
       "imageResized": "图片尺寸已自动调整到符合要求的范围"
@@ -539,7 +536,7 @@
     "signup": "注册",
     "logout": "退出",
     "profile": "个人中心",
-    "gallery": "画廊",
+    "galleryLabel": "画廊",
     "settings": "设置",
     "help": "帮助",
     "feedback": "反馈",
@@ -584,14 +581,14 @@
     "currentBalance": "当前余额",
     "requiredCredits": "所需积分",
     "difference": "差额",
-    "credits": "积分",
+    "creditLabel": "积分",
     "goToRecharge": "去充值",
-    "cancel": "取消",
+    "cancelAction": "取消",
     "generating": "生成中...",
     "startGenerate": "开始生成",
-    "close": "关闭",
-    "completed": "已完成",
-    "experienceTheDifference": "体验差异"
+    "closeAction": "关闭",
+    "completedStatus": "已完成",
+    "experienceDifference": "体验差异"
   },
   "pricing": {
     "title": "简单透明的价格",
@@ -994,7 +991,7 @@
     "loadMore": "加载更多",
     "noData": "暂无数据"
   },
-  "credits": "积分",
+  "creditLabel": "积分",
   "privacy": {
     "title": "隐私政策",
     "intro": "我们重视您的隐私。本政策说明我们如何收集、使用和保护您的信息。",

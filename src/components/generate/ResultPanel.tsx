@@ -12,13 +12,13 @@ import {
   DrawerFooter,
   DrawerHeader,
   Image,
-  Spinner,
-  useDisclosure,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Spinner,
+  useDisclosure,
 } from '@heroui/react';
 import { Download, ImageIcon, Sparkles, Wand2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -54,8 +54,7 @@ const downloadImage = async (imageUrl: string, filename: string) => {
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
   } catch (error) {
-    const t = useTranslations('resultPanel');
-    console.error(t('downloadImageFailed'), error);
+    console.error('下载图片失败:', error);
   }
 };
 
@@ -96,7 +95,7 @@ export function ResultPanel({
   // 订阅 Supabase 实时更新
   useEffect(() => {
     console.log('调试信息 - useEffect 触发，imageEditResultId:', imageEditResultId);
-    
+
     if (!imageEditResultId) {
       console.log('调试信息 - imageEditResultId 为空，跳过订阅');
       return;
@@ -173,7 +172,9 @@ export function ResultPanel({
 
   // 生成视频逻辑
   const handleVideoGenerate = useCallback(async () => {
-    if (isVideoGenerating) return;
+    if (isVideoGenerating) {
+      return;
+    }
     setIsVideoGenerating(true);
     setVideoError(null);
     setGeneratedVideoUrl(null);
@@ -271,27 +272,33 @@ export function ResultPanel({
               {/* 右侧视频或loading */}
               <div className="flex flex-col items-center">
                 <h5 className="text-sm mb-2 text-gray-500">{t('video')}</h5>
-                {isLoading ? (
-                  <div className="flex flex-col items-center justify-center h-64 w-full">
-                    <Spinner size="lg" />
-                    <span className="mt-4 text-gray-400 text-sm">{t('generatingVideo')}</span>
-                  </div>
-                ) : error ? (
-                  <div className="flex flex-col items-center justify-center h-64 w-full">
-                    <span className="text-red-500 text-sm">{error}</span>
-                  </div>
-                ) : isValidVideoUrl ? (
-                  <video
-                    src={videoUrl}
-                    controls
-                    className="w-full rounded-lg object-contain"
-                    style={{ background: '#000' }}
-                  />
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-64 w-full">
-                    <span className="text-gray-400 text-sm">{t('videoNotStarted')}</span>
-                  </div>
-                )}
+                {isLoading
+                  ? (
+                      <div className="flex flex-col items-center justify-center h-64 w-full">
+                        <Spinner size="lg" />
+                        <span className="mt-4 text-gray-400 text-sm">{t('generatingVideo')}</span>
+                      </div>
+                    )
+                  : error
+                    ? (
+                        <div className="flex flex-col items-center justify-center h-64 w-full">
+                          <span className="text-red-500 text-sm">{error}</span>
+                        </div>
+                      )
+                    : isValidVideoUrl
+                      ? (
+                          <video
+                            src={videoUrl}
+                            controls
+                            className="w-full rounded-lg object-contain"
+                            style={{ background: '#000' }}
+                          />
+                        )
+                      : (
+                          <div className="flex flex-col items-center justify-center h-64 w-full">
+                            <span className="text-gray-400 text-sm">{t('videoNotStarted')}</span>
+                          </div>
+                        )}
               </div>
             </div>
           </ModalBody>
@@ -336,7 +343,6 @@ export function ResultPanel({
         isLoading={isVideoGenerating}
         error={videoError}
       />
-
 
       <Card className="backdrop-blur-md bg-white/10 dark:bg-black/10 border-0 shadow-2xl">
         <CardHeader>
@@ -424,7 +430,7 @@ export function ResultPanel({
                                   startContent={<Download className="w-4 h-4" />}
                                   onPress={() => {
                                     const imageUrl = colorizedImage || generatedImages[0]!;
-                                    const filename = colorizedImage 
+                                    const filename = colorizedImage
                                       ? `colorized-image-${Date.now()}.png`
                                       : `generated-image-${Date.now()}.png`;
                                     downloadImage(imageUrl, filename);
@@ -452,7 +458,7 @@ export function ResultPanel({
                               >
                                 <Image
                                   src={colorizedImage || generatedImages[0]}
-                                  alt={colorizedImage ? "Colorized image" : "Generated image"}
+                                  alt={colorizedImage ? 'Colorized image' : 'Generated image'}
                                   className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
                                 />
                                 <div
@@ -460,15 +466,13 @@ export function ResultPanel({
                                 />
                               </div>
                             </div>
-                            
+
                             {/* 视频生成区域 - 在参考图片下方 */}
                             {/* 删除生成视频相关区域 */}
                           </div>
                         </div>
                       </div>
                     )}
-
-
 
                     {/* 显示视频生成错误 */}
                     {videoError && (
@@ -532,36 +536,38 @@ export function ResultPanel({
                     )}
                   </div>
                 )
-              : originalImageUrl ? (
-                  <div className="flex flex-col items-center justify-center py-8 px-8 text-center">
-                    <div className="relative mb-4">
-                      <div
-                        className="relative p-4 rounded-full bg-gradient-to-br from-gray-100/50 to-gray-200/50 dark:from-gray-800/50 dark:to-gray-700/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
-                      >
-                        <ImageIcon className="w-6 h-6 text-gray-400 dark:text-gray-500" />
+              : originalImageUrl
+                ? (
+                    <div className="flex flex-col items-center justify-center py-8 px-8 text-center">
+                      <div className="relative mb-4">
+                        <div
+                          className="relative p-4 rounded-full bg-gradient-to-br from-gray-100/50 to-gray-200/50 dark:from-gray-800/50 dark:to-gray-700/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
+                        >
+                          <ImageIcon className="w-6 h-6 text-gray-400 dark:text-gray-500" />
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <h4 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                          {t('waitingGenerate')}
+                        </h4>
+                        <p className="text-xs text-gray-500 dark:text-gray-500 max-w-xs">
+                          {t('waitingDescription')}
+                        </p>
                       </div>
                     </div>
-                    <div className="space-y-1">
-                      <h4 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                        {t('waitingGenerate')}
-                      </h4>
-                      <p className="text-xs text-gray-500 dark:text-gray-500 max-w-xs">
-                        {t('waitingDescription')}
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center min-h-[300px] px-8 text-center">
-                    <div className="relative mb-4">
-                      <div className="relative p-4 rounded-full bg-gradient-to-br from-gray-100/30 to-gray-200/30 dark:from-gray-800/30 dark:to-gray-700/30 backdrop-blur-sm border border-gray-200/30 dark:border-gray-700/30">
-                        <ImageIcon className="w-6 h-6 text-gray-400 dark:text-gray-500" />
+                  )
+                : (
+                    <div className="flex flex-col items-center justify-center min-h-[300px] px-8 text-center">
+                      <div className="relative mb-4">
+                        <div className="relative p-4 rounded-full bg-gradient-to-br from-gray-100/30 to-gray-200/30 dark:from-gray-800/30 dark:to-gray-700/30 backdrop-blur-sm border border-gray-200/30 dark:border-gray-700/30">
+                          <ImageIcon className="w-6 h-6 text-gray-400 dark:text-gray-500" />
+                        </div>
+                      </div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                        {t('pleaseUploadImage')}
                       </div>
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">
-                      {t('pleaseUploadImage')}
-                    </div>
-                  </div>
-                )}
+                  )}
         </CardBody>
       </Card>
 
@@ -585,14 +591,14 @@ export function ResultPanel({
                   src={colorizedImage || generatedImages[0] || ''}
                   alt={t('referenceImage')}
                   className="w-full h-auto object-cover"
-                  onError={(e) => console.error('参考图片加载错误:', e)}
+                  onError={e => console.error('参考图片加载错误:', e)}
                 />
               </div>
             </div>
-            
+
             {/* 视频预览标题 */}
             <h4 className="text-base font-semibold mb-2">{t('videoPreview')}</h4>
-            
+
             {/* 视频生成状态监控 */}
             {videoTaskId && (
               <div className="w-full mt-6">
@@ -603,18 +609,18 @@ export function ResultPanel({
                 />
               </div>
             )}
-            
+
             {/* 视频展示区 */}
             {generatedVideoUrl && (
               <div className="w-full flex flex-col items-center mt-6">
                 <h5 className="text-base font-semibold mb-2 text-white/90">{t('videoResult')}</h5>
-                <video 
-                  src={generatedVideoUrl} 
-                  controls 
-                  autoPlay 
-                  loop 
-                  className="w-full max-w-md rounded-lg shadow-lg bg-black" 
-                  onError={(e) => console.error('视频加载错误:', e)}
+                <video
+                  src={generatedVideoUrl}
+                  controls
+                  autoPlay
+                  loop
+                  className="w-full max-w-md rounded-lg shadow-lg bg-black"
+                  onError={e => console.error('视频加载错误:', e)}
                 />
                 <Button
                   size="sm"
@@ -628,7 +634,7 @@ export function ResultPanel({
                 </Button>
               </div>
             )}
-            
+
             {/* 视频生成错误显示 */}
             {videoError && (
               <div className="w-full mt-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
@@ -653,7 +659,8 @@ export function ResultPanel({
               {isVideoGenerating ? t('generating') : (generatedVideoUrl ? t('regenerate') : t('startGenerate'))}
               <span className="ml-2 flex items-center bg-white/20 rounded-full px-2 py-0.5 text-xs font-medium">
                 <Sparkles className="w-4 h-4 mr-1 text-yellow-400" />
-                {videoCreditCost}{t('credits')}
+                {videoCreditCost}
+                {t('credits')}
               </span>
             </Button>
           </DrawerFooter>

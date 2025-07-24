@@ -1,14 +1,14 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { createClient } from '@/lib/supabase/client';
-import ImageUploading, { type ImageListType } from 'react-images-uploading';
-import { useCallback, useEffect, useState } from 'react';
 import { Loader2, Upload, X } from 'lucide-react';
-import { v4 as uuidv4 } from 'uuid';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { useCallback, useEffect, useState } from 'react';
+import ImageUploading, { type ImageListType } from 'react-images-uploading';
+import { v4 as uuidv4 } from 'uuid';
+import { Button } from '@/components/ui/button';
+import { createClient } from '@/lib/supabase/client';
+import { cn } from '@/lib/utils';
 
 // 常量定义
 const STORAGE_BUCKET = 'live-photos';
@@ -206,7 +206,7 @@ export function PictureCardUpload({
         } catch (cleanupError) {
           console.error('Failed to cleanup uploaded file:', cleanupError);
         }
-                  throw new Error(`${t('saveRecordFailed')}: ${dbError.message}`);
+        throw new Error(`${t('saveRecordFailed')}: ${dbError.message}`);
       }
 
       const uploadedFile: UploadFile = {

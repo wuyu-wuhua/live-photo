@@ -2,7 +2,7 @@
 
 import type { ImageEditResult } from '@/types/database';
 import { Checkbox, Image } from '@heroui/react';
-import { CheckCircle, Clock, Download, Loader2, Mic, Smile, VideoIcon, XCircle, Trash2, Wand2 } from 'lucide-react';
+import { CheckCircle, Clock, Download, Loader2, Mic, Smile, Trash2, VideoIcon, Wand2, XCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
@@ -52,7 +52,7 @@ export default function GalleryCard({
         return result.liveportrait_result_url;
       }
     }
-    
+
     // 对于图片类型，检查表情包和对口型结果
     if (result.emoji_result_url) {
       return result.emoji_result_url;
@@ -60,11 +60,11 @@ export default function GalleryCard({
     if (result.liveportrait_result_url) {
       return result.liveportrait_result_url;
     }
-    
+
     // 最后返回图片结果
     return result.result_image_url && result.result_image_url.length > 0 ? result.result_image_url[0] : null;
   };
-  
+
   const displayUrl = getDisplayMediaUrl() || '/placeholder-image.jpg';
   const isVideo = result.result_type === 'video' && (result.video_result_url || result.emoji_result_url || result.liveportrait_result_url);
   const isGif = result.emoji_result_url && result.result_type !== 'video';
@@ -72,17 +72,17 @@ export default function GalleryCard({
   // 获取状态显示信息（修正：图片类型一律显示已完成）
   const getStatusInfo = (status: string) => {
     if (isVideo) {
-    switch (status) {
-      case 'SUCCEEDED':
-        return { color: 'success', icon: CheckCircle, text: t('status.completed') };
-      case 'RUNNING':
-        return { color: 'warning', icon: Loader2, text: t('status.processing') };
-      case 'PENDING':
-        return { color: 'default', icon: Clock, text: t('status.pending') };
-      case 'FAILED':
-        return { color: 'danger', icon: XCircle, text: t('status.failed') };
-      default:
-        return { color: 'default', icon: Clock, text: t('status.unknown') };
+      switch (status) {
+        case 'SUCCEEDED':
+          return { color: 'success', icon: CheckCircle, text: t('status.completed') };
+        case 'RUNNING':
+          return { color: 'warning', icon: Loader2, text: t('status.processing') };
+        case 'PENDING':
+          return { color: 'default', icon: Clock, text: t('status.pending') };
+        case 'FAILED':
+          return { color: 'danger', icon: XCircle, text: t('status.failed') };
+        default:
+          return { color: 'default', icon: Clock, text: t('status.unknown') };
       }
     } else {
       // 图片类型一律显示已完成
@@ -116,9 +116,15 @@ export default function GalleryCard({
 
   // 功能类型显示
   const getFunctionLabel = () => {
-    if (isVideo) return t('video_synthesis');
-    if (isGif) return t('gifResult');
-    if ((result.request_parameters as any)?.function === 'colorization') return t('colorization');
+    if (isVideo) {
+      return t('video_synthesis');
+    }
+    if (isGif) {
+      return t('gifResult');
+    }
+    if ((result.request_parameters as any)?.function === 'colorization') {
+      return t('colorization');
+    }
     return t('image');
   };
 
@@ -186,7 +192,7 @@ export default function GalleryCard({
                     className="w-full h-auto object-cover rounded-t-lg"
                     loading="lazy"
                   />
-          )}
+                )}
 
           {/* 视频类型标识 */}
           {isVideo && (
@@ -234,7 +240,7 @@ export default function GalleryCard({
               onClick={(e) => {
                 e.stopPropagation();
                 setIsDownloadClicked(true);
-                const filename = isGif 
+                const filename = isGif
                   ? `animated-gif-${result.id}.gif`
                   : `${result.result_type}_${result.id}`;
                 handleDownloadClick(displayUrl || '', filename);
@@ -245,22 +251,22 @@ export default function GalleryCard({
             >
               <Download size={16} />
             </Button>
-          {/* 删除按钮 */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1 min-w-0 flex-shrink-0 border border-red-200 hover:border-red-300 shadow-sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (onDelete) {
-                onDelete(result);
-              }
-            }}
-            title="删除"
-          >
-            <Trash2 size={16} />
-          </Button>
-        </div>
+            {/* 删除按钮 */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1 min-w-0 flex-shrink-0 border border-red-200 hover:border-red-300 shadow-sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (onDelete) {
+                  onDelete(result);
+                }
+              }}
+              title="删除"
+            >
+              <Trash2 size={16} />
+            </Button>
+          </div>
         </div>
         {/* 额外功能状态 */}
         <div className="flex gap-2 w-full">

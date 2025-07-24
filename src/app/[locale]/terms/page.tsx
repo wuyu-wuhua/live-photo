@@ -1,12 +1,12 @@
+import { AlertTriangle, ArrowLeft, CheckCircle, CreditCard, FileText, Scale, Settings, Shield, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { ArrowLeft, FileText, CheckCircle, Shield, Users, CreditCard, Scale, AlertTriangle, Settings } from 'lucide-react';
 // import { Button } from '@heroui/react'; // 未使用，移除
 
 export default function TermsPage() {
   const t = useTranslations('terms');
   const commonT = useTranslations('common');
-  
+
   return (
     <div className="min-h-screen bg-background">
       <main className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
@@ -38,7 +38,9 @@ export default function TermsPage() {
           </p>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-full text-sm text-muted-foreground">
             <FileText className="w-4 h-4" />
-            {t('lastUpdated')}: {t('lastUpdatedDate')}
+            {t('lastUpdated')}
+            :
+            {t('lastUpdatedDate')}
           </div>
         </section>
 
@@ -139,7 +141,7 @@ export default function TermsPage() {
                       <div className="w-1.5 h-1.5 bg-pink-500 rounded-full mt-2 flex-shrink-0"></div>
                       {t('accountSecurity3')}
                     </li>
-                </ul>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -252,7 +254,7 @@ export default function TermsPage() {
                 <div className="bg-white/50 dark:bg-gray-800/50 rounded-2xl p-6 border border-white/20">
                   <h3 className="font-semibold mb-3 text-lg">{t('thirdPartyTitle')}</h3>
                   <p className="text-gray-600 dark:text-gray-400">{t('thirdParty')}</p>
-              </div>
+                </div>
               </div>
             </div>
           </section>
@@ -283,4 +285,4 @@ export default function TermsPage() {
       </main>
     </div>
   );
-} 
+}

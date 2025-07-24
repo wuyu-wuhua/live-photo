@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,7 +9,7 @@ export async function POST(request: NextRequest) {
     if (!inputs || !inputs.image) {
       return NextResponse.json(
         { error: '缺少必要的参数' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -19,7 +20,7 @@ export async function POST(request: NextRequest) {
     if (!API_KEY) {
       return NextResponse.json(
         { error: 'API密钥未配置' },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -32,9 +33,9 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         inputs: {
-          image: inputs.image,
-          'add-prompt': inputs['add-prompt'] || ''
-        }
+          'image': inputs.image,
+          'add-prompt': inputs['add-prompt'] || '',
+        },
       }),
     });
 
@@ -50,7 +51,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         success: false,
         message: '未获取到GIF地址',
-        raw: result
+        raw: result,
       }, { status: 500 });
     }
     return NextResponse.json({
@@ -58,14 +59,13 @@ export async function POST(request: NextRequest) {
       url: gifUrl,
       gif_url: gifUrl,
       output: gifUrl,
-      message: 'GIF生成成功'
+      message: 'GIF生成成功',
     });
-
   } catch (error) {
     console.error('GIF generation error:', error);
     return NextResponse.json(
       { error: '服务器内部错误' },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}

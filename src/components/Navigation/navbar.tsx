@@ -7,8 +7,8 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { Icon } from '@/components/Icon';
-import { ThemeSwitch } from '@/components/theme-switch';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { ThemeSwitch } from '@/components/theme-switch';
 
 import { useUser } from '@/hooks/useUser';
 import { signOut } from '@/lib/auth-client';

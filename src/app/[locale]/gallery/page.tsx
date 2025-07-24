@@ -2,18 +2,18 @@
 'use client';
 
 import type { ImageEditResult, QueryParams } from '@/types/database';
-import { Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, Pagination, Spinner, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@heroui/react';
-import { toast } from 'sonner';
+import { Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Spinner, useDisclosure } from '@heroui/react';
 import { Images, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useState, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import Masonry from 'react-masonry-css';
+import { toast } from 'sonner';
 import GalleryCard from '@/components/gallery/GalleryCard';
 import ImageDetailModal from '@/components/gallery/ImageDetailModal';
+import VideoDetailModal from '@/components/gallery/VideoDetailModal';
 import { VideoParameterPanel } from '@/components/video-generate/VideoParameterPanel';
 import { useImageEditResults } from '@/hooks/useDatabase';
-import { useRouter, usePathname } from 'next/navigation';
-import VideoDetailModal from '@/components/gallery/VideoDetailModal';
 
 import '@/styles/masonry.css';
 
@@ -77,8 +77,12 @@ export default function GalleryPage(props: GalleryPageProps) {
   // 优先用props传递的typeFilter，否则用路由判断
   let typeFilter: 'all' | 'image' | 'video' = propTypeFilter || 'all';
   if (!propTypeFilter) {
-    if (pathname.endsWith('/images')) typeFilter = 'image';
-    if (pathname.endsWith('/videos')) typeFilter = 'video';
+    if (pathname.endsWith('/images')) {
+      typeFilter = 'image';
+    }
+    if (pathname.endsWith('/videos')) {
+      typeFilter = 'video';
+    }
   }
 
   const [state, setState] = useState<GalleryPageState>({
@@ -104,7 +108,7 @@ export default function GalleryPage(props: GalleryPageProps) {
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
   const [imageToDelete, setImageToDelete] = useState<ImageEditResult | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
-  
+
   // 多选状态
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [isSelectMode, setIsSelectMode] = useState(false);
@@ -161,7 +165,7 @@ export default function GalleryPage(props: GalleryPageProps) {
   // 处理多选
   const handleSelectItem = (itemId: string) => {
     console.log('选择项目:', itemId);
-    setSelectedItems(prev => {
+    setSelectedItems((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(itemId)) {
         newSet.delete(itemId);
@@ -175,7 +179,7 @@ export default function GalleryPage(props: GalleryPageProps) {
     });
   };
 
-          // {t('gallery.selectAll')}/{t('gallery.cancelSelectAll')}
+  // {t('gallery.selectAll')}/{t('gallery.cancelSelectAll')}
   const handleSelectAll = () => {
     if (selectedItems.size === results.length) {
       setSelectedItems(new Set());
@@ -189,7 +193,7 @@ export default function GalleryPage(props: GalleryPageProps) {
     console.log('批量删除按钮被点击');
     console.log('当前选中的项目数量:', selectedItems.size);
     console.log('选中的项目:', Array.from(selectedItems));
-    
+
     if (selectedItems.size === 0) {
       toast.error(t('pleaseSelectItems'));
       return;
@@ -209,7 +213,7 @@ export default function GalleryPage(props: GalleryPageProps) {
     console.log('要删除的项目:', itemsToDelete);
     console.log('imageToDelete:', imageToDelete);
     console.log('selectedItems:', selectedItems);
-    
+
     if (itemsToDelete.length === 0) {
       console.log('没有项目需要删除');
       toast.error(t('pleaseSelectItems'));
@@ -218,7 +222,7 @@ export default function GalleryPage(props: GalleryPageProps) {
 
     const isBatch = !imageToDelete;
     console.log('是否为批量删除:', isBatch);
-    
+
     if (isBatch) {
       setIsBatchDeleting(true);
     } else {
@@ -237,7 +241,7 @@ export default function GalleryPage(props: GalleryPageProps) {
           });
 
           console.log('删除响应状态:', response.status);
-          
+
           if (response.ok) {
             successCount++;
             console.log('删除成功:', itemId);
@@ -252,7 +256,7 @@ export default function GalleryPage(props: GalleryPageProps) {
         }
       }
 
-                    if (successCount > 0) {
+      if (successCount > 0) {
         toast.success(t('deleteSuccess', { count: successCount }));
         if (errorCount > 0) {
           toast.error(t('deleteFailedWithCount', { count: errorCount }));
@@ -264,7 +268,7 @@ export default function GalleryPage(props: GalleryPageProps) {
       } else {
         toast.error(t('deleteFailed'));
       }
-      
+
       // 清理状态
       setSelectedItems(new Set());
       setIsSelectMode(false);
@@ -287,9 +291,13 @@ export default function GalleryPage(props: GalleryPageProps) {
   // 类型过滤器
   const handleTypeFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    if (value === 'all') router.push('/gallery');
-    else if (value === 'image') router.push('/gallery/images');
-    else if (value === 'video') router.push('/gallery/videos');
+    if (value === 'all') {
+      router.push('/gallery');
+    } else if (value === 'image') {
+      router.push('/gallery/images');
+    } else if (value === 'video') {
+      router.push('/gallery/videos');
+    }
   };
 
   return (
@@ -299,50 +307,56 @@ export default function GalleryPage(props: GalleryPageProps) {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div className="flex items-center gap-4">
             <h1 className="text-2xl font-bold">{t('title')}</h1>
-            
+
             {/* 多选控制按钮 */}
-            {!isSelectMode ? (
-              <Button
-                size="sm"
-                variant="flat"
-                color="primary"
-                onPress={() => setIsSelectMode(true)}
-                className="text-xs"
-              >
-                {t('selectMode')}
-              </Button>
-            ) : (
-              <div className="flex items-center gap-2">
-                <Button
-                  size="sm"
-                  variant="flat"
-                  color="secondary"
-                  onPress={handleSelectAll}
-                  className="text-xs"
-                >
-                  {selectedItems.size === results.length ? t('deselectAll') : t('selectAll')}
-                </Button>
-                <Button
-                  size="sm"
-                  variant="flat"
-                  color="danger"
-                  onPress={handleBatchDelete}
-                  startContent={<Trash2 size={14} />}
-                  isDisabled={selectedItems.size === 0}
-                  className="text-xs"
-                >
-                  {t('batchDelete')} ({selectedItems.size})
-                </Button>
-                <Button
-                  size="sm"
-                  variant="light"
-                  onPress={exitSelectMode}
-                  className="text-xs"
-                >
-                  {t('cancel')}
-                </Button>
-              </div>
-            )}
+            {!isSelectMode
+              ? (
+                  <Button
+                    size="sm"
+                    variant="flat"
+                    color="primary"
+                    onPress={() => setIsSelectMode(true)}
+                    className="text-xs"
+                  >
+                    {t('selectMode')}
+                  </Button>
+                )
+              : (
+                  <div className="flex items-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="flat"
+                      color="secondary"
+                      onPress={handleSelectAll}
+                      className="text-xs"
+                    >
+                      {selectedItems.size === results.length ? t('deselectAll') : t('selectAll')}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="flat"
+                      color="danger"
+                      onPress={handleBatchDelete}
+                      startContent={<Trash2 size={14} />}
+                      isDisabled={selectedItems.size === 0}
+                      className="text-xs"
+                    >
+                      {t('batchDelete')}
+                      {' '}
+                      (
+                      {selectedItems.size}
+                      )
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="light"
+                      onPress={exitSelectMode}
+                      className="text-xs"
+                    >
+                      {t('cancel')}
+                    </Button>
+                  </div>
+                )}
           </div>
 
           <div className="flex flex-wrap gap-2">
@@ -451,7 +465,9 @@ export default function GalleryPage(props: GalleryPageProps) {
       {selectedVideoResult && selectedVideoResult.result_type === 'video' && (
         <VideoDetailModal
           isOpen={isOpen}
-          onClose={() => { setSelectedVideoResult(null); onClose(); }}
+          onClose={() => {
+            setSelectedVideoResult(null); onClose();
+          }}
           videoResult={selectedVideoResult}
           formatTime={formatTime}
         />
@@ -469,9 +485,9 @@ export default function GalleryPage(props: GalleryPageProps) {
             )}
           </DrawerBody>
           <DrawerFooter>
-                            <Button color="danger" variant="light" onPress={onDrawerClose}>
-                  {t('cancel')}
-                </Button>
+            <Button color="danger" variant="light" onPress={onDrawerClose}>
+              {t('cancel')}
+            </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
@@ -484,18 +500,17 @@ export default function GalleryPage(props: GalleryPageProps) {
           </ModalHeader>
           <ModalBody>
             <p>
-              {imageToDelete 
-                ? t('deleteConfirmMessage') 
-                : t('batchDeleteConfirmMessage', { count: selectedItems.size })
-              }
+              {imageToDelete
+                ? t('deleteConfirmMessage')
+                : t('batchDeleteConfirmMessage', { count: selectedItems.size })}
             </p>
           </ModalBody>
           <ModalFooter>
             <Button color="default" variant="light" onPress={onDeleteModalClose}>
               {t('cancel')}
             </Button>
-            <Button 
-              color="danger" 
+            <Button
+              color="danger"
               onPress={confirmDelete}
               isLoading={isDeleting || isBatchDeleting}
             >
