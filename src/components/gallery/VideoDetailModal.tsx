@@ -40,23 +40,27 @@ export default function VideoDetailModal({
             <div className="flex flex-col items-center">
               <h5 className="text-sm mb-2 text-gray-500">{t('originalImage')}</h5>
               {/* 优先显示原始图片，如果没有则显示处理后的图片 */}
-              {videoResult.source_image_url ? (
-                <img
-                  src={videoResult.source_image_url}
-                  alt={t('originalImage')}
-                  className="w-full rounded-lg object-contain"
-                  style={{ maxHeight: 360, background: '#222' }}
-                />
-              ) : (videoResult.result_image_url && videoResult.result_image_url.length > 0) ? (
-                <img
-                  src={videoResult.result_image_url[0]}
-                  alt={t('originalImage')}
-                  className="w-full rounded-lg object-contain"
-                  style={{ maxHeight: 360, background: '#222' }}
-                />
-              ) : (
-                <div className="text-gray-400 text-center">{t('noOriginalImage')}</div>
-              )}
+              {videoResult.source_image_url
+                ? (
+                    <img
+                      src={videoResult.source_image_url}
+                      alt={t('originalImage')}
+                      className="w-full rounded-lg object-contain"
+                      style={{ maxHeight: 360, background: '#222' }}
+                    />
+                  )
+                : (videoResult.result_image_url && videoResult.result_image_url.length > 0)
+                    ? (
+                        <img
+                          src={videoResult.result_image_url[0]}
+                          alt={t('originalImage')}
+                          className="w-full rounded-lg object-contain"
+                          style={{ maxHeight: 360, background: '#222' }}
+                        />
+                      )
+                    : (
+                        <div className="text-gray-400 text-center">{t('noOriginalImage')}</div>
+                      )}
             </div>
             {/* 右侧视频 */}
             <div className="flex flex-col items-center">

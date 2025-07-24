@@ -132,8 +132,8 @@ export default function GalleryPage(props: GalleryPageProps) {
   useEffect(() => {
     const timer = setInterval(() => {
       // 只在有正在处理的任务时才刷新
-      const hasProcessingTasks = results.some(result => 
-        result.status === 'RUNNING' || result.status === 'PENDING'
+      const hasProcessingTasks = results.some(result =>
+        result.status === 'RUNNING' || result.status === 'PENDING',
       );
       if (hasProcessingTasks) {
         refetch();
