@@ -1,8 +1,18 @@
 import { createBrowserClient } from '@supabase/ssr';
 
 export function createClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  let supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // 清理URL格式，确保没有多余的字符
+  if (supabaseUrl) {
+    // 移除可能的前缀字符（如 'd'）
+    supabaseUrl = supabaseUrl.replace(/^[^h]*/, '');
+    // 确保URL以 https:// 开头
+    if (!supabaseUrl.startsWith('https://')) {
+      supabaseUrl = `https://${supabaseUrl.replace(/^https?:\/\//, '')}`;
+    }
+  }
 
   console.log('Supabase配置检查:', {
     hasUrl: !!supabaseUrl,
