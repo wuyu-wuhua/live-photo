@@ -6,6 +6,17 @@ import { updateSession } from './lib/supabase/middleware';
 const intlMiddleware = createMiddleware(routing);
 
 export default async function middleware(request: NextRequest) {
+  // 跳过认证相关的路径，避免中间件干扰认证流程
+  const authPaths = ['/auth', '/api/auth'];
+  const isAuthPath = authPaths.some(path =>
+    request.nextUrl.pathname.includes(path),
+  );
+  
+  if (isAuthPath) {
+    // 对于认证相关路径，直接执行国际化中间件，不进行认证检查
+    return intlMiddleware(request);
+  }
+
   // 需要登录保护的路径
   const protectedPaths = ['/generate', '/gallery'];
 
