@@ -265,7 +265,7 @@ export default function GeneratePage() {
                   <span className="text-sm font-medium">
                     {creditsLoading ? '...' : credits?.balance || 0}
                     {' '}
-                    {t('credits')}
+                    {t('credits.credits')}
                   </span>
                 </div>
                 <Button
@@ -354,7 +354,7 @@ export default function GeneratePage() {
                         <p className="text-sm font-medium mt-1 text-gray-700 dark:text-gray-300">
                           {plan.credits}
                           {' '}
-                          {t('credits')}
+                          {t('credits.credits')}
                         </p>
                       </div>
                       <div className="text-right">
@@ -366,7 +366,7 @@ export default function GeneratePage() {
                           $
                           {(plan.price / plan.credits * 100).toFixed(2)}
                           /100
-                          {t('credits')}
+                          {t('credits.credits')}
                         </p>
                       </div>
                     </div>
