@@ -19,7 +19,7 @@ export default function GeneratePage() {
   const t = useTranslations();
   const { user } = useUser();
   const { credits, loading: creditsLoading, refresh: refreshCredits } = useCredits();
-  const { colorizeImage, isLoading: isColorizing, result: colorizedImage, error: colorizeError, reset: resetColorize } = use302AIColorize();
+  const { colorizeImage, isLoading: isColorizing, result: colorizedImage, error: colorizeError } = use302AIColorize();
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [baseImageFiles, setBaseImageFiles] = useState<FormUploadFile[]>([]);

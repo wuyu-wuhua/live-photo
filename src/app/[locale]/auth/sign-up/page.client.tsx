@@ -3,7 +3,6 @@
 import { Button, Card, CardBody, Divider, Image } from '@heroui/react';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SEO_CONFIG } from '@/app';
 import { GitHubIcon } from '@/components/icons/github';
@@ -13,7 +12,6 @@ import { useTranslations } from 'next-intl';
 
 export function SignUpPageClient() {
   const t = useTranslations();
-  const router = useRouter();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 

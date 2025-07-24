@@ -368,20 +368,6 @@ async function processImageUploadAsync(
 }
 
 /**
- * 验证图片尺寸（简化版本）
- */
-async function validateImageDimensions(imageUrl: string): Promise<boolean> {
-  try {
-    // 对于服务器端验证，我们暂时跳过复杂的尺寸检测
-    // 让DashScope API自己处理尺寸验证，我们只在前端进行验证
-    return true;
-  } catch (error) {
-    console.error('验证图片尺寸失败:', error);
-    return true; // 验证失败时，让API自己处理
-  }
-}
-
-/**
  * 验证请求参数
  */
 async function validateRequestData(requestData: DashscopeImageEditRequest): Promise<string | null> {

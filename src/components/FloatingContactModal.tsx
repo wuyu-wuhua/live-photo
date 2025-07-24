@@ -162,6 +162,9 @@ export function ContactModalProvider({ children }: { children: React.ReactNode }
         document.removeEventListener('touchend', handleMouseUp);
       };
     }
+    
+    // 当不在拖拽状态时，返回一个空的清理函数
+    return () => {};
   }, [isDragging, isDraggingButton, dragOffset]);
 
   // 初始化悬浮球位置

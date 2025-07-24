@@ -39,49 +39,6 @@ type VideoSynthesisResponse = {
 };
 
 /**
- * 验证图片URL是否可访问
- */
-async function validateImageUrl(imageUrl: string): Promise<boolean> {
-  try {
-    // 使用AbortController来实现超时
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
-    
-    const response = await fetch(imageUrl, { 
-      method: 'HEAD',
-      signal: controller.signal
-    });
-    
-    clearTimeout(timeoutId);
-    return response.ok;
-  } catch (error) {
-    console.error('图片URL验证失败:', error);
-    return false;
-  }
-}
-
-/**
- * 下载图片并转换为base64
- */
-async function downloadImageAsBase64(imageUrl: string): Promise<string> {
-  try {
-    const response = await fetch(imageUrl);
-    if (!response.ok) {
-      throw new Error(`下载图片失败: ${response.status}`);
-    }
-    
-    const arrayBuffer = await response.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    const base64 = buffer.toString('base64');
-    
-    return `data:image/jpeg;base64,${base64}`;
-  } catch (error) {
-    console.error('下载图片失败:', error);
-    throw error;
-  }
-}
-
-/**
  * 调用DashScope视频合成API
  */
 async function callDashScopeVideoSynthesisAPI(
@@ -138,50 +95,6 @@ async function callDashScopeVideoSynthesisAPI(
   console.log('DashScope API成功响应:', result);
   
   return result;
-}
-
-/**
- * 轮询任务状态
- */
-async function pollTaskStatus(taskId: string): Promise<any> {
-  if (!DASHSCOPE_CONFIG.API_KEY) {
-    throw new Error(ERROR_MESSAGES.MISSING_API_KEY);
-  }
-
-  const maxAttempts = 60; // 最多轮询60次
-  const pollInterval = 5000; // 每5秒轮询一次
-
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    console.log(`轮询任务状态 - 第${attempt + 1}次, 任务ID: ${taskId}`);
-
-    const response = await fetch(`https://dashscope.aliyuncs.com/api/v1/tasks/${taskId}`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${DASHSCOPE_CONFIG.API_KEY}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`轮询任务状态失败: ${response.status}`);
-    }
-
-    const result = await response.json() as any;
-    console.log('轮询结果:', result);
-
-    if (result.output?.task_status === 'SUCCEEDED') {
-      console.log('任务完成:', result);
-      return result;
-    }
-
-    if (result.output?.task_status === 'FAILED') {
-      throw new Error('视频生成任务失败');
-    }
-
-    // 等待后继续轮询
-    await new Promise(resolve => setTimeout(resolve, pollInterval));
-  }
-
-  throw new Error('轮询超时，任务可能仍在处理中');
 }
 
 /**
@@ -335,7 +248,6 @@ export async function POST(request: NextRequest) {
     try {
       const imageEditResult = await ImageEditService.getById(requestData.imageId, supabaseClient);
       if (imageEditResult.success && imageEditResult.data) {
-        const safeResultImageUrl = Array.isArray(imageEditResult.data.result_image_url) ? imageEditResult.data.result_image_url : [];
         const safeSourceImageUrl = imageEditResult.data.source_image_url || '';
         let safeRequestParameters: Record<string, any> = {};
         if (typeof imageEditResult.data.request_parameters === 'object' && imageEditResult.data.request_parameters !== null && !Array.isArray(imageEditResult.data.request_parameters)) {

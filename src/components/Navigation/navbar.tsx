@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { Icon } from '@/components/Icon';
 import { ThemeSwitch } from '@/components/theme-switch';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-import { siteConfig } from '@/config/site';
+
 import { useUser } from '@/hooks/useUser';
 import { signOut } from '@/lib/auth-client';
 

@@ -3,17 +3,16 @@
 import { Button, Card, CardBody, Divider, Image } from '@heroui/react';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { SEO_CONFIG, SYSTEM_CONFIG } from '@/app';
+import { SEO_CONFIG} from '@/app';
 import { GitHubIcon } from '@/components/icons/github';
 import { GoogleIcon } from '@/components/icons/google';
 import { signInWithGitHub, signInWithGoogle } from '@/lib/auth-client';
 
 export function SignInPageClient() {
   const t = useTranslations();
-  const router = useRouter();
+  // const router = useRouter(); // 已声明但未使用，需移除
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 

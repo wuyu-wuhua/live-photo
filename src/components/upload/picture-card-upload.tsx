@@ -132,8 +132,6 @@ export function PictureCardUpload({
       throw new Error(t('userIdRequired'));
     }
 
-    // 获取文件扩展名
-    const fileExtension = file.name.split('.').pop() || '';
     const tempId = `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
     // 创建临时文件对象显示上传进度

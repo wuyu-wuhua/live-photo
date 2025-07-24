@@ -31,12 +31,7 @@ export default antfu(
       '@next/next': nextPlugin,
     },
     rules: {
-      ...nextPlugin.configs.recommended.rules,
-      ...nextPlugin.configs['core-web-vitals'].rules,
-    },
-  },
-  {
-    rules: {
+      // 只保留自定义规则，不合并 nextPlugin 的 rules，避免类型冲突
       'antfu/no-top-level-await': 'off', // Allow top-level await
       'style/brace-style': ['error', '1tbs'], // Use the default brace style
       'ts/consistent-type-definitions': ['error', 'type'], // Use `type` instead of `interface`

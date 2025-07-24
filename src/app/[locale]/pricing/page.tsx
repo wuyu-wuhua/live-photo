@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Card, CardBody, CardFooter, CardHeader, Chip } from '@heroui/react';
+import { Button, Card, CardBody, CardFooter, CardHeader } from '@heroui/react';
 import { Check, CreditCard } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';

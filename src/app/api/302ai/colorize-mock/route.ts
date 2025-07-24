@@ -33,7 +33,7 @@ type MockColorizeResponse = {
 /**
  * 模拟302.AI上色处理
  */
-async function mockColorizeProcessing(imageFile: File): Promise<MockColorizeResponse> {
+async function mockColorizeProcessing(): Promise<MockColorizeResponse> {
   // 模拟处理时间
   await new Promise(resolve => setTimeout(resolve, MOCK_CONFIG.PROCESSING_TIME_MS));
   
@@ -194,7 +194,7 @@ export async function POST(request: NextRequest) {
 
       // 7. 模拟302.AI处理
       console.log('开始模拟302.AI上色处理...');
-      const mockResult = await mockColorizeProcessing(imageFile);
+      const mockResult = await mockColorizeProcessing();
       console.log('模拟处理完成，结果URL:', mockResult.output);
 
       // 7. 上传结果图片到我们的存储

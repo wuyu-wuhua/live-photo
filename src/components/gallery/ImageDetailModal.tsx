@@ -1,10 +1,9 @@
 'use client';
 
 import type { ImageEditResult } from '@/types/database';
-import { Button, Card, CardBody, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spinner } from '@heroui/react';
-import { CheckCircle, Clock, Download, Loader2, Mic, Smile, XCircle, Wand2 } from 'lucide-react';
+import { Button, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@heroui/react';
+import { CheckCircle, Clock, Download, Loader2, XCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useRouter } from '@/i18n/i18nConfig';
 
 type ImageDetailModalProps = {
   isOpen: boolean;
@@ -22,7 +21,6 @@ export default function ImageDetailModal({
   formatTime,
 }: ImageDetailModalProps) {
   const t = useTranslations('gallery');
-  const router = useRouter();
   if (!imageResult) {
     return null;
   }

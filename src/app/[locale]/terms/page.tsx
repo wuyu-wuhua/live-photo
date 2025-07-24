@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { ArrowLeft, FileText, CheckCircle, Shield, Users, CreditCard, Scale, AlertTriangle, Settings } from 'lucide-react';
-import { Button } from '@heroui/react';
+// import { Button } from '@heroui/react'; // 未使用，移除
 
 export default function TermsPage() {
   const t = useTranslations('terms');

@@ -15,7 +15,6 @@ import { useState } from 'react';
 import { PictureCardForm } from '@/components/upload/picture-card-form';
 import { useCredits } from '@/hooks/useCredits';
 import { Label } from '../ui/label';
-import { t } from 'node_modules/framer-motion/dist/types.d-CtuPurYT';
 
 // 导入上传配置
 const UPLOAD_CONFIG = {

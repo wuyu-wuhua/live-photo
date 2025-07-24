@@ -23,14 +23,14 @@ export default function VideoGeneratePage() {
   const { user } = useUser();
   const { credits, loading: creditsLoading, refresh: refreshCredits, hasEnoughCredits } = useCredits();
 
-  const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [imageData, setImageData] = useState<ImageEditResult | null>(null);
   const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string>('');
-  const [videoType, setVideoType] = useState<'emoji' | 'liveportrait'>('emoji');
-  const [audioUrl, setAudioUrl] = useState<string>('');
-  const [drivenId, setDrivenId] = useState<string>('mengwa_kaixin');
+  // 只保留 videoType，不要 setVideoType
+  const [videoType] = useState<'emoji' | 'liveportrait'>('emoji');
+  const [audioUrl] = useState<string>('');
+  const [drivenId] = useState<string>('mengwa_kaixin');
   const [showCreditModal, setShowCreditModal] = useState(false);
   const [requiredCredits, setRequiredCredits] = useState(0);
   const [creditsConsumed, setCreditsConsumed] = useState<number | undefined>(undefined);
@@ -95,7 +95,6 @@ export default function VideoGeneratePage() {
       if (!imageId) {
         setError('Missing image ID parameter');
         toast.error('Missing image ID parameter');
-        setIsLoading(false);
         return;
       }
 
@@ -112,29 +111,14 @@ export default function VideoGeneratePage() {
         toast.error('Error while retrieving image data');
         console.error(err);
       } finally {
-        setIsLoading(false);
+        // setIsLoading(false); // 未使用，移除
       }
     }
 
     fetchImageData();
   }, [imageId]);
 
-  // Handle video type change
-  const handleVideoTypeChange = (type: 'emoji' | 'liveportrait') => {
-    setVideoType(type);
-    // Update required credits - fixed at 3 credits for all video types
-    setRequiredCredits(3);
-  };
 
-  // Handle audio URL change
-  const handleAudioUrlChange = (url: string) => {
-    setAudioUrl(url);
-  };
-
-  // Handle emoji template ID change
-  const handleDrivenIdChange = (id: string) => {
-    setDrivenId(id);
-  };
 
   // Check if credits are sufficient
   const checkCredits = () => {
@@ -156,14 +140,7 @@ export default function VideoGeneratePage() {
   };
 
   // Check if current video type has enough credits
-  const currentHasEnoughCredits = () => {
-    if (!user) {
-      return false;
-    }
-    // Fixed cost at 3 credits for all video types
-    const cost = 3;
-    return hasEnoughCredits(cost);
-  };
+
 
   // Generate video
   const generateVideo = async () => {

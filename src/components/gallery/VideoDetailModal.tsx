@@ -6,7 +6,6 @@ interface VideoDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   videoResult: ImageEditResult | null;
-  handleDownload: (url: string, filename?: string) => void;
   formatTime: (date: string) => string;
 }
 
@@ -14,7 +13,6 @@ export default function VideoDetailModal({
   isOpen,
   onClose,
   videoResult,
-  handleDownload,
   formatTime,
 }: VideoDetailModalProps) {
   const t = useTranslations('gallery');

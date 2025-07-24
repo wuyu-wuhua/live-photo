@@ -231,11 +231,15 @@ export default function GalleryCard({
               variant="ghost"
               size="sm"
               className="text-blue-500 hover:text-blue-700 hover:bg-blue-50 p-1 min-w-0 flex-shrink-0 border border-blue-200 hover:border-blue-300 shadow-sm"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsDownloadClicked(true);
                 const filename = isGif 
                   ? `animated-gif-${result.id}.gif`
                   : `${result.result_type}_${result.id}`;
                 handleDownloadClick(displayUrl || '', filename);
+                // 重置状态
+                setTimeout(() => setIsDownloadClicked(false), 100);
               }}
               title="下载"
             >

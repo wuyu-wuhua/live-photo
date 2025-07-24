@@ -1,11 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { ImageEditService } from '@/services/databaseService';
 
 type RouteContext = { params: { id: string } }
 
 export async function DELETE(
-  request: NextRequest,
+  // request: NextRequest, // 未使用，彻底移除
   { params }: RouteContext
 ) {
   try {

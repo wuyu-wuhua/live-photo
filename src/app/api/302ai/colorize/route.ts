@@ -27,10 +27,6 @@ const ERROR_MESSAGES = {
   INTERNAL_ERROR: '服务器内部错误',
 } as const;
 
-type ColorizeRequest = {
-  image: File;
-};
-
 type ColorizeResponse = {
   id: string;
   model: string;
@@ -239,38 +235,6 @@ async function safeUpdateTaskStatus(
     // 不抛出错误，只记录日志
     console.warn('任务状态更新失败，但继续执行');
   }
-}
-
-/**
- * 创建编辑任务数据
- */
-function createEditTaskData(
-  result: ColorizeResponse,
-  userId: string,
-): any {
-  return {
-    id: uuidv4(),
-    user_id: userId,
-    function: 'colorization',
-    prompt: '黑白照片上色',
-    parameters: {
-      model: '302.AI DDColor',
-      strength: 1.0,
-    },
-    base_image_url: '', // 将在后续更新
-    result_image_url: result.output,
-    status: 'SUCCEEDED',
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    completed_at: result.completed_at,
-    error_message: result.error || null,
-    processing_time_ms: result.completed_at && result.created_at 
-      ? new Date(result.completed_at).getTime() - new Date(result.created_at).getTime()
-      : null,
-    credit_cost: API_302AI_CONFIG.CREDIT_COST,
-    external_task_id: result.id,
-    external_model: result.model,
-  };
 }
 
 /**

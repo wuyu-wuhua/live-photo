@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { ArrowLeft, CreditCard, Clock, Shield, XCircle, Mail, CheckCircle, AlertCircle } from 'lucide-react';
+import { ArrowLeft, CreditCard, Clock, Shield, XCircle, Mail, CheckCircle} from 'lucide-react';
 
 export default function RefundPolicyPage() {
   const t = useTranslations('refundPolicy');

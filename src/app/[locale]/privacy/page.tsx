@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { ArrowLeft, Shield, Eye, Lock, Users, Database, Server, FileText } from 'lucide-react';
-import { Button } from '@heroui/react';
+
 
 export default function PrivacyPolicyPage() {
   const t = useTranslations('privacy');

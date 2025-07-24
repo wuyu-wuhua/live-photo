@@ -5,7 +5,7 @@ import { Languages } from 'lucide-react';
 import { useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
-import { type Locale, locales, setStoredLocale } from '@/i18n/i18nConfig';
+import { type Locale, setStoredLocale } from '@/i18n/i18nConfig';
 
 export function LanguageSwitcher() {
   const locale = useLocale() as Locale;

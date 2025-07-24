@@ -1,7 +1,8 @@
 'use client';
+'use client';
 
 import type { ImageEditResult, QueryParams } from '@/types/database';
-import { Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, Pagination, Spinner, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Checkbox } from '@heroui/react';
+import { Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, Pagination, Spinner, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@heroui/react';
 import { toast } from 'sonner';
 import { Images, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -108,12 +109,6 @@ export default function GalleryPage(props: GalleryPageProps) {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [isSelectMode, setIsSelectMode] = useState(false);
   const [isBatchDeleting, setIsBatchDeleting] = useState(false);
-
-  // 视频生成参数状态
-  const [audioUrl, setAudioUrl] = useState<string>('');
-  const [drivenId, setDrivenId] = useState<string>('mengwa_kaixin');
-  const [isGenerating] = useState(false);
-  const [generateError] = useState<string | null>(null);
 
   // 构建查询参数
   const queryParams: QueryParams = {
@@ -458,7 +453,6 @@ export default function GalleryPage(props: GalleryPageProps) {
           isOpen={isOpen}
           onClose={() => { setSelectedVideoResult(null); onClose(); }}
           videoResult={selectedVideoResult}
-          handleDownload={handleDownload}
           formatTime={formatTime}
         />
       )}

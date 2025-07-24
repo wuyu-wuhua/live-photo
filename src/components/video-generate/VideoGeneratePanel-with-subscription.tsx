@@ -26,7 +26,19 @@ export function VideoGeneratePanel({
   function renderStatusContent() {
     // 如果有taskId，使用TaskStatusMonitor组件
     if (taskId) {
-      return <TaskStatusMonitor taskId={taskId} />;
+      return (
+        <TaskStatusMonitor 
+          taskId={taskId} 
+          onSuccess={(videoUrl) => {
+            // 处理成功回调
+            console.log('Video generation success:', videoUrl);
+          }}
+          onError={(error) => {
+            // 处理错误回调
+            console.error('Video generation error:', error);
+          }}
+        />
+      );
     }
 
     // 否则使用传统的状态显示

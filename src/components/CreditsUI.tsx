@@ -1,8 +1,8 @@
 'use client';
 
 import type { CreditPlan } from '@/types/database';
-import { Button, Card, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, Spinner, useDisclosure } from '@heroui/react';
-import { Gift, History, Plus, Wallet } from 'lucide-react';
+import { Button, Card, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, Spinner, useDisclosure } from '@heroui/react';
+import {  Wallet } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useCredits } from '@/hooks/useCredits';
@@ -14,7 +14,7 @@ export default function CreditsUI() {
   const t = useTranslations();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [activeTab, setActiveTab] = useState<'buy' | 'history'>('buy');
-  const { credits, loading, recentTransactions, fetchTransactions, refresh } = useCredits();
+  const { credits, loading, recentTransactions, refresh } = useCredits();
 
   // 积分套餐模拟数据
   const creditPlans: CreditPlan[] = [

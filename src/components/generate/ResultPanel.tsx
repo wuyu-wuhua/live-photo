@@ -24,7 +24,7 @@ import { Download, ImageIcon, Sparkles, Wand2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { VideoParameterPanel } from '@/components/video-generate/VideoParameterPanel';
+
 import { TaskStatusMonitor } from '@/components/video-generate/TaskStatusMonitor';
 import { useUser } from '@/hooks/useUser';
 import { createSupabaseClient } from '@/lib/supabase';
@@ -77,13 +77,11 @@ export function ResultPanel({
   const [, setIsSubscribed] = useState(false);
 
   // 视频生成相关状态
-  const [selectedVideoType, setSelectedVideoType] = useState<'emoji' | 'liveportrait'>('emoji');
   const [isVideoGenerating, setIsVideoGenerating] = useState(false);
   const [videoError, setVideoError] = useState<string | null>(null);
   const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string | null>(null);
   const [isVideoModalOpen, setVideoModalOpen] = useState(false);
   const [videoTaskId, setVideoTaskId] = useState<string | null>(null);
-  const [referenceImage, setReferenceImage] = useState<string>('');
 
   // 先声明参考图片变量
   const referenceImageUrl = colorizedImage || (generatedImages && generatedImages.length > 0 && generatedImages[0]);
@@ -150,19 +148,17 @@ export function ResultPanel({
   }, [imageEditResultId]);
 
   // 处理视频生成
-  const handleVideoGeneration = useCallback((referenceImage: string) => {
+  const handleVideoGeneration = useCallback(() => {
     if (!user) {
       console.warn(t('loginRequired'));
       return;
     }
 
-    setSelectedVideoType(referenceImage.includes('colorized') ? 'emoji' : 'liveportrait');
     // 重置状态
     setVideoError(null);
     setGeneratedVideoUrl(null);
     setVideoTaskId(null);
     onDrawerOpen();
-    setReferenceImage(referenceImage);
   }, [user, onDrawerOpen, t]);
 
   // 处理Drawer关闭
@@ -241,7 +237,7 @@ export function ResultPanel({
   function VideoPreviewModal({
     isOpen,
     onClose,
-    referenceImage,
+    referenceImage: imageUrl,
     videoUrl,
     isLoading,
     error,
@@ -267,7 +263,7 @@ export function ResultPanel({
               <div className="flex flex-col items-center">
                 <h5 className="text-sm mb-2 text-gray-500">{t('referenceImage')}</h5>
                 <Image
-                  src={referenceImage}
+                  src={imageUrl}
                   alt={t('referenceImage')}
                   className="w-full rounded-lg object-contain"
                 />
@@ -442,7 +438,7 @@ export function ResultPanel({
                                   variant="flat"
                                   color="primary"
                                   startContent={<Wand2 className="w-4 h-4" />}
-                                  onPress={() => handleVideoGeneration(colorizedImage || generatedImages[0]!)}
+                                  onPress={() => handleVideoGeneration()}
                                   isLoading={isVideoGenerating}
                                   className="text-xs bg-gradient-to-r from-green-500/70 to-blue-500/70 text-white"
                                 >
