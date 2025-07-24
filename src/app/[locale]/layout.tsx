@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import clsx from 'clsx';
 import { NextIntlClientProvider } from 'next-intl';
@@ -15,13 +16,15 @@ type Props = {
   children: ReactNode;
 };
 
-// export async function generateMetadata(): Promise<Metadata> {
-//   const t = await getTranslations('LocaleLayout');
-
-//   return {
-//     title: t('title'),
-//   };
-// }
+export const metadata: Metadata = {
+  title: 'Live Photo - AI图像编辑平台',
+  description: '专业的AI图像编辑平台，支持图像上色、视频生成等功能',
+  icons: {
+    icon: '/assets/image/logo.png',
+    shortcut: '/assets/image/logo.png',
+    apple: '/assets/image/logo.png',
+  },
+};
 
 export default async function RootLayout({ children }: Props) {
   const messages = await getMessages();

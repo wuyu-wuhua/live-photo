@@ -46,13 +46,7 @@ export default function Navbar() {
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="12" r="10" fill="#4F46E5" />
-              <circle cx="12" cy="12" r="7" fill="#818CF8" />
-              <circle cx="12" cy="12" r="4" fill="#C4B5FD" />
-              <circle cx="15" cy="9" r="1.5" fill="#FFFFFF" />
-              <path d="M7 14L10 11L13 14L17 10" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <img src="/assets/image/logo.png" alt="Logo" width="36" height="36" className="rounded-full" />
             <p className="font-bold text-inherit">{t('common.appName')}</p>
           </NextLink>
         </NavbarBrand>
