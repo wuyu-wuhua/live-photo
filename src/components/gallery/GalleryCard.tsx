@@ -53,7 +53,17 @@ export default function GalleryCard({
       }
     }
 
-    // 对于图片类型，检查表情包和对口型结果
+    // 对于图片类型，优先显示处理后的图片
+    if (result.result_image_url && result.result_image_url.length > 0) {
+      return result.result_image_url[0];
+    }
+
+    // 如果没有处理后的图片，显示原始图片
+    if (result.source_image_url) {
+      return result.source_image_url;
+    }
+
+    // 检查表情包和对口型结果
     if (result.emoji_result_url) {
       return result.emoji_result_url;
     }
@@ -61,8 +71,7 @@ export default function GalleryCard({
       return result.liveportrait_result_url;
     }
 
-    // 最后返回图片结果
-    return result.result_image_url && result.result_image_url.length > 0 ? result.result_image_url[0] : null;
+    return null;
   };
 
   const displayUrl = getDisplayMediaUrl() || '/placeholder-image.jpg';

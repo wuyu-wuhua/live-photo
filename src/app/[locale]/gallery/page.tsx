@@ -131,10 +131,16 @@ export default function GalleryPage(props: GalleryPageProps) {
   // 自动轮询刷新
   useEffect(() => {
     const timer = setInterval(() => {
-      refetch();
-    }, 10000); // 每10秒刷新一次
+      // 只在有正在处理的任务时才刷新
+      const hasProcessingTasks = results.some(result => 
+        result.status === 'RUNNING' || result.status === 'PENDING'
+      );
+      if (hasProcessingTasks) {
+        refetch();
+      }
+    }, 30000); // 改为30秒刷新一次，减少API调用频率
     return () => clearInterval(timer);
-  }, [refetch]);
+  }, [refetch, results]);
 
   // 处理卡片点击，区分图片和视频
   const handleCardClick = (result: ImageEditResult) => {
