@@ -11,11 +11,20 @@ export function createClient() {
   });
 
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.error('Supabase环境变量缺失:', {
-      NEXT_PUBLIC_SUPABASE_URL: supabaseUrl ? '已设置' : '未设置',
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: supabaseAnonKey ? '已设置' : '未设置',
-    });
-    throw new Error('缺少Supabase环境变量。请确保设置了NEXT_PUBLIC_SUPABASE_URL和NEXT_PUBLIC_SUPABASE_ANON_KEY');
+    console.warn('Supabase环境变量缺失，使用模拟客户端');
+    return {
+      from: () => ({
+        select: () => ({
+          eq: () => ({
+            single: () => Promise.resolve({ data: null, error: null }),
+          }),
+        }),
+      }),
+      rpc: () => Promise.resolve({ data: null, error: null }),
+      auth: {
+        getUser: () => Promise.resolve({ data: { user: null }, error: null }),
+      },
+    } as any;
   }
 
   return createBrowserClient(supabaseUrl, supabaseAnonKey);

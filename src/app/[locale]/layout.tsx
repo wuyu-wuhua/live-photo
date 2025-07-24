@@ -17,8 +17,8 @@ type Props = {
 };
 
 export const metadata: Metadata = {
-  title: 'Live Photo - AI图像编辑平台',
-  description: '专业的AI图像编辑平台，支持图像上色、视频生成等功能',
+  title: 'Live Photo - AI image editing platform',
+  description: 'Professional AI image editing platform, supporting image coloring, video generation and more',
   icons: {
     icon: '/assets/image/logo.png',
     shortcut: '/assets/image/logo.png',
