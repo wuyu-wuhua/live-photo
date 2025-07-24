@@ -168,7 +168,7 @@ function CheckoutForm({ plan, onSuccess, onClose }: Omit<StripePaymentProps, 'is
         <p className="text-sm text-default-500 mt-1">{plan.description}</p>
         <div className="flex justify-between items-center mt-3">
           <span className="text-sm">
-            {t('profile.credits')}
+            {t('credits')}
             :
             {plan.credits}
           </span>

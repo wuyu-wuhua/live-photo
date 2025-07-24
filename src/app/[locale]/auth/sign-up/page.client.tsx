@@ -4,31 +4,17 @@ import { Button, Card, CardBody, Divider, Image } from '@heroui/react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SEO_CONFIG } from '@/app';
-import { GitHubIcon } from '@/components/icons/github';
 import { GoogleIcon } from '@/components/icons/google';
-import { signInWithGitHub, signInWithGoogle } from '@/lib/auth-client';
+import { signInWithGoogle } from '@/lib/auth-client';
 
 export function SignUpPageClient() {
   const t = useTranslations();
+  const router = useRouter();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const handleGitHubSignUp = async () => {
-    try {
-      setLoading(true);
-      const { error } = await signInWithGitHub();
-      if (error) {
-        setError(error.message);
-      }
-    } catch (error) {
-      console.error('GitHub注册失败:', error);
-      setError(t('auth.githubSignUpFailed'));
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleGoogleSignUp = async () => {
     try {
@@ -43,6 +29,10 @@ export function SignUpPageClient() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleBackToHome = () => {
+    router.push('/');
   };
 
   return (
@@ -96,12 +86,15 @@ export function SignUpPageClient() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <Button
+                    variant="bordered"
                     className="flex items-center gap-2"
                     disabled={loading}
-                    onClick={handleGitHubSignUp}
+                    onClick={handleBackToHome}
                   >
-                    <GitHubIcon className="h-5 w-5" />
-                    {t('auth.github')}
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    {t('NotFound.backToHome')}
                   </Button>
                   <Button
                     className="flex items-center gap-2"
