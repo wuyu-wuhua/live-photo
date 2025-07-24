@@ -18,6 +18,12 @@ export async function createClient() {
         }),
       }),
       rpc: () => Promise.resolve({ data: null, error: null }),
+      auth: {
+        getUser: () => Promise.resolve({ data: { user: null }, error: null }),
+        signInWithPassword: () => Promise.resolve({ data: { user: null }, error: { message: 'Supabase not configured' } }),
+        signUp: () => Promise.resolve({ data: { user: null }, error: { message: 'Supabase not configured' } }),
+        signOut: () => Promise.resolve({ error: null }),
+      },
     } as any;
   }
 
