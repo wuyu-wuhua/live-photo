@@ -37,7 +37,7 @@ export async function GET() {
     }
 
     // 修复需要修复的记录
-    const recordsToFix = records?.filter((record) => {
+    const recordsToFix = records?.filter((record: any) => {
       const hasVideoUrl = record.video_result_url || record.emoji_result_url || record.liveportrait_result_url;
       return hasVideoUrl && record.result_type !== 'video';
     }) || [];
