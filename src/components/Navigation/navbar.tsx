@@ -32,6 +32,10 @@ export default function Navbar() {
       href: '/',
     },
     {
+      label: t('nav.showcase'),
+      href: '/showcase',
+    },
+    {
       label: t('common.pricing'),
       href: '/pricing',
     },

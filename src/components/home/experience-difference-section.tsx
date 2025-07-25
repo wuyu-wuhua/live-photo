@@ -108,40 +108,17 @@ export function ExperienceDifferenceSection() {
   };
 
   return (
-    <section className="py-20">
-      <div className="container-fluid px-0 mx-auto">
-        <div className="space-y-8 text-center">
-          <h2
-            className={`
-              text-3xl font-bold text-foreground
-              lg:text-4xl
-            `}
-          >
-            {t('common.experienceTheDifference')}
-          </h2>
-
-          {/* Category Buttons */}
-          {/* <div className="flex flex-wrap justify-center gap-4">
-            {categories.map((category, index) => (
-              <Button
-                className="capitalize"
-                key={category}
-                onClick={() => setActiveCategory(index)}
-                variant={activeCategory === index ? 'default' : 'outline'}
-              >
-                {t(`common.${category}`)}
-              </Button>
-            ))}
-          </div> */}
-
+    <section className="p-0 m-0" style={{marginTop: 0, paddingTop: 0}}>
+      <div className="container-fluid px-0 mx-auto m-0" style={{marginTop: 0, paddingTop: 0}}>
+        <div className="text-center m-0 p-0" style={{marginTop: 0, paddingTop: 0}}>
           {/* Before/After Slider */}
           <div
-            className="relative w-full"
+            className="relative w-full m-0 p-0"
+            style={{marginTop: 0, paddingTop: 0, top: 0}}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-background to-transparent pointer-events-none"></div>
-            <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-background to-transparent pointer-events-none"></div>
+            {/* 彻底去除顶部渐变遮罩div */}
             <Carousel
               setApi={setApi}
               opts={{
@@ -198,17 +175,6 @@ export function ExperienceDifferenceSection() {
                               src={item.after}
                               width={250}
                             />
-                            {/* {item.hasNewPalette && (
-                              <Button
-                                className="absolute right-2 bottom-2 text-xs"
-                                variant="secondary"
-                                size="sm"
-                              >
-                                {t('common.newPalette')}
-                                {' '}
-                                <span className="ml-1">🪄</span>
-                              </Button>
-                            )} */}
                           </div>
                         </div>
                       </CardBody>

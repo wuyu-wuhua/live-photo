@@ -16,7 +16,8 @@
     "logout": "退出",
     "pricing": "价格",
     "profile": "个人中心",
-    "galleryLabel": "画廊"
+    "galleryLabel": "画廊",
+    "showcase": "作品展示"
   },
   "Navigation": {
     "home": "首页",
@@ -28,6 +29,14 @@
     "fileUpload": "文件上传",
     "about": "关于我们",
     "pricing": "价格"
+  },
+  "showcase": {
+    "title": "作品展示",
+    "subtitle": "浏览AI上色后的图片和视频作品",
+    "imageTab": "图片",
+    "videoTab": "视频",
+    "imageTitle": "上色图片作品",
+    "videoTitle": "上色视频作品"
   },
   "NotFound": {
     "description": "抱歉，您访问的页面不存在。",

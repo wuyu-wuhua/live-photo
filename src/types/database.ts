@@ -308,6 +308,7 @@ export type Database = {
           emoji_result_url: string | null;
           emoji_status: Database['public']['Enums']['task_status'] | null;
           video_result_url: string | null;
+          is_showcase: boolean; // 是否展示到作品展示页
         };
         Insert: {
           created_at?: string;
@@ -333,6 +334,7 @@ export type Database = {
           emoji_result_url?: string | null;
           emoji_status?: Database['public']['Enums']['task_status'] | null;
           video_result_url?: string | null;
+          is_showcase?: boolean;
         };
         Update: {
           created_at?: string;
@@ -358,6 +360,7 @@ export type Database = {
           emoji_result_url?: string | null;
           emoji_status?: Database['public']['Enums']['task_status'] | null;
           video_result_url?: string | null;
+          is_showcase?: boolean;
         };
         Relationships: [];
       };

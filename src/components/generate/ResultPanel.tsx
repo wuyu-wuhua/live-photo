@@ -87,6 +87,26 @@ export function ResultPanel({
   const hasReferenceImage = !!referenceImageUrl;
   const videoCreditCost = 10;
 
+  // 新增：控制展示弹窗
+  const { isOpen: isShowcaseModalOpen, onOpen: onShowcaseModalOpen, onClose: onShowcaseModalClose } = useDisclosure();
+  const [pendingShowcaseId, setPendingShowcaseId] = useState<string | null>(null);
+
+  // 监听 imageEditResult 状态，生成成功时弹窗
+  useEffect(() => {
+    if (imageEditResult && imageEditResult.status === 'SUCCEEDED' && pendingShowcaseId !== imageEditResult.id) {
+      setPendingShowcaseId(imageEditResult.id);
+      onShowcaseModalOpen();
+    }
+  }, [imageEditResult, pendingShowcaseId, onShowcaseModalOpen]);
+
+  // 处理用户选择
+  const handleShowcaseChoice = async (accept: boolean) => {
+    if (!imageEditResult) return;
+    const supabase = createSupabaseClient();
+    await supabase.from('image_edit_results').update({ is_showcase: accept }).eq('id', imageEditResult.id);
+    onShowcaseModalClose();
+  };
+
   // 监控 generatedVideoUrl 变化
   useEffect(() => {
     console.log('generatedVideoUrl 状态变化:', generatedVideoUrl);
@@ -334,6 +354,20 @@ export function ResultPanel({
   // 多张结果图网格显示
   return (
     <div className="h-fit">
+      {/* 新增：作品展示弹窗 */}
+      <Modal isOpen={isShowcaseModalOpen} onClose={onShowcaseModalClose}>
+        <ModalContent>
+          <ModalHeader>是否将该作品展示到“作品展示”页面？</ModalHeader>
+          <ModalBody>
+            <div className="text-base">您可以随时在“我的作品”页面修改展示状态。</div>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onPress={() => handleShowcaseChoice(true)}>展示</Button>
+            <Button color="default" variant="light" onPress={() => handleShowcaseChoice(false)}>不展示</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
       {/* 视频生成预览弹窗 */}
       <VideoPreviewModal
         isOpen={isVideoModalOpen}

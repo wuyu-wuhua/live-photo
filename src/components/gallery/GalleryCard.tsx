@@ -2,10 +2,11 @@
 
 import type { ImageEditResult } from '@/types/database';
 import { Checkbox, Image } from '@heroui/react';
-import { CheckCircle, Clock, Download, Loader2, Mic, Smile, Trash2, VideoIcon, Wand2, XCircle } from 'lucide-react';
+import { CheckCircle, Clock, Download, Loader2, Mic, Smile, Trash2, VideoIcon, Wand2, XCircle, Eye, EyeOff } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
+import { createSupabaseClient } from '@/lib/supabase';
 
 const Button = dynamic(
   () => import('@/components/ui/button').then(mod => mod.Button),
@@ -23,6 +24,11 @@ type GalleryCardProps = {
   isSelectMode?: boolean;
   isSelected?: boolean;
   onSelect?: (itemId: string) => void;
+  // 新增：是否隐藏展示按钮
+  hideShowcaseButton?: boolean;
+  hideDeleteButton?: boolean;
+  hideStatusInfo?: boolean; // 新增
+  hideVideoControls?: boolean; // 新增：是否隐藏视频控件
 };
 
 export default function GalleryCard({
@@ -34,10 +40,22 @@ export default function GalleryCard({
   isSelectMode = false,
   isSelected = false,
   onSelect,
+  hideShowcaseButton = false,
+  hideDeleteButton = false,
+  hideStatusInfo = false,
+  hideVideoControls = false,
 }: GalleryCardProps) {
   const t = useTranslations('gallery');
   // 添加状态来跟踪下载按钮点击，防止事件冒泡到 Card
   const [isDownloadClicked, setIsDownloadClicked] = useState(false);
+  // 新增：处理展示/隐藏
+  const [showcaseLoading, setShowcaseLoading] = useState(false);
+  const handleShowcaseToggle = async () => {
+    setShowcaseLoading(true);
+    const supabase = createSupabaseClient();
+    await supabase.from('image_edit_results').update({ is_showcase: !result.is_showcase }).eq('id', result.id);
+    setShowcaseLoading(false);
+  };
   // 获取显示的图片或视频URL
   const getDisplayMediaUrl = () => {
     // 优先检查视频类型的各种结果URL
@@ -174,12 +192,26 @@ export default function GalleryCard({
           {isVideo && displayUrl
             ? (
                 <video
-                  className="w-full h-auto object-cover rounded-t-lg"
+                  className="w-full h-auto object-contain rounded-t-lg"
                   muted
                   loop
-                  controls
+                  controls={!hideVideoControls}
                   poster={result.result_image_url && result.result_image_url.length > 0 ? result.result_image_url[0] : undefined}
                   onError={e => console.error('Video error:', e)}
+                  onMouseEnter={(e) => {
+                    if (hideVideoControls) {
+                      const video = e.currentTarget;
+                      video.controls = true;
+                      video.play();
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (hideVideoControls) {
+                      const video = e.currentTarget;
+                      video.controls = false;
+                      video.pause();
+                    }
+                  }}
                 >
                   <source src={displayUrl} type="video/mp4" />
                 </video>
@@ -189,7 +221,7 @@ export default function GalleryCard({
                   <img
                     src={displayUrl}
                     alt={t('gifResult')}
-                    className="w-full h-auto object-cover rounded-t-lg"
+                    className="w-full h-auto object-contain rounded-t-lg"
                     loading="lazy"
                     style={{ imageRendering: 'auto' }}
                   />
@@ -198,7 +230,7 @@ export default function GalleryCard({
                   <Image
                     src={displayUrl || '/placeholder-image.jpg'}
                     alt={t('generatedResult')}
-                    className="w-full h-auto object-cover rounded-t-lg"
+                    className="w-full h-auto object-contain rounded-t-lg"
                     loading="lazy"
                   />
                 )}
@@ -217,112 +249,25 @@ export default function GalleryCard({
               GIF
             </div>
           )}
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-2 p-3">
-        {/* 状态信息 */}
-        <div className="flex items-center justify-between w-full">
-          <div className="flex items-center gap-1">
-            <StatusIcon className={`w-3 h-3 ${result.status === 'RUNNING' ? 'animate-spin' : ''}`} />
-            <span className="text-xs font-medium">
-              {statusInfo.text}
-            </span>
-          </div>
-
-          <span className="text-xs text-gray-500">
-            {formatTime ? formatTime(result.created_at) : new Date(result.created_at).toLocaleDateString()}
-          </span>
-        </div>
-
-        {/* 功能类型和操作按钮 */}
-        <div className="flex items-center justify-between w-full">
-          <span className="text-sm font-medium text-gray-700 flex-1">
-            {getFunctionLabel()}
-          </span>
-          <div className="flex gap-2">
-            {/* 下载按钮 */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-blue-500 hover:text-blue-700 hover:bg-blue-50 p-1 min-w-0 flex-shrink-0 border border-blue-200 hover:border-blue-300 shadow-sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsDownloadClicked(true);
-                const filename = isGif
-                  ? `animated-gif-${result.id}.gif`
-                  : `${result.result_type}_${result.id}`;
-                handleDownloadClick(displayUrl || '', filename);
-                // 重置状态
-                setTimeout(() => setIsDownloadClicked(false), 100);
-              }}
-              title="下载"
-            >
-              <Download size={16} />
-            </Button>
-            {/* 删除按钮 */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1 min-w-0 flex-shrink-0 border border-red-200 hover:border-red-300 shadow-sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                if (onDelete) {
-                  onDelete(result);
-                }
-              }}
-              title="删除"
-            >
-              <Trash2 size={16} />
-            </Button>
-          </div>
-        </div>
-        {/* 额外功能状态 */}
-        <div className="flex gap-2 w-full">
-          {/* 表情视频状态 */}
-          {result.emoji_compatible && (
-            <div className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs ${result.emoji_status === 'SUCCEEDED'
-              ? 'bg-green-100 text-green-700'
-              : result.emoji_status === 'RUNNING'
-                ? 'bg-blue-100 text-blue-700'
-                : result.emoji_status === 'FAILED'
-                  ? 'bg-red-100 text-red-700'
-                  : 'bg-gray-100 text-gray-700'
-            }`}
-            >
-              <Smile size={12} />
-              <span>
-                {result.emoji_status === 'SUCCEEDED'
-                  ? t('emojiReady')
-                  : result.emoji_status === 'RUNNING'
-                    ? t('emojiGenerating')
-                    : result.emoji_status === 'FAILED'
-                      ? t('emojiFailed')
-                      : t('emojiAvailable')}
-              </span>
-            </div>
-          )}
-          {/* 对口型视频状态 */}
-          {result.liveportrait_compatible && (
-            <div className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs ${result.liveportrait_status === 'SUCCEEDED'
-              ? 'bg-green-100 text-green-700'
-              : result.liveportrait_status === 'RUNNING'
-                ? 'bg-blue-100 text-blue-700'
-                : result.liveportrait_status === 'FAILED'
-                  ? 'bg-red-100 text-red-700'
-                  : 'bg-gray-100 text-gray-700'
-            }`}
-            >
-              <Mic size={12} />
-              <span>
-                {result.liveportrait_status === 'SUCCEEDED'
-                  ? t('lipsyncReady')
-                  : result.liveportrait_status === 'RUNNING'
-                    ? t('lipsyncGenerating')
-                    : result.liveportrait_status === 'FAILED'
-                      ? t('lipsyncFailed')
-                      : t('lipsyncAvailable')}
-              </span>
+          
+          {/* 下载按钮 - 移到图片右下角，鼠标悬停显示 */}
+          {!hideVideoControls && (
+            <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+              <div
+                className="cursor-pointer p-1"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsDownloadClicked(true);
+                  const filename = isGif
+                    ? `animated-gif-${result.id}.gif`
+                    : `${result.result_type}_${result.id}`;
+                  handleDownloadClick(displayUrl || '', filename);
+                  setTimeout(() => setIsDownloadClicked(false), 100);
+                }}
+                title="下载"
+              >
+                <Download size={20} className="text-purple-500 hover:text-purple-600" />
+              </div>
             </div>
           )}
         </div>

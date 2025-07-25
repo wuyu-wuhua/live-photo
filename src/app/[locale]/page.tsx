@@ -3,7 +3,7 @@ import { ExperienceDifferenceSection } from '@/components/home/experience-differ
 import { FinalCTASection } from '@/components/home/final-cta-section';
 import { HeroSection } from '@/components/home/hero-section';
 import { HomeTestimonialsSection } from '@/components/home/testimonials-section';
-import { TrustedSection } from '@/components/home/trusted-section';
+// import { TrustedSection } from '@/components/home/trusted-section';
 
 export default function Home() {
   return (
@@ -16,10 +16,7 @@ export default function Home() {
       {/* Hero Section */}
       <HeroSection />
 
-      {/* Trusted Section */}
-      <TrustedSection />
-
-      {/* Experience The Difference Section */}
+      {/* Experience The Difference Section (moved up, right after Hero) */}
       <ExperienceDifferenceSection />
 
       {/* Home Testimonials Section */}
@@ -31,28 +28,5 @@ export default function Home() {
       {/* Final CTA Section */}
       <FinalCTASection />
     </div>
-    // <div className="flex h-screen flex-col items-center justify-center">
-    //   <div className="mb-9 flex flex-col items-center gap-4">
-    //     <Button color="primary">Button</Button>
-
-  //     <div className="flex gap-4">
-  //       <Link href="/" className="text-blue-500 hover:underline">
-  //         Home
-  //       </Link>
-  //       <Link href="/pathnames" className="text-blue-500 hover:underline">
-  //         Pathnames
-  //       </Link>
-  //       <Link href="/about" className="text-blue-500 hover:underline">
-  //         About
-  //       </Link>
-  //     </div>
-
-  //     <LanguageSwitcher />
-  //   </div>
-
-  //   <div className="max-w-4xl text-center">
-  //     <p className="text-lg">{t('desc')}</p>
-  //   </div>
-  // </div>
   );
 }

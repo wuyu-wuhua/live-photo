@@ -80,14 +80,6 @@ export default function ImageDetailModal({
         <ModalHeader className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <span className="text-xl font-bold">{t('imageDetails')}</span>
-            <div className={`px-2 py-1 rounded-lg ${statusInfo.bg} ml-2`}>
-              <div className="flex items-center gap-1">
-                <StatusIcon className={`w-4 h-4 ${statusInfo.color} ${imageResult.status === 'RUNNING' ? 'animate-spin' : ''}`} />
-                <span className={`text-sm font-medium ${statusInfo.color}`}>
-                  {statusInfo.label}
-                </span>
-              </div>
-            </div>
           </div>
           <div className="text-sm text-gray-500">
             {t('createTime')}
@@ -109,7 +101,7 @@ export default function ImageDetailModal({
                     alt={t('originalImage')}
                     className="w-full rounded-lg object-contain"
                   />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 bg-black/50 transition-opacity group-hover:opacity-100 rounded-lg">
+                  <div className="absolute bottom-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <Button
                       isIconOnly
                       color="default"
@@ -132,7 +124,7 @@ export default function ImageDetailModal({
                     alt={t('generatedResult')}
                     className="w-full rounded-lg object-contain"
                   />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 bg-black/50 transition-opacity group-hover:opacity-100 rounded-lg">
+                  <div className="absolute bottom-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <Button
                       isIconOnly
                       color="default"
@@ -159,7 +151,7 @@ export default function ImageDetailModal({
                       alt={`${t('generatedResult')} ${index + 2}`}
                       className="w-full aspect-square object-cover rounded-lg"
                     />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 bg-black/50 transition-opacity group-hover:opacity-100 rounded-lg">
+                    <div className="absolute bottom-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Button
                         isIconOnly
                         color="default"
