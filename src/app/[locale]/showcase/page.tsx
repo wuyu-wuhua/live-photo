@@ -28,4 +28,4 @@ export default function ShowcasePage() {
       <p className="text-lg text-default-500">{t('subtitle')}</p>
     </div>
   );
-} 
+}
