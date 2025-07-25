@@ -1,10 +1,10 @@
 'use client';
 
 import type { ImageEditResult } from '@/types/database';
-import { Checkbox, Image } from '@heroui/react';
+import { Image } from '@heroui/react';
 import { CheckCircle, Clock, Download, Loader2, Mic, Smile, Trash2, VideoIcon, Wand2, XCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createSupabaseClient } from '@/lib/supabase';
 
 type GalleryCardProps = {
@@ -47,14 +47,21 @@ export default function GalleryCard({
   const [isDownloadClicked, setIsDownloadClicked] = useState(false);
   // 新增：处理展示/隐藏
   const [showcaseLoading, setShowcaseLoading] = useState(false);
+  const [localShowcaseStatus, setLocalShowcaseStatus] = useState(result.is_showcase);
+
+  // 监听result.is_showcase的变化，确保本地状态与数据库状态同步
+  useEffect(() => {
+    console.log(`GalleryCard ${result.id}: 接收到新的 is_showcase = ${result.is_showcase}, 当前 localShowcaseStatus = ${localShowcaseStatus}`);
+    setLocalShowcaseStatus(result.is_showcase);
+  }, [result.is_showcase, result.id]);
   
   const handleShowcaseToggle = async (checked: boolean) => {
     setShowcaseLoading(true);
     try {
       const supabase = createSupabaseClient();
-
+      console.log(`正在更新数据库: ${result.id} -> is_showcase = ${checked}`);
       
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('image_edit_results')
         .update({ is_showcase: checked })
         .eq('id', result.id)
@@ -63,13 +70,19 @@ export default function GalleryCard({
       
       if (error) {
         console.error(t('common.updateShowcaseFailed'), error);
+        setLocalShowcaseStatus(result.is_showcase);
         // 可以在这里添加错误提示
       } else {
+        console.log(`数据库更新成功: ${result.id} -> is_showcase = ${data?.is_showcase}`);
+        setLocalShowcaseStatus(checked);
+        // 更新成功后，可以添加成功提示
+        console.log(`作品${checked ? '已添加到' : '已从'}作品展示页面`);
         // 调用回调函数通知父组件
         onShowcaseToggle?.(result.id, checked);
       }
     } catch (error) {
-      console.error(t('common.updateShowcaseFailed'), error);
+      console.error('更新展示状态失败:', error);
+      setLocalShowcaseStatus(result.is_showcase);
     } finally {
       setShowcaseLoading(false);
     }
@@ -183,18 +196,6 @@ export default function GalleryCard({
     >
       <div className={hideShowcaseButton && hideDeleteButton && hideStatusInfo ? 'p-0' : 'p-0'}>
         <div className={hideShowcaseButton && hideDeleteButton && hideStatusInfo ? 'relative group' : 'relative group'}>
-          {/* 多选复选框 */}
-          {isSelectMode && !hideShowcaseButton && (
-            <div className="absolute top-2 left-2 z-50">
-              <Checkbox
-                isSelected={isSelected}
-                onValueChange={() => {
-                  onSelect?.(result.id);
-                }}
-                className="bg-white/90 dark:bg-black/90 backdrop-blur-sm"
-              />
-            </div>
-          )}
           {/* 只保留图片本身 */}
           {(isVideo && displayUrl) ? (
             <video
