@@ -5,39 +5,22 @@ import { Button } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 import Masonry from 'react-masonry-css';
 import GalleryCard from '@/components/gallery/GalleryCard';
-import { useImageEditResults } from '@/hooks/useDatabase';
+import { useShowcaseItems } from '@/hooks/useDatabase';
 import '@/styles/masonry.css';
 
 export default function ShowcaseVideosPage() {
   const t = useTranslations('showcase');
   const router = useRouter();
-  // 只查is_showcase为true的视频
-  const { results, loading, error } = useImageEditResults({
+  // 获取所有用户同意展示的视频
+  const { results, loading, error } = useShowcaseItems({
     page: 1,
     limit: 100,
     sortBy: 'created_at',
     sortOrder: 'desc',
-    filters: { result_type: 'video', is_showcase: true },
+    filters: { result_type: 'video' },
   });
 
-  // 下载视频方法
-  const handleDownload = async (url: string, filename?: string) => {
-    if (!url) return;
-    try {
-      const response = await fetch(url);
-      const blob = await response.blob();
-      const blobUrl = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = blobUrl;
-      a.download = filename || `live-photo-${new Date().getTime()}.${url.endsWith('.mp4') ? 'mp4' : 'png'}`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(blobUrl);
-    } catch (error) {
-      window.open(url, '_blank');
-    }
-  };
+
 
   return (
     <div className="max-w-7xl mx-auto w-full px-4 py-8">
@@ -53,10 +36,10 @@ export default function ShowcaseVideosPage() {
       {loading ? (
         <div className="flex justify-center items-center py-12">加载中...</div>
       ) : error ? (
-        <div className="flex justify-center items-center py-12 text-red-500">加载失败</div>
+        <div className="flex justify-center items-center py-12 text-red-500">{t('common.loadingFailed')}</div>
       ) : (
         <div className="w-full">
-          <div className="text-sm text-gray-500 mb-4">共找到 {results.length} 个视频</div>
+          <div className="text-sm text-gray-500 mb-4">{t('foundVideos', { count: results.length })}</div>
           <Masonry
             breakpointCols={4}
             className="my-masonry-grid"
@@ -67,7 +50,7 @@ export default function ShowcaseVideosPage() {
                 key={result.id}
                 result={result}
                 onImageClick={() => {}}
-                onDownload={handleDownload}
+                onDownload={() => {}}
                 hideShowcaseButton
                 hideDeleteButton
                 hideStatusInfo

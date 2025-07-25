@@ -17,7 +17,7 @@
     "pricing": "价格",
     "profile": "个人中心",
     "galleryLabel": "画廊",
-    "showcase": "作品展示"
+    "showcase": "画廊"
   },
   "Navigation": {
     "home": "首页",
@@ -31,12 +31,14 @@
     "pricing": "价格"
   },
   "showcase": {
-    "title": "作品展示",
+    "title": "画廊",
     "subtitle": "浏览AI上色后的图片和视频作品",
     "imageTab": "图片",
     "videoTab": "视频",
     "imageTitle": "上色图片作品",
-    "videoTitle": "上色视频作品"
+    "videoTitle": "上色视频作品",
+    "foundImages": "共找到 {count} 张图片",
+    "foundVideos": "共找到 {count} 个视频"
   },
   "NotFound": {
     "description": "抱歉，您访问的页面不存在。",
@@ -771,6 +773,32 @@
     "batchDeleteConfirm": "确认批量删除",
     "batchDeleteConfirmMessage": "确定要删除选中的 {count} 个项目吗？删除后将无法恢复。",
     "selectMode": "多选模式",
+    "showcaseDescription": "展示按钮：将作品展示到作品展示页面，让所有人都能看到您的作品",
+    "showcaseStatus": {
+      "showcased": "已展示",
+      "notShowcased": "未展示",
+      "processing": "处理中..."
+    },
+    "common": {
+      "loadingFailed": "加载失败",
+      "updateShowcaseFailed": "更新展示状态失败",
+      "downloadFailed": "下载失败",
+      "deleteFailed": "删除失败",
+      "deleteSuccess": "删除成功",
+      "uploadFailed": "上传失败",
+      "uploadSuccess": "上传成功",
+      "generateFailed": "生成失败",
+      "generateSuccess": "生成成功",
+      "videoGenerateSuccess": "视频生成成功！",
+      "videoGenerateFailed": "视频生成失败",
+      "queryTaskFailed": "查询任务状态失败",
+      "playFailed": "播放失败",
+      "autoPlayFailed": "自动播放失败",
+      "connectionFailed": "连接失败",
+      "connectionSuccess": "连接成功",
+      "testFailed": "测试失败",
+      "testSuccess": "测试成功"
+    },
     "selectAll": "全选",
     "deselectAll": "取消全选",
     "cancelSelectItem": "取消选择项目",
@@ -1185,6 +1213,8 @@
     "signInLink": "立即登录",
     "githubSignInFailed": "GitHub登录失败",
     "googleSignInFailed": "Google登录失败",
+    "signInWithGoogle": "使用 Google 登录",
+    "signingIn": "登录中...",
     "githubSignUpFailed": "GitHub注册失败",
     "googleSignUpFailed": "Google注册失败"
   },

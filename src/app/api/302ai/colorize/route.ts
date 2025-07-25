@@ -138,7 +138,22 @@ async function pollTaskResult(taskId: string, maxAttempts: number = 60): Promise
     });
 
     if (!response.ok) {
-      throw new Error(`${ERROR_MESSAGES.API_REQUEST_FAILED}: ${response.status}`);
+      const errorText = await response.text();
+      console.error('302.AI API错误详情:', {
+        status: response.status,
+        statusText: response.statusText,
+        errorText,
+      });
+      
+      if (response.status === 503) {
+        throw new Error('302.AI 服务暂时不可用，请稍后重试');
+      } else if (response.status === 401) {
+        throw new Error('302.AI API 密钥无效，请联系管理员');
+      } else if (response.status === 429) {
+        throw new Error('请求频率过高，请稍后重试');
+      } else {
+        throw new Error(`302.AI API 请求失败 (${response.status}): ${errorText}`);
+      }
     }
 
     const result = await response.json();

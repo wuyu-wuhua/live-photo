@@ -211,10 +211,83 @@ export class ImageEditService {
   static async getByUserId(userId: string, params?: QueryParams, customClient?: any): Promise<PaginatedResponse<ImageEditResult>> {
     try {
       const client = customClient || supabase;
+
+      
       let query = client
         .from('image_edit_results')
         .select('*', { count: 'exact' })
         .eq('user_id', userId);
+
+      // 状态过滤
+      if (params?.filters?.status) {
+        query = query.eq('status', params.filters.status);
+      }
+
+      // 类型过滤
+      if (params?.filters?.result_type) {
+        query = query.eq('result_type', params.filters.result_type);
+      }
+
+      // 展示过滤
+      if (params?.filters?.is_showcase !== undefined) {
+        query = query.eq('is_showcase', params.filters.is_showcase);
+      }
+
+      // 排序
+      if (params?.sortBy) {
+        query = query.order(params.sortBy, { ascending: params.sortOrder === 'asc' });
+      } else {
+        query = query.order('created_at', { ascending: false });
+      }
+
+      // 分页
+      if (params?.limit) {
+        const offset = params.offset || (params.page ? (params.page - 1) * params.limit : 0);
+        query = query.range(offset, offset + params.limit - 1);
+      }
+
+      const { data, error, count } = await query;
+
+      if (error) {
+        throw error;
+      }
+
+      const limit = params?.limit || data?.length || 0;
+      const page = params?.page || 1;
+
+      return {
+        success: true,
+        data: data || [],
+        pagination: {
+          page,
+          limit,
+          total: count || 0,
+          totalPages: Math.ceil((count || 0) / limit),
+        },
+      };
+    } catch (error) {
+      return {
+        success: false,
+        data: [],
+        error: error instanceof Error ? error.message : '获取编辑结果失败',
+        pagination: {
+          page: 1,
+          limit: 0,
+          total: 0,
+          totalPages: 0,
+        },
+      };
+    }
+  }
+
+  // 新增：获取所有用户同意展示的作品
+  static async getShowcaseItems(params?: QueryParams, customClient?: any): Promise<PaginatedResponse<ImageEditResult>> {
+    try {
+      const client = customClient || supabase;
+      let query = client
+        .from('image_edit_results')
+        .select('*', { count: 'exact' })
+        .eq('is_showcase', true);
 
       // 状态过滤
       if (params?.filters?.status) {
@@ -262,7 +335,7 @@ export class ImageEditService {
       return {
         success: false,
         data: [],
-        error: error instanceof Error ? error.message : '获取编辑结果失败',
+        error: error instanceof Error ? error.message : '获取展示作品失败',
         pagination: {
           page: 1,
           limit: 0,

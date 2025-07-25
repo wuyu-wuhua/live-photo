@@ -224,11 +224,59 @@ export function useImageEditResults(params?: QueryParams) {
 
   return {
     results,
+    setResults,
     pagination,
     ...state,
     refetch: fetchResults,
     createEditResult,
     updateStatus,
+  };
+}
+
+// 新增：获取所有用户同意展示的作品 Hook
+export function useShowcaseItems(params?: QueryParams) {
+  const [results, setResults] = useState<ImageEditResult[]>([]);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    totalPages: 0,
+  });
+  const [state, setState] = useState<LoadingState>({
+    loading: false,
+    error: null,
+  });
+
+  const fetchShowcaseItems = useCallback(async () => {
+    setState({ loading: true, error: null });
+    try {
+      const response = await ImageEditService.getShowcaseItems(params);
+      if (response.success) {
+        setResults(response.data);
+        setPagination(response.pagination);
+      } else {
+        const errorMsg = response.error || '获取展示作品失败';
+        setState({ loading: false, error: errorMsg });
+        toast.error(errorMsg);
+      }
+    } catch (error) {
+      const errorMsg = '获取展示作品失败';
+      setState({ loading: false, error: errorMsg });
+      toast.error(errorMsg);
+    } finally {
+      setState(prev => ({ ...prev, loading: false }));
+    }
+  }, [JSON.stringify(params)]);
+
+  useEffect(() => {
+    fetchShowcaseItems();
+  }, [fetchShowcaseItems]);
+
+  return {
+    results,
+    pagination,
+    ...state,
+    refetch: fetchShowcaseItems,
   };
 }
 

@@ -53,7 +53,7 @@ const testimonials = [
   },
   {
     author: {
-      avatar: 'linear-gradient(135deg,#f953c6,#b91d73)',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
       handle: '@tom',
       image: '/assets/image/user-work-3.png',
       name: 'Tom',

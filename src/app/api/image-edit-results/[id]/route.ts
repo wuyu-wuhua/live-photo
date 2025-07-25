@@ -1,11 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
-type RouteContext = { params: { id: string } };
-
 export async function DELETE(
-  // request: NextRequest, // 未使用，彻底移除
-  { params }: RouteContext,
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const supabaseClient = await createClient();
@@ -19,7 +17,27 @@ export async function DELETE(
       );
     }
 
-    const resultId = params.id;
+    // 修复参数解析问题
+    let resultId: string | undefined;
+    try {
+      const resolvedParams = await params;
+      resultId = resolvedParams.id;
+    } catch (error) {
+      console.error('参数解析失败:', error);
+      // 尝试从URL中提取ID
+      const url = new URL(request.url);
+      const pathParts = url.pathname.split('/');
+      resultId = pathParts[pathParts.length - 1];
+    }
+
+    if (!resultId) {
+      console.error('删除API - 无法获取记录ID');
+      return NextResponse.json(
+        { error: 'Invalid record ID' },
+        { status: 400 },
+      );
+    }
+
     console.log('删除API - 开始删除记录:', resultId, '用户ID:', user.id);
 
     // 获取要删除的记录

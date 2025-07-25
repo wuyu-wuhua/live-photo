@@ -5,7 +5,7 @@ import { Button } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 import Masonry from 'react-masonry-css';
 import GalleryCard from '@/components/gallery/GalleryCard';
-import { useImageEditResults } from '@/hooks/useDatabase';
+import { useShowcaseItems } from '@/hooks/useDatabase';
 import ImageDetailModal from '@/components/gallery/ImageDetailModal';
 import { useState } from 'react';
 import type { ImageEditResult } from '@/types/database';
@@ -15,13 +15,13 @@ export default function ShowcaseImagesPage() {
   const t = useTranslations('showcase');
   const router = useRouter();
   const [selected, setSelected] = useState<ImageEditResult | null>(null);
-  // 只查is_showcase为true的图片
-  const { results, loading, error } = useImageEditResults({
+  // 获取所有用户同意展示的图片
+  const { results, loading, error } = useShowcaseItems({
     page: 1,
     limit: 100,
     sortBy: 'created_at',
     sortOrder: 'desc',
-    filters: { result_type: 'image', is_showcase: true },
+    filters: { result_type: 'image' },
   });
 
   // 下载图片方法
@@ -68,10 +68,10 @@ export default function ShowcaseImagesPage() {
       {loading ? (
         <div className="flex justify-center items-center py-12">加载中...</div>
       ) : error ? (
-        <div className="flex justify-center items-center py-12 text-red-500">加载失败</div>
+        <div className="flex justify-center items-center py-12 text-red-500">{t('common.loadingFailed')}</div>
       ) : (
         <div className="w-full">
-          <div className="text-sm text-gray-500 mb-4">共找到 {results.length} 张图片</div>
+          <div className="text-sm text-gray-500 mb-4">{t('foundImages', { count: results.length })}</div>
           <Masonry
             breakpointCols={4}
             className="my-masonry-grid"

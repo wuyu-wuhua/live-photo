@@ -4,6 +4,7 @@ import { Button, Card, CardBody, CardHeader, Progress, Spinner } from '@heroui/r
 import { AlertCircle, CheckCircle, Clock, RefreshCw, XCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 type TaskStatus = 'PENDING' | 'RUNNING' | 'SUCCEEDED' | 'FAILED';
 
@@ -14,6 +15,7 @@ type TaskStatusMonitorProps = {
 };
 
 export function TaskStatusMonitor({ taskId, onSuccess, onError }: TaskStatusMonitorProps) {
+  const t = useTranslations('gallery');
   const [status, setStatus] = useState<TaskStatus>('PENDING');
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -160,7 +162,7 @@ export function TaskStatusMonitor({ taskId, onSuccess, onError }: TaskStatusMoni
         {videoUrl && (
           <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
             <CheckCircle className="w-4 h-4 text-green-500" />
-            <span className="text-sm text-green-600 dark:text-green-400">视频生成成功！</span>
+            <span className="text-sm text-green-600 dark:text-green-400">{t('common.videoGenerateSuccess')}</span>
           </div>
         )}
 

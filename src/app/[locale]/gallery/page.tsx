@@ -126,7 +126,7 @@ export default function GalleryPage(props: GalleryPageProps) {
     },
   };
 
-  const { results, pagination, loading, error, refetch } = useImageEditResults(queryParams);
+  const { results, setResults, pagination, loading, error, refetch } = useImageEditResults(queryParams);
 
   // 自动轮询刷新
   useEffect(() => {
@@ -183,6 +183,19 @@ export default function GalleryPage(props: GalleryPageProps) {
       console.log('当前选中的项目:', Array.from(newSet));
       return newSet;
     });
+  };
+
+  // 处理展示开关更新
+  const handleShowcaseToggle = (resultId: string, isShowcase: boolean) => {
+    console.log(`展示开关更新: ${resultId} -> ${isShowcase}`);
+    // 不刷新页面，直接更新本地数据状态
+    setResults((prevResults: ImageEditResult[]) => 
+      prevResults.map((result: ImageEditResult) => 
+        result.id === resultId 
+          ? { ...result, is_showcase: isShowcase }
+          : result
+      )
+    );
   };
 
   // {t('gallery.selectAll')}/{t('gallery.cancelSelectAll')}
@@ -244,6 +257,9 @@ export default function GalleryPage(props: GalleryPageProps) {
         try {
           const response = await fetch(`/api/image-edit-results/${itemId}`, {
             method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
           });
 
           console.log('删除响应状态:', response.status);
@@ -317,15 +333,20 @@ export default function GalleryPage(props: GalleryPageProps) {
             {/* 多选控制按钮 */}
             {!isSelectMode
               ? (
-                  <Button
-                    size="sm"
-                    variant="flat"
-                    color="primary"
-                    onPress={() => setIsSelectMode(true)}
-                    className="text-xs"
-                  >
-                    {t('selectMode')}
-                  </Button>
+                  <div className="flex items-center gap-3">
+                    <Button
+                      size="sm"
+                      variant="flat"
+                      color="primary"
+                      onPress={() => setIsSelectMode(true)}
+                      className="text-xs"
+                    >
+                      {t('selectMode')}
+                    </Button>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                      {t('showcaseDescription')}
+                    </span>
+                  </div>
                 )
               : (
                   <div className="flex items-center gap-2">
@@ -441,6 +462,10 @@ export default function GalleryPage(props: GalleryPageProps) {
                 isSelectMode={isSelectMode}
                 isSelected={selectedItems.has(result.id)}
                 onSelect={handleSelectItem}
+                hideShowcaseButton={false}
+                hideDeleteButton={false}
+                hideStatusInfo={false}
+                onShowcaseToggle={handleShowcaseToggle}
               />
             ))}
           </Masonry>

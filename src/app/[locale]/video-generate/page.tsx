@@ -1,12 +1,13 @@
 'use client';
 
 import type { ImageEditResult, TaskStatus } from '@/types/database';
-import { Button, Modal, ModalBody, ModalContent, ModalHeader } from '@heroui/react';
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
 import { VideoIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { createSupabaseClient } from '@/lib/supabase';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { VideoGeneratePanel } from '@/components/video-generate/VideoGeneratePanel';
 import { VideoParameterPanel } from '@/components/video-generate/VideoParameterPanel';
@@ -35,6 +36,10 @@ export default function VideoGeneratePage() {
 
   // 新增状态用于跟踪生成任务
   const [generationTaskId, setGenerationTaskId] = useState<string | null>(null);
+  
+  // 新增：展示询问相关状态
+  const { isOpen: isShowcaseModalOpen, onOpen: onShowcaseModalOpen, onClose: onShowcaseModalClose } = useDisclosure();
+  const [pendingShowcaseId, setPendingShowcaseId] = useState<string | null>(null);
   const [taskStatus, setTaskStatus] = useState<TaskStatus | null>(null);
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const pollingCountRef = useRef<number>(0);
@@ -82,6 +87,7 @@ export default function VideoGeneratePage() {
         setTaskStatus(taskData.status);
 
         // 如果任务成功完成
+        console.log('Task status check:', taskData.status, 'taskId:', taskId);
         if (taskData.status === 'SUCCEEDED') {
           // 停止轮询
           if (pollingIntervalRef.current) {
@@ -99,6 +105,11 @@ export default function VideoGeneratePage() {
           setIsGenerating(false);
           toast.success('Video generated successfully');
           refreshCredits();
+          
+          // 显示展示询问弹框
+          console.log('Video generation succeeded, taskId:', taskId);
+          setPendingShowcaseId(taskId);
+          onShowcaseModalOpen();
         } else if (taskData.status === 'FAILED') {
           // 停止轮询
           if (pollingIntervalRef.current) {
@@ -167,6 +178,32 @@ export default function VideoGeneratePage() {
   //   setVideoType(type);
   //   setRequiredCredits(3);
   // } // 未使用，彻底移除
+
+  // 处理展示选择
+  const handleShowcaseChoice = async (accept: boolean) => {
+    console.log('handleShowcaseChoice called with:', accept, 'pendingShowcaseId:', pendingShowcaseId);
+    if (!pendingShowcaseId) return;
+    
+    try {
+      const supabase = createSupabaseClient();
+      await supabase
+        .from('image_edit_results')
+        .update({ is_showcase: accept })
+        .eq('id', pendingShowcaseId);
+      
+      onShowcaseModalClose();
+      setPendingShowcaseId(null);
+      
+      if (accept) {
+        toast.success('作品已添加到展示页面');
+      } else {
+        toast.success('作品已设置为不展示');
+      }
+    } catch (error) {
+      console.error('更新展示状态失败:', error);
+      toast.error('更新展示状态失败');
+    }
+  };
 
   // Check if credits are sufficient
   const checkCredits = () => {
@@ -415,6 +452,33 @@ export default function VideoGeneratePage() {
               </div>
             </div>
           </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      {/* 作品展示询问弹框 */}
+      <Modal isOpen={isShowcaseModalOpen} onClose={onShowcaseModalClose} size="md">
+        {(() => { console.log('Modal render state:', { isShowcaseModalOpen, pendingShowcaseId }); return null; })()}
+        <ModalContent className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg">
+          <ModalHeader className="flex flex-col gap-1 border-b border-slate-200 dark:border-slate-800 pb-3">
+            <h3 className="text-lg font-semibold bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-400 dark:to-slate-200 bg-clip-text text-transparent">
+              是否将该视频展示到"作品展示"页面？
+            </h3>
+          </ModalHeader>
+          <ModalBody className="pb-6 pt-4">
+            <div className="space-y-4">
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                您可以随时在"我的作品"页面修改展示状态。
+              </p>
+            </div>
+          </ModalBody>
+          <ModalFooter className="flex gap-2">
+            <Button color="primary" onPress={() => handleShowcaseChoice(true)}>
+              展示
+            </Button>
+            <Button color="default" variant="light" onPress={() => handleShowcaseChoice(false)}>
+              不展示
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </div>

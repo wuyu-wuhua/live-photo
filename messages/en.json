@@ -15,7 +15,9 @@
     "signup": "Sign Up",
     "logout": "Logout",
     "pricing": "Pricing",
-    "profile": "Profile"
+    "profile": "Profile",
+    "galleryLabel": "Gallery",
+    "showcase": "Gallery"
   },
   "Navigation": {
     "home": "Home",
@@ -28,6 +30,16 @@
     "fileUpload": "File Upload",
     "about": "About Us",
     "pricing": "Pricing"
+  },
+  "showcase": {
+    "title": "Gallery",
+    "subtitle": "Browse AI-colored images and videos",
+    "imageTab": "Images",
+    "videoTab": "Videos",
+    "imageTitle": "Colored Images",
+    "videoTitle": "Colored Videos",
+    "foundImages": "Found {count} images",
+    "foundVideos": "Found {count} videos"
   },
   "auth": {
     "signIn": "Sign In",
@@ -552,6 +564,8 @@
     "signInLink": "Sign in",
     "githubSignInFailed": "GitHub sign in failed",
     "googleSignInFailed": "Google sign in failed",
+    "signInWithGoogle": "Sign in with Google",
+    "signingIn": "Signing in...",
     "githubSignUpFailed": "GitHub sign up failed",
     "googleSignUpFailed": "Google sign up failed"
   },
@@ -725,6 +739,32 @@
     "batchDeleteConfirm": "Confirm Batch Delete",
     "batchDeleteConfirmMessage": "Are you sure you want to delete the selected {count} items? This action cannot be undone.",
     "selectMode": "Select Mode",
+    "showcaseDescription": "Showcase button: Display your work on the showcase page for everyone to see",
+    "showcaseStatus": {
+      "showcased": "Showcased",
+      "notShowcased": "Not Showcased",
+      "processing": "Processing..."
+    },
+    "common": {
+      "loadingFailed": "Loading Failed",
+      "updateShowcaseFailed": "Failed to update showcase status",
+      "downloadFailed": "Download Failed",
+      "deleteFailed": "Delete Failed",
+      "deleteSuccess": "Delete Success",
+      "uploadFailed": "Upload Failed",
+      "uploadSuccess": "Upload Success",
+      "generateFailed": "Generate Failed",
+      "generateSuccess": "Generate Success",
+      "videoGenerateSuccess": "Video generation successful!",
+      "videoGenerateFailed": "Video generation failed",
+      "queryTaskFailed": "Failed to query task status",
+      "playFailed": "Play Failed",
+      "autoPlayFailed": "Auto Play Failed",
+      "connectionFailed": "Connection Failed",
+      "connectionSuccess": "Connection Success",
+      "testFailed": "Test Failed",
+      "testSuccess": "Test Success"
+    },
     "selectAll": "Select All",
     "deselectAll": "Deselect All",
     "cancelSelectItem": "Cancel select item",

@@ -1,10 +1,8 @@
 'use client';
 
-import { Button, Card, CardBody, Divider, Image } from '@heroui/react';
+import { Button, Card, CardBody, Image } from '@heroui/react';
 
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SEO_CONFIG } from '@/app';
 import { GoogleIcon } from '@/components/icons/google';
@@ -12,7 +10,6 @@ import { signInWithGoogle } from '@/lib/auth-client';
 
 export function SignInPageClient() {
   const t = useTranslations();
-  const router = useRouter();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -32,9 +29,7 @@ export function SignInPageClient() {
     }
   };
 
-  const handleBackToHome = () => {
-    router.push('/');
-  };
+
 
   return (
     <div
@@ -76,58 +71,24 @@ export function SignInPageClient() {
             </p>
           </div>
 
-          <Card className="border-none shadow-sm">
-            <CardBody className="pt-2">
-              <div className="space-y-4">
+          <Card className="border-none shadow-lg bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
+            <CardBody className="pt-6 pb-8">
+              <div className="space-y-6">
                 {error && (
-                  <div className="text-sm font-medium text-destructive">
+                  <div className="text-sm font-medium text-destructive bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
                     {error}
                   </div>
                 )}
 
-                <div className="grid grid-cols-2 gap-4">
-                  <Button
-                    variant="bordered"
-                    className="flex items-center gap-2"
-                    disabled={loading}
-                    onClick={handleBackToHome}
-                  >
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
-                    {t('NotFound.backToHome')}
-                  </Button>
-                  <Button
-                    className="flex items-center gap-2"
-                    disabled={loading}
-                    onClick={handleGoogleLogin}
-                  >
-                    <GoogleIcon className="h-5 w-5" />
-                    {t('auth.google')}
-                  </Button>
-                </div>
-
-                <div className="relative mt-6">
-                  <div className="absolute inset-0 flex items-center">
-                    <Divider className="w-full" />
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">
-                      {t('auth.orContinueWith')}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mt-6 text-center text-sm text-muted-foreground">
-                  {t('auth.dontHaveAccount')}
-                  {' '}
-                  <Link
-                    className="text-primary underline-offset-4 hover:underline"
-                    href="/auth/sign-up"
-                  >
-                    {t('auth.signUpLink')}
-                  </Link>
-                </div>
+                <Button
+                  size="lg"
+                  className="w-full h-14 bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border-2 border-gray-200 dark:border-gray-600 shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-3 font-medium"
+                  disabled={loading}
+                  onClick={handleGoogleLogin}
+                >
+                  <GoogleIcon className="h-6 w-6" />
+                  {loading ? t('auth.signingIn') : t('auth.signInWithGoogle')}
+                </Button>
               </div>
             </CardBody>
           </Card>
