@@ -1,11 +1,11 @@
 'use client';
-import { useTranslations } from 'next-intl';
-import React from 'react';
 import { Button } from '@heroui/react';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import Masonry from 'react-masonry-css';
+import React from 'react';
 import GalleryCard from '@/components/gallery/GalleryCard';
 import { useShowcaseItems } from '@/hooks/useDatabase';
+import Masonry from 'react-masonry-css';
 import '@/styles/masonry.css';
 
 export default function ShowcaseVideosPage() {
@@ -20,8 +20,6 @@ export default function ShowcaseVideosPage() {
     filters: { result_type: 'video' },
   });
 
-
-
   return (
     <div className="max-w-7xl mx-auto w-full px-4 py-8">
       <h1 className="text-3xl font-bold text-center mb-6">{t('title')}</h1>
@@ -33,33 +31,37 @@ export default function ShowcaseVideosPage() {
           {t('videoTab')}
         </Button>
       </div>
-      {loading ? (
-        <div className="flex justify-center items-center py-12">加载中...</div>
-      ) : error ? (
-        <div className="flex justify-center items-center py-12 text-red-500">{t('common.loadingFailed')}</div>
-      ) : (
-        <div className="w-full">
-          <div className="text-sm text-gray-500 mb-4">{t('foundVideos', { count: results.length })}</div>
-          <Masonry
-            breakpointCols={4}
-            className="my-masonry-grid"
-            columnClassName="my-masonry-grid_column"
-          >
-            {results.map(result => (
-              <GalleryCard
-                key={result.id}
-                result={result}
-                onImageClick={() => {}}
-                onDownload={() => {}}
-                hideShowcaseButton
-                hideDeleteButton
-                hideStatusInfo
-                hideVideoControls
-              />
-            ))}
-          </Masonry>
-        </div>
-      )}
+      {loading
+        ? (
+          <div className="flex justify-center items-center py-12">加载中...</div>
+        )
+        : error
+          ? (
+            <div className="flex justify-center items-center py-12 text-red-500">{t('common.loadingFailed')}</div>
+          )
+          : (
+            <div className="w-full">
+              <div className="text-sm text-gray-500 mb-4">{t('foundVideos', { count: results.length })}</div>
+              <Masonry
+                breakpointCols={4}
+                className="my-masonry-grid"
+                columnClassName="my-masonry-grid_column"
+              >
+                {results.map(result => (
+                  <GalleryCard
+                    key={result.id}
+                    result={result}
+                    onImageClick={() => {}}
+                    onDownload={() => {}}
+                    hideShowcaseButton
+                    hideDeleteButton
+                    hideStatusInfo
+                    hideVideoControls
+                  />
+                ))}
+              </Masonry>
+            </div>
+          )}
     </div>
   );
 } 

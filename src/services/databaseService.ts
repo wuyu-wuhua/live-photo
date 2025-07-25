@@ -211,8 +211,6 @@ export class ImageEditService {
   static async getByUserId(userId: string, params?: QueryParams, customClient?: any): Promise<PaginatedResponse<ImageEditResult>> {
     try {
       const client = customClient || supabase;
-
-      
       let query = client
         .from('image_edit_results')
         .select('*', { count: 'exact' })

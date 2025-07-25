@@ -29,8 +29,6 @@ export function SignInPageClient() {
     }
   };
 
-
-
   return (
     <div
       className="grid h-screen w-screen md:grid-cols-2"
