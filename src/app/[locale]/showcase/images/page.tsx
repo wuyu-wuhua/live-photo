@@ -1,21 +1,21 @@
 'use client';
-import type { ImageEditResult } from '@/types/database';
-import { Button } from '@heroui/react';
-import Masonry from 'react-masonry-css';
 import { useTranslations } from 'next-intl';
+import Masonry from 'react-masonry-css';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import type { ImageEditResult } from '@/types/database';
 import GalleryCard from '@/components/gallery/GalleryCard';
 import ImageDetailModal from '@/components/gallery/ImageDetailModal';
 import { useShowcaseItems } from '@/hooks/useDatabase';
 import '@/styles/masonry.css';
+import { Button } from '@heroui/react';
 
 export default function ShowcaseImagesPage() {
   const t = useTranslations('showcase');
   const router = useRouter();
   const [selected, setSelected] = useState<ImageEditResult | null>(null);
   // 获取所有用户同意展示的图片
-  const { results, loading, error } = useShowcaseItems({
+  const { results, loading } = useShowcaseItems({
     page: 1,
     limit: 100,
     sortBy: 'created_at',
@@ -68,8 +68,6 @@ export default function ShowcaseImagesPage() {
       </div>
       {loading ? (
         <div className="flex justify-center items-center py-12">加载中...</div>
-      ) : error ? (
-        <div className="flex justify-center items-center py-12 text-red-500">{t('common.loadingFailed')}</div>
       ) : (
         <div className="w-full">
           <div className="text-sm text-gray-500 mb-4">{t('foundImages', { count: results.length })}</div>
@@ -101,4 +99,4 @@ export default function ShowcaseImagesPage() {
       )}
     </div>
   );
-} 
+}

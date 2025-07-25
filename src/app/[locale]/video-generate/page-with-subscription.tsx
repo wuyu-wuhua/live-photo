@@ -3,19 +3,19 @@
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { VideoIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { VideoGeneratePanel } from '@/components/video-generate/VideoGeneratePanel';
 import { VideoParameterPanel } from '@/components/video-generate/VideoParameterPanel';
 import { VideoResultPanel } from '@/components/video-generate/VideoResultPanel';
-import { createSupabaseClient } from '@/lib/supabase';
 import { useCredits } from '@/hooks/useCredits';
+import { createSupabaseClient } from '@/lib/supabase';
 import { useImageEditStatusSubscription } from '@/hooks/useSupabaseSubscription';
 import { useUser } from '@/hooks/useUser';
-import { ImageEditService } from '@/services/databaseService';
 import type { ImageEditResult, TaskStatus } from '@/types/database';
+import { ImageEditService } from '@/services/databaseService';
 
 export default function VideoGeneratePage() {
   const t = useTranslations();
@@ -39,7 +39,7 @@ export default function VideoGeneratePage() {
   // 新增状态用于跟踪生成任务
   const [generationTaskId, setGenerationTaskId] = useState<string | null>(null);
   const [taskStatus, setTaskStatus] = useState<TaskStatus | null>(null);
-  
+
   // 新增：展示询问相关状态
   const { isOpen: isShowcaseModalOpen, onOpen: onShowcaseModalOpen, onClose: onShowcaseModalClose } = useDisclosure();
   const [pendingShowcaseId, setPendingShowcaseId] = useState<string | null>(null);
@@ -67,7 +67,7 @@ export default function VideoGeneratePage() {
         setIsGenerating(false);
         toast.success('Video generated successfully');
         refreshCredits();
-        
+
         // 显示展示询问弹框
         setPendingShowcaseId(updatedTask.id);
         onShowcaseModalOpen();
@@ -132,7 +132,7 @@ export default function VideoGeneratePage() {
     if (!pendingShowcaseId) {
       return;
     }
-    
+
     try {
       const supabase = createSupabaseClient();
       await supabase
@@ -142,7 +142,7 @@ export default function VideoGeneratePage() {
       
       onShowcaseModalClose();
       setPendingShowcaseId(null);
-      
+
       if (accept) {
         toast.success('作品已添加到展示页面');
       } else {

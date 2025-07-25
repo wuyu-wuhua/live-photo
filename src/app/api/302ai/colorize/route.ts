@@ -144,7 +144,7 @@ async function pollTaskResult(taskId: string, maxAttempts: number = 60): Promise
         statusText: response.statusText,
         errorText,
       });
-      
+
       if (response.status === 503) {
         throw new Error('302.AI 服务暂时不可用，请稍后重试');
       } else if (response.status === 401) {
