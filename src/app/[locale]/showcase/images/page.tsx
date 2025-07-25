@@ -1,14 +1,13 @@
-// 顺序：第三方库 -> 组件 -> 类型 -> 样式
 'use client';
-import React, { useState } from 'react';
 import { Button } from '@heroui/react';
 import Masonry from 'react-masonry-css';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import GalleryCard from '@/components/gallery/GalleryCard';
 import ImageDetailModal from '@/components/gallery/ImageDetailModal';
-import { useShowcaseItems } from '@/hooks/useDatabase';
 import type { ImageEditResult } from '@/types/database';
+import { useShowcaseItems } from '@/hooks/useDatabase';
 import '@/styles/masonry.css';
 
 export default function ShowcaseImagesPage() {
@@ -26,7 +25,9 @@ export default function ShowcaseImagesPage() {
 
   // 下载图片方法
   const handleDownload = async (url: string, filename?: string) => {
-    if (!url) return;
+    if (!url) {
+      return;
+    }
     try {
       const response = await fetch(url);
       const blob = await response.blob();

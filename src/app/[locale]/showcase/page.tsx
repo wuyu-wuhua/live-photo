@@ -1,8 +1,9 @@
 'use client';
-import React, { useEffect } from 'react';
+
+import { Button } from '@heroui/react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { Button } from '@heroui/react';
+import React, { useEffect } from 'react';
 
 export default function ShowcasePage() {
   const t = useTranslations('showcase');

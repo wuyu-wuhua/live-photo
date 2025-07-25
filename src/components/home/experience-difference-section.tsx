@@ -51,6 +51,7 @@ export function ExperienceDifferenceSection() {
   const [api, setApi] = useState<CarouselApi>();
   const [isPaused, setIsPaused] = useState(false);
   const autoScrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // 自动滚动功能
   useEffect(() => {
@@ -87,7 +88,7 @@ export function ExperienceDifferenceSection() {
       // 如果到达最后一个，自动回到第一个
       if (api.selectedScrollSnap() === api.scrollSnapList().length - 1) {
         // 使用setTimeout避免立即滚动造成的视觉跳跃
-        setTimeout(() => {
+        timeoutRef.current = setTimeout(() => {
           api.scrollTo(0, false);
         }, 500);
       }
@@ -95,6 +96,9 @@ export function ExperienceDifferenceSection() {
 
     return () => {
       api.off('select', () => {});
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
   }, [api]);
 
@@ -108,13 +112,13 @@ export function ExperienceDifferenceSection() {
   };
 
   return (
-    <section className="p-0 m-0" style={{marginTop: 0, paddingTop: 0}}>
-      <div className="container-fluid px-0 mx-auto m-0" style={{marginTop: 0, paddingTop: 0}}>
-        <div className="text-center m-0 p-0" style={{marginTop: 0, paddingTop: 0}}>
+    <section className="p-0 m-0" style={{ marginTop: 0, paddingTop: 0 }}>
+      <div className="container-fluid px-0 mx-auto m-0" style={{ marginTop: 0, paddingTop: 0 }}>
+        <div className="text-center m-0 p-0" style={{ marginTop: 0, paddingTop: 0 }}>
           {/* Before/After Slider */}
           <div
             className="relative w-full m-0 p-0"
-            style={{marginTop: 0, paddingTop: 0, top: 0}}
+            style={{ marginTop: 0, paddingTop: 0, top: 0 }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
@@ -129,7 +133,7 @@ export function ExperienceDifferenceSection() {
             >
               <CarouselContent className="px-4">
                 {beforeAfterImages.map((item, index) => (
-                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                  <CarouselItem key={`comparison-${index}`} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
                     <Card
                       className={`
                         relative transition-all duration-300

@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import React from 'react';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
@@ -37,7 +36,7 @@ export default function VideoGeneratePage() {
 
   // 新增状态用于跟踪生成任务
   const [generationTaskId, setGenerationTaskId] = useState<string | null>(null);
-  
+
   // 新增：展示询问相关状态
   const { isOpen: isShowcaseModalOpen, onOpen: onShowcaseModalOpen, onClose: onShowcaseModalClose } = useDisclosure();
   const [pendingShowcaseId, setPendingShowcaseId] = useState<string | null>(null);
@@ -67,8 +66,6 @@ export default function VideoGeneratePage() {
         setError('Error while retrieving image data');
         toast.error('Error while retrieving image data');
         console.error(err);
-      } finally {
-        // setIsLoading(false); // 未使用，移除
       }
     }
 
@@ -106,7 +103,7 @@ export default function VideoGeneratePage() {
           setIsGenerating(false);
           toast.success('Video generated successfully');
           refreshCredits();
-          
+
           // 显示展示询问弹框
           console.log('Video generation succeeded, taskId:', taskId);
           setPendingShowcaseId(taskId);
@@ -174,27 +171,23 @@ export default function VideoGeneratePage() {
     };
   }, []);
 
-  // Handle video type change
-  // const handleVideoTypeChange = (type: 'emoji' | 'liveportrait') => {
-  //   setVideoType(type);
-  //   setRequiredCredits(3);
-  // } // 未使用，彻底移除
-
   // 处理展示选择
   const handleShowcaseChoice = async (accept: boolean) => {
     console.log('handleShowcaseChoice called with:', accept, 'pendingShowcaseId:', pendingShowcaseId);
-    if (!pendingShowcaseId) return;
-    
+    if (!pendingShowcaseId) {
+      return;
+    }
+
     try {
       const supabase = createSupabaseClient();
       await supabase
         .from('image_edit_results')
         .update({ is_showcase: accept })
         .eq('id', pendingShowcaseId);
-      
+
       onShowcaseModalClose();
       setPendingShowcaseId(null);
-      
+
       if (accept) {
         toast.success('作品已添加到展示页面');
       } else {
@@ -224,8 +217,6 @@ export default function VideoGeneratePage() {
 
     return true;
   };
-
-  // Check if current video type has enough credits
 
   // Generate video
   const generateVideo = async () => {
@@ -342,7 +333,6 @@ export default function VideoGeneratePage() {
             {/* Credits display */}
             {user && (
               <div className="flex items-center gap-2 px-3 py-1.5 bg-white/80 dark:bg-slate-800/80 rounded-lg backdrop-blur-sm shadow-sm border border-slate-200 dark:border-slate-700">
-                {/* <WalletModal className="w-4 h-4 text-slate-700 dark:text-slate-300" /> */}
                 <span className="text-sm font-medium">
                   {creditsLoading ? '...' : credits?.balance || 0}
                   {' '}
@@ -403,8 +393,12 @@ export default function VideoGeneratePage() {
       <Modal isOpen={showCreditModal} onClose={() => setShowCreditModal(false)} size="md">
         <ModalContent className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg">
           <ModalHeader className="flex flex-col gap-1 border-b border-slate-200 dark:border-slate-800 pb-3">
-            <h3 className="text-lg font-semibold bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-400 dark:to-slate-200 bg-clip-text text-transparent">{t('common.insufficientCredits')}</h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400">{t('common.notEnoughCredits')}</p>
+            <h3 className="text-lg font-semibold bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-400 dark:to-slate-200 bg-clip-text text-transparent">
+              {t('common.insufficientCredits')}
+            </h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              {t('common.notEnoughCredits')}
+            </p>
           </ModalHeader>
           <ModalBody className="pb-6 pt-4">
             <div className="space-y-4">
@@ -458,7 +452,6 @@ export default function VideoGeneratePage() {
 
       {/* 作品展示询问弹框 */}
       <Modal isOpen={isShowcaseModalOpen} onClose={onShowcaseModalClose} size="md">
-        {(() => { console.log('Modal render state:', { isShowcaseModalOpen, pendingShowcaseId }); return null; })()}
         <ModalContent className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg">
           <ModalHeader className="flex flex-col gap-1 border-b border-slate-200 dark:border-slate-800 pb-3">
             <h3 className="text-lg font-semibold bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-400 dark:to-slate-200 bg-clip-text text-transparent">

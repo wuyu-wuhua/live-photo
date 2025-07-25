@@ -13,7 +13,7 @@ import { useUser } from '@/hooks/useUser';
 const photoGroups = [
   {
     thumb: '/assets/image/original-bw.png', // 原始图片缩略图
-    bw: '/assets/image/original-bw.png',    // 原始黑白主图
+    bw: '/assets/image/original-bw.png', // 原始黑白主图
     color: ['/assets/image/colorized-1.png', '/assets/image/colorized-2.png', '/assets/image/colorized-3.png'],
   },
   {
@@ -58,7 +58,8 @@ export function HeroSection() {
   };
 
   // 当前展示的图片组
-  const currentGroup = (photoGroups[activeGroupIndex] ?? photoGroups[0])!;
+  const currentGroup = photoGroups[activeGroupIndex] ?? photoGroups[0];
+  if (!currentGroup) return null;
 
   return (
     <section className="text-gray-900 text-white dark:bg-black dark:text-white">
@@ -347,7 +348,7 @@ export function HeroSection() {
           <div className="flex space-x-3 mt-2">
             {photoGroups.map((group, idx) => (
               <button
-                key={group.thumb + idx}
+                key={group.thumb}
                 type="button"
                 className={`h-16 w-16 cursor-pointer overflow-hidden rounded-lg border transition-transform duration-200 hover:scale-110 ${activeGroupIndex === idx ? 'border-primary ring-2 ring-primary' : 'border-default-200 dark:border-default-100'}`}
                 aria-label={`切换示例${idx + 1}`}

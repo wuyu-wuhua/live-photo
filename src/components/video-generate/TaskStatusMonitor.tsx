@@ -2,9 +2,9 @@
 
 import { Button, Card, CardBody, CardHeader, Progress, Spinner } from '@heroui/react';
 import { AlertCircle, CheckCircle, Clock, RefreshCw, XCircle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { useTranslations } from 'next-intl';
 
 type TaskStatus = 'PENDING' | 'RUNNING' | 'SUCCEEDED' | 'FAILED';
 
@@ -41,15 +41,11 @@ export function TaskStatusMonitor({ taskId, onSuccess, onError }: TaskStatusMoni
 
         if (taskStatus === 'SUCCEEDED') {
           const videoUrl = result.data?.video_url;
-          console.log('TaskStatusMonitor - 任务成功，videoUrl:', videoUrl);
           if (videoUrl) {
             setVideoUrl(videoUrl);
             setProgress(100);
-            console.log('TaskStatusMonitor - 调用 onSuccess 回调');
             onSuccess(videoUrl);
             toast.success('视频生成完成！');
-          } else {
-            console.error('TaskStatusMonitor - 任务成功但没有视频URL');
           }
         } else if (taskStatus === 'FAILED') {
           const errorMsg = result.data?.error || '视频生成失败';

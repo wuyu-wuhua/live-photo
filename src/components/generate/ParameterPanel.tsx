@@ -110,11 +110,7 @@ export function ParameterPanel({
           <span className="text-danger ml-1">*</span>
         </Label>
         <div className="min-h-[400px] flex items-center justify-center">
-          {' '}
-          {/* 减少整体高度 */}
           <div className="w-full max-w-2xl">
-            {' '}
-            {/* 进一步增加上传区域宽度 */}
             <PictureCardForm
               value={baseImageFiles}
               onChange={async (files) => {
@@ -122,7 +118,7 @@ export function ParameterPanel({
                 if (files.length > baseImageFiles.length) {
                   const { file }: any = files[files.length - 1];
                   if (file) {
-                  // 基本验证
+                    // 基本验证
                     const validation = validateImage(file, t);
                     if (!validation.valid) {
                       setImageValidationError(validation.error || null);
@@ -138,7 +134,6 @@ export function ParameterPanel({
 
                     // 如果有调整后的文件，显示提示信息
                     if (dimensionValidation.resizedFile) {
-                      console.log('图片已自动调整尺寸');
                       setImageResizeNotice(t('parameterPanel.notices.imageResized'));
                     } else {
                       setImageResizeNotice(null);
@@ -163,7 +158,6 @@ export function ParameterPanel({
                 }
               }}
               onUploadError={(error, file) => {
-                console.error('上传失败:', error, file);
                 setUploadError(error);
               }}
             />

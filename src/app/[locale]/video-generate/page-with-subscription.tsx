@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import React from 'react';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
