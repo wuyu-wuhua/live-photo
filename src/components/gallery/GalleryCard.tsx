@@ -1,10 +1,10 @@
 'use client';
 
-import type { ImageEditResult } from '@/types/database';
 import { Image } from '@heroui/react';
-import { CheckCircle, Clock, Download, Loader2, Mic, Smile, Trash2, VideoIcon, Wand2, XCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { CheckCircle, Clock, Download, Loader2, Mic, Smile, Trash2, VideoIcon, Wand2, XCircle } from 'lucide-react';
+import type { ImageEditResult } from '@/types/database';
 import { createSupabaseClient } from '@/lib/supabase';
 
 type GalleryCardProps = {
@@ -51,7 +51,6 @@ export default function GalleryCard({
 
   // 监听result.is_showcase的变化，确保本地状态与数据库状态同步
   useEffect(() => {
-    console.log(`GalleryCard ${result.id}: 接收到新的 is_showcase = ${result.is_showcase}, 当前 localShowcaseStatus = ${localShowcaseStatus}`);
     setLocalShowcaseStatus(result.is_showcase);
   }, [result.is_showcase, result.id]);
   
@@ -59,29 +58,19 @@ export default function GalleryCard({
     setShowcaseLoading(true);
     try {
       const supabase = createSupabaseClient();
-      console.log(`正在更新数据库: ${result.id} -> is_showcase = ${checked}`);
-      
       const { data, error } = await supabase
         .from('image_edit_results')
         .update({ is_showcase: checked })
         .eq('id', result.id)
         .select('is_showcase')
         .single();
-      
       if (error) {
-        console.error(t('common.updateShowcaseFailed'), error);
         setLocalShowcaseStatus(result.is_showcase);
-        // 可以在这里添加错误提示
       } else {
-        console.log(`数据库更新成功: ${result.id} -> is_showcase = ${data?.is_showcase}`);
         setLocalShowcaseStatus(checked);
-        // 更新成功后，可以添加成功提示
-        console.log(`作品${checked ? '已添加到' : '已从'}作品展示页面`);
-        // 调用回调函数通知父组件
         onShowcaseToggle?.(result.id, checked);
       }
     } catch (error) {
-      console.error('更新展示状态失败:', error);
       setLocalShowcaseStatus(result.is_showcase);
     } finally {
       setShowcaseLoading(false);

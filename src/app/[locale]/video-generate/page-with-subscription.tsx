@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
 import { VideoIcon } from 'lucide-react';
 import { toast } from 'sonner';
@@ -129,7 +129,9 @@ export default function VideoGeneratePage() {
 
   // 处理展示选择
   const handleShowcaseChoice = async (accept: boolean) => {
-    if (!pendingShowcaseId) return;
+    if (!pendingShowcaseId) {
+      return;
+    }
     
     try {
       const supabase = createSupabaseClient();

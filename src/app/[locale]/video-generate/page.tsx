@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
 import { VideoIcon } from 'lucide-react';
 import { toast } from 'sonner';
@@ -85,7 +85,6 @@ export default function VideoGeneratePage() {
         setTaskStatus(taskData.status);
 
         // 如果任务成功完成
-        console.log('Task status check:', taskData.status, 'taskId:', taskId);
         if (taskData.status === 'SUCCEEDED') {
           // 停止轮询
           if (pollingIntervalRef.current) {
@@ -105,7 +104,6 @@ export default function VideoGeneratePage() {
           refreshCredits();
 
           // 显示展示询问弹框
-          console.log('Video generation succeeded, taskId:', taskId);
           setPendingShowcaseId(taskId);
           onShowcaseModalOpen();
         } else if (taskData.status === 'FAILED') {
@@ -139,7 +137,7 @@ export default function VideoGeneratePage() {
         }
       }
     } catch (err) {
-      console.error('Error polling task status:', err);
+      // 不再打印 console
     }
   };
 
