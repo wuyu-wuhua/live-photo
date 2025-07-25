@@ -189,12 +189,12 @@ export default function GalleryPage(props: GalleryPageProps) {
   const handleShowcaseToggle = (resultId: string, isShowcase: boolean) => {
     console.log(`展示开关更新: ${resultId} -> ${isShowcase}`);
     // 不刷新页面，直接更新本地数据状态
-    setResults((prevResults: ImageEditResult[]) => 
-      prevResults.map((result: ImageEditResult) => 
-        result.id === resultId 
+    setResults((prevResults: ImageEditResult[]) =>
+      prevResults.map((result: ImageEditResult) =>
+        result.id === resultId
           ? { ...result, is_showcase: isShowcase }
-          : result
-      )
+          : result,
+      ),
     );
   };
 

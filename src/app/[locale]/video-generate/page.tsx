@@ -1,11 +1,11 @@
 'use client';
 
-import type { ImageEditResult, TaskStatus } from '@/types/database';
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
-import { VideoIcon } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
+import { VideoIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { createSupabaseClient } from '@/lib/supabase';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
@@ -15,6 +15,7 @@ import { VideoResultPanel } from '@/components/video-generate/VideoResultPanel';
 import { useCredits } from '@/hooks/useCredits';
 import { useUser } from '@/hooks/useUser';
 import { ImageEditService } from '@/services/databaseService';
+import type { ImageEditResult, TaskStatus } from '@/types/database';
 
 export default function VideoGeneratePage() {
   const t = useTranslations();
