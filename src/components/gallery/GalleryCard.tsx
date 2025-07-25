@@ -1,10 +1,10 @@
 'use client';
 
+import { CheckCircle, Clock, Download, Loader2, Mic, Smile, Trash2, VideoIcon, Wand2, XCircle } from 'lucide-react';
+import type { ImageEditResult } from '@/types/database';
 import { Image } from '@heroui/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { CheckCircle, Clock, Download, Loader2, Mic, Smile, Trash2, VideoIcon, Wand2, XCircle } from 'lucide-react';
-import type { ImageEditResult } from '@/types/database';
 import { createSupabaseClient } from '@/lib/supabase';
 
 type GalleryCardProps = {
@@ -346,13 +346,14 @@ export default function GalleryCard({
           <div className="flex gap-2 w-full">
             {/* 表情视频状态 */}
             {result.emoji_compatible && (
-              <div className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs ${result.emoji_status === 'SUCCEEDED'
-                ? 'bg-green-100 text-green-700'
-                : result.emoji_status === 'RUNNING'
-                  ? 'bg-blue-100 text-blue-700'
-                  : result.emoji_status === 'FAILED'
-                    ? 'bg-red-100 text-red-700'
-                    : 'bg-gray-100 text-gray-700'
+              <div className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs ${
+                result.emoji_status === 'SUCCEEDED'
+                  ? 'bg-green-100 text-green-700'
+                  : result.emoji_status === 'RUNNING'
+                    ? 'bg-blue-100 text-blue-700'
+                    : result.emoji_status === 'FAILED'
+                      ? 'bg-red-100 text-red-700'
+                      : 'bg-gray-100 text-gray-700'
               }`}
               >
                 <Smile size={12} />
@@ -369,13 +370,14 @@ export default function GalleryCard({
             )}
             {/* 对口型视频状态 */}
             {result.liveportrait_compatible && (
-              <div className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs ${result.liveportrait_status === 'SUCCEEDED'
-                ? 'bg-green-100 text-green-700'
-                : result.liveportrait_status === 'RUNNING'
-                  ? 'bg-blue-100 text-blue-700'
-                  : result.liveportrait_status === 'FAILED'
-                    ? 'bg-red-100 text-red-700'
-                    : 'bg-gray-100 text-gray-700'
+              <div className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs ${
+                result.liveportrait_status === 'SUCCEEDED'
+                  ? 'bg-green-100 text-green-700'
+                  : result.liveportrait_status === 'RUNNING'
+                    ? 'bg-blue-100 text-blue-700'
+                    : result.liveportrait_status === 'FAILED'
+                      ? 'bg-red-100 text-red-700'
+                      : 'bg-gray-100 text-gray-700'
               }`}
               >
                 <Mic size={12} />
