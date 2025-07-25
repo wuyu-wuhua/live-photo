@@ -24,50 +24,41 @@ export default function ImageDetailModal({
   if (!imageResult) {
     return null;
   }
-  // 将 useTranslations hook 移到条件判断之前调用
-  // 获取状态显示信息
-  const getStatusInfo = (status: string) => {
-    switch (status) {
-      case 'succeeded':
-        return {
-          color: 'text-green-600',
-          bg: 'bg-green-100',
-          icon: CheckCircle,
-          label: t('status.completed'),
-        };
-      case 'running':
-        return {
-          color: 'text-yellow-600',
-          bg: 'bg-yellow-100',
-          icon: Loader2,
-          label: t('status.processing'),
-        };
-      case 'pending':
-        return {
-          color: 'text-gray-600',
-          bg: 'bg-gray-100',
-          icon: Clock,
-          label: t('status.pending'),
-        };
-      case 'failed':
-        return {
-          color: 'text-red-600',
-          bg: 'bg-red-100',
-          icon: XCircle,
-          label: t('status.failed'),
-        };
-      default:
-        return {
-          color: 'text-gray-600',
-          bg: 'bg-gray-100',
-          icon: Clock,
-          label: t('status.unknown'),
-        };
-    }
-  };
-
-  const statusInfo = getStatusInfo(imageResult.status);
-  const StatusIcon = statusInfo.icon;
+  // 删除未使用的 getStatusInfo 函数
+  // const getStatusInfo = (status: string) => {
+  //   switch (status) {
+  //     case 'succeeded':
+  //       return {
+  //         color: 'success',
+  //         icon: CheckCircle,
+  //         text: t('status.completed'),
+  //       };
+  //     case 'running':
+  //       return {
+  //         color: 'warning',
+  //         icon: Loader2,
+  //         text: t('status.processing'),
+  //       };
+  //     case 'pending':
+  //       return {
+  //         color: 'default',
+  //         icon: Clock,
+  //         text: t('status.pending'),
+  //       };
+  //     case 'failed':
+  //       return {
+  //         color: 'danger',
+  //         icon: XCircle,
+  //         text: t('status.failed'),
+  //       };
+  //     default:
+  //       return {
+  //         color: 'default',
+  //         icon: Clock,
+  //         text: t('status.unknown'),
+  //       };
+  //   }
+  // };
 
   return (
     <Modal

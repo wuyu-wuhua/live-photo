@@ -1,17 +1,11 @@
 'use client';
 
 import type { ImageEditResult } from '@/types/database';
-import { Checkbox, Image } from '@heroui/react';
-import { CheckCircle, Clock, Download, Loader2, Mic, Smile, Trash2, VideoIcon, Wand2, XCircle, Eye, EyeOff } from 'lucide-react';
+import { Checkbox, Image, Switch } from '@heroui/react';
+import { CheckCircle, Clock, Download, Loader2, Mic, Smile, Trash2, VideoIcon, Wand2, XCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { createSupabaseClient } from '@/lib/supabase';
-
-const Button = dynamic(
-  () => import('@/components/ui/button').then(mod => mod.Button),
-  { ssr: false },
-);
 
 type GalleryCardProps = {
   result: ImageEditResult;
@@ -50,11 +44,30 @@ export default function GalleryCard({
   const [isDownloadClicked, setIsDownloadClicked] = useState(false);
   // 新增：处理展示/隐藏
   const [showcaseLoading, setShowcaseLoading] = useState(false);
-  const handleShowcaseToggle = async () => {
+  const [localShowcaseStatus, setLocalShowcaseStatus] = useState(result.is_showcase);
+  
+  const handleShowcaseToggle = async (checked: boolean) => {
     setShowcaseLoading(true);
-    const supabase = createSupabaseClient();
-    await supabase.from('image_edit_results').update({ is_showcase: !result.is_showcase }).eq('id', result.id);
-    setShowcaseLoading(false);
+    try {
+      const supabase = createSupabaseClient();
+      const { error } = await supabase
+        .from('image_edit_results')
+        .update({ is_showcase: checked })
+        .eq('id', result.id);
+      
+      if (error) {
+        console.error('更新展示状态失败:', error);
+        setLocalShowcaseStatus(result.is_showcase);
+      } else {
+        setLocalShowcaseStatus(checked);
+        // window.location.reload(); // 移除强制刷新
+      }
+    } catch (error) {
+      console.error('更新展示状态失败:', error);
+      setLocalShowcaseStatus(result.is_showcase);
+    } finally {
+      setShowcaseLoading(false);
+    }
   };
   // 获取显示的图片或视频URL
   const getDisplayMediaUrl = () => {
@@ -139,20 +152,6 @@ export default function GalleryCard({
         console.error('Download failed:', error);
       }
     }
-  };
-
-  // 功能类型显示
-  const getFunctionLabel = () => {
-    if (isVideo) {
-      return t('video_synthesis');
-    }
-    if (isGif) {
-      return t('gifResult');
-    }
-    if ((result.request_parameters as any)?.function === 'colorization') {
-      return t('colorization');
-    }
-    return t('image');
   };
 
   return (
@@ -250,24 +249,119 @@ export default function GalleryCard({
             </div>
           )}
           
-          {/* 下载按钮 - 移到图片右下角，鼠标悬停显示 */}
-          {!hideVideoControls && (
-            <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
-              <div
-                className="cursor-pointer p-1"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsDownloadClicked(true);
-                  const filename = isGif
-                    ? `animated-gif-${result.id}.gif`
-                    : `${result.result_type}_${result.id}`;
-                  handleDownloadClick(displayUrl || '', filename);
-                  setTimeout(() => setIsDownloadClicked(false), 100);
-                }}
-                title="下载"
-              >
-                <Download size={20} className="text-purple-500 hover:text-purple-600" />
+          {/* 状态信息和日期，放到最上面，并与图片增加间距 */}
+          {!hideStatusInfo && (
+            <div className="flex items-center justify-between w-full mb-3 mt-2">
+              <div className="flex items-center gap-1">
+                <StatusIcon className={`w-3 h-3 ${result.status === 'RUNNING' ? 'animate-spin' : ''}`} />
+                <span className="text-xs font-medium">
+                  {statusInfo.text}
+                </span>
               </div>
+              <span className="text-xs text-gray-500">
+                {formatTime ? formatTime(result.created_at) : new Date(result.created_at).toLocaleDateString()}
+              </span>
+            </div>
+          )}
+
+          {/* 展示/下载/删除按钮那一行放到下面 */}
+          <div className="flex items-center gap-2 justify-between mb-2">
+            {/* 展示/隐藏按钮 - Switch 开关样式 */}
+            {!hideShowcaseButton && (
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={localShowcaseStatus}
+                  onChange={(e) => handleShowcaseToggle(e.target.checked)}
+                  disabled={showcaseLoading}
+                  color="primary"
+                />
+                <span className="text-xs">{showcaseLoading ? '处理中...' : (!localShowcaseStatus ? '未展示' : '已展示')}</span>
+              </div>
+            )}
+            {/* 下载和删除按钮并排显示在右侧 */}
+            {!hideDeleteButton && !hideVideoControls && (
+              <div className="flex gap-2">
+                <div
+                  className="cursor-pointer p-1"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsDownloadClicked(true);
+                    const filename = isGif
+                      ? `animated-gif-${result.id}.gif`
+                      : `${result.result_type}_${result.id}`;
+                    handleDownloadClick(displayUrl || '', filename);
+                    setTimeout(() => setIsDownloadClicked(false), 100);
+                  }}
+                  title="下载"
+                >
+                  <Download size={20} className="text-purple-500 hover:text-purple-600" />
+                </div>
+                <div
+                  className="cursor-pointer p-1"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (onDelete) {
+                      onDelete(result);
+                    }
+                  }}
+                  title="删除"
+                >
+                  <Trash2 size={20} className="text-red-500 hover:text-red-700" />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* 恢复图片下方的所有内容 */}
+      <div className="flex flex-col gap-2 p-3">
+        {/* 额外功能状态 */}
+        <div className="flex gap-2 w-full">
+          {/* 表情视频状态 */}
+          {result.emoji_compatible && (
+            <div className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs ${result.emoji_status === 'SUCCEEDED'
+              ? 'bg-green-100 text-green-700'
+              : result.emoji_status === 'RUNNING'
+                ? 'bg-blue-100 text-blue-700'
+                : result.emoji_status === 'FAILED'
+                  ? 'bg-red-100 text-red-700'
+                  : 'bg-gray-100 text-gray-700'
+            }`}
+            >
+              <Smile size={12} />
+              <span>
+                {result.emoji_status === 'SUCCEEDED'
+                  ? t('emojiReady')
+                  : result.emoji_status === 'RUNNING'
+                    ? t('emojiGenerating')
+                    : result.emoji_status === 'FAILED'
+                      ? t('emojiFailed')
+                      : t('emojiAvailable')}
+              </span>
+            </div>
+          )}
+          {/* 对口型视频状态 */}
+          {result.liveportrait_compatible && (
+            <div className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs ${result.liveportrait_status === 'SUCCEEDED'
+              ? 'bg-green-100 text-green-700'
+              : result.liveportrait_status === 'RUNNING'
+                ? 'bg-blue-100 text-blue-700'
+                : result.liveportrait_status === 'FAILED'
+                  ? 'bg-red-100 text-red-700'
+                  : 'bg-gray-100 text-gray-700'
+            }`}
+            >
+              <Mic size={12} />
+              <span>
+                {result.liveportrait_status === 'SUCCEEDED'
+                  ? t('lipsyncReady')
+                  : result.liveportrait_status === 'RUNNING'
+                    ? t('lipsyncGenerating')
+                    : result.liveportrait_status === 'FAILED'
+                      ? t('lipsyncFailed')
+                      : t('lipsyncAvailable')}
+              </span>
             </div>
           )}
         </div>
