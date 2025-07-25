@@ -101,7 +101,9 @@ export function ResultPanel({
 
   // 处理用户选择
   const handleShowcaseChoice = async (accept: boolean) => {
-    if (!imageEditResult) return;
+    if (!imageEditResult) {
+      return;
+    }
     const supabase = createSupabaseClient();
     await supabase.from('image_edit_results').update({ is_showcase: accept }).eq('id', imageEditResult.id);
     onShowcaseModalClose();

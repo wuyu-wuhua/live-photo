@@ -1,14 +1,14 @@
 'use client';
-import { useTranslations } from 'next-intl';
-import Masonry from 'react-masonry-css';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
 import type { ImageEditResult } from '@/types/database';
+import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import Masonry from 'react-masonry-css';
 import GalleryCard from '@/components/gallery/GalleryCard';
 import ImageDetailModal from '@/components/gallery/ImageDetailModal';
 import { useShowcaseItems } from '@/hooks/useDatabase';
-import '@/styles/masonry.css';
 import { Button } from '@heroui/react';
+import '@/styles/masonry.css';
 
 export default function ShowcaseImagesPage() {
   const t = useTranslations('showcase');
@@ -66,37 +66,45 @@ export default function ShowcaseImagesPage() {
           {t('videoTab')}
         </Button>
       </div>
-      {loading ? (
-        <div className="flex justify-center items-center py-12">加载中...</div>
-      ) : (
-        <div className="w-full">
-          <div className="text-sm text-gray-500 mb-4">{t('foundImages', { count: results.length })}</div>
-          <Masonry
-            breakpointCols={4}
-            className="my-masonry-grid"
-            columnClassName="my-masonry-grid_column"
-          >
-            {results.map(result => (
-              <GalleryCard
-                key={result.id}
-                result={result}
-                onImageClick={() => setSelected(result)}
-                onDownload={handleDownload}
-                hideShowcaseButton
-                hideDeleteButton
-                hideStatusInfo
-              />
-            ))}
-          </Masonry>
-          <ImageDetailModal
-            isOpen={!!selected}
-            imageResult={selected}
-            onClose={() => setSelected(null)}
-            handleDownload={handleDownload}
-            formatTime={formatTime}
-          />
-        </div>
-      )}
+      {
+        loading
+          ? (
+            <div className="flex justify-center items-center py-12">加载中...</div>
+          )
+          : results.length === 0
+            ? (
+              <div className="flex justify-center items-center py-12 text-red-500">{t('common.loadingFailed')}</div>
+            )
+            : (
+              <div className="w-full">
+                <div className="text-sm text-gray-500 mb-4">{t('foundImages', { count: results.length })}</div>
+                <Masonry
+                  breakpointCols={4}
+                  className="my-masonry-grid"
+                  columnClassName="my-masonry-grid_column"
+                >
+                  {results.map(result => (
+                    <GalleryCard
+                      key={result.id}
+                      result={result}
+                      onImageClick={() => setSelected(result)}
+                      onDownload={handleDownload}
+                      hideShowcaseButton
+                      hideDeleteButton
+                      hideStatusInfo
+                    />
+                  ))}
+                </Masonry>
+                <ImageDetailModal
+                  isOpen={!!selected}
+                  imageResult={selected}
+                  onClose={() => setSelected(null)}
+                  handleDownload={handleDownload}
+                  formatTime={formatTime}
+                />
+              </div>
+            )
+      }
     </div>
   );
 }

@@ -2,8 +2,8 @@
 
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
 import { useTranslations } from 'next-intl';
-import { useSearchParams } from 'next/navigation';
 import { VideoIcon } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
@@ -11,9 +11,9 @@ import { VideoGeneratePanel } from '@/components/video-generate/VideoGeneratePan
 import { VideoParameterPanel } from '@/components/video-generate/VideoParameterPanel';
 import { VideoResultPanel } from '@/components/video-generate/VideoResultPanel';
 import { useCredits } from '@/hooks/useCredits';
-import { createSupabaseClient } from '@/lib/supabase';
-import { useUser } from '@/hooks/useUser';
 import type { ImageEditResult, TaskStatus } from '@/types/database';
+import { useUser } from '@/hooks/useUser';
+import { createSupabaseClient } from '@/lib/supabase';
 import { ImageEditService } from '@/services/databaseService';
 
 export default function VideoGeneratePage() {

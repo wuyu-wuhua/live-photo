@@ -59,7 +59,9 @@ export function HeroSection() {
 
   // 当前展示的图片组
   const currentGroup = photoGroups[activeGroupIndex] ?? photoGroups[0];
-  if (!currentGroup) return null;
+  if (!currentGroup) {
+    return null;
+  }
 
   return (
     <section className="text-gray-900 text-white dark:bg-black dark:text-white">

@@ -2,7 +2,7 @@
 
 import type { ImageEditResult } from '@/types/database';
 import { Button, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@heroui/react';
-import { Clock, Download, Loader2, XCircle } from 'lucide-react';
+import {  Download } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 type ImageDetailModalProps = {

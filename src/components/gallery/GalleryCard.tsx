@@ -1,7 +1,7 @@
 'use client';
 
-import { CheckCircle, Clock, Download, Loader2, Mic, Smile, Trash2, VideoIcon, Wand2, XCircle } from 'lucide-react';
 import type { ImageEditResult } from '@/types/database';
+import { CheckCircle, Clock, Download, Loader2, Mic, Smile, Trash2, VideoIcon, Wand2, XCircle } from 'lucide-react';
 import { Image } from '@heroui/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
@@ -53,7 +53,7 @@ export default function GalleryCard({
   useEffect(() => {
     setLocalShowcaseStatus(result.is_showcase);
   }, [result.is_showcase, result.id]);
-  
+
   const handleShowcaseToggle = async (checked: boolean) => {
     setShowcaseLoading(true);
     try {
@@ -186,7 +186,8 @@ export default function GalleryCard({
       <div className={hideShowcaseButton && hideDeleteButton && hideStatusInfo ? 'p-0' : 'p-0'}>
         <div className={hideShowcaseButton && hideDeleteButton && hideStatusInfo ? 'relative group' : 'relative group'}>
           {/* 只保留图片本身 */}
-          {(isVideo && displayUrl) ? (
+          {(isVideo && displayUrl)
+           ? (
             <video
               className={hideShowcaseButton && hideDeleteButton && hideStatusInfo ? 'w-full h-auto object-contain' : 'w-full h-auto object-contain rounded-t-lg'}
               muted
@@ -246,6 +247,8 @@ export default function GalleryCard({
           {/* 只在作品展示图片页面显示悬浮下载按钮 */}
           {hideShowcaseButton && hideDeleteButton && hideStatusInfo && result.result_type === 'image' && (
             <div
+              role="button"
+              tabIndex={0}
               className="absolute bottom-2 right-2 z-20 hidden group-hover:flex"
               onClick={e => {
                 e.stopPropagation();
@@ -304,7 +307,11 @@ export default function GalleryCard({
                 <span className="text-xs">
                   {showcaseLoading ? t('showcaseStatus.processing') : (!result.is_showcase ? t('showcaseStatus.notShowcased') : t('showcaseStatus.showcased'))}
                   {/* 调试信息 */}
-                  <span className="text-gray-400 ml-1">({result.is_showcase ? 'true' : 'false'})</span>
+                  <span className="text-gray-400 ml-1">
+                    (
+                      {result.is_showcase ? 'true' : 'false'}
+                      )
+                  </span>
                 </span>
               </div>
             )}
