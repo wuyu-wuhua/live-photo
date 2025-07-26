@@ -1,5 +1,6 @@
 'use client';
 
+import type { ImageEditResult, TaskStatus } from '@/types/database';
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
 import { VideoIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -13,7 +14,6 @@ import { VideoResultPanel } from '@/components/video-generate/VideoResultPanel';
 import { useCredits } from '@/hooks/useCredits';
 import { useUser } from '@/hooks/useUser';
 import { createSupabaseClient } from '@/lib/supabase';
-import type { ImageEditResult, TaskStatus } from '@/types/database';
 import { ImageEditService } from '@/services/databaseService';
 
 export default function VideoGeneratePage() {
