@@ -1,11 +1,11 @@
 'use client';
 
-import type { ImageEditResult } from '@/types/database';
-import { CheckCircle, Clock, Download, Loader2, Mic, Smile, Trash2, VideoIcon, Wand2, XCircle } from 'lucide-react';
 import { Image } from '@heroui/react';
+import { CheckCircle, Clock, Download, Loader2, Mic, Smile, Trash2, VideoIcon, Wand2, XCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { createSupabaseClient } from '@/lib/supabase';
+import type { ImageEditResult } from '@/types/database';
 
 type GalleryCardProps = {
   result: ImageEditResult;
@@ -250,7 +250,7 @@ export default function GalleryCard({
               role="button"
               tabIndex={0}
               className="absolute bottom-2 right-2 z-20 hidden group-hover:flex"
-              onClick={e => {
+              onClick={(e) => {
                 e.stopPropagation();
                 setIsDownloadClicked(true);
                 const filename = isGif
@@ -258,6 +258,17 @@ export default function GalleryCard({
                   : `${result.result_type}_${result.id}`;
                 handleDownloadClick(displayUrl || '', filename);
                 setTimeout(() => setIsDownloadClicked(false), 100);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setIsDownloadClicked(true);
+                  const filename = isGif
+                    ? `animated-gif-${result.id}.gif`
+                    : `${result.result_type}_${result.id}`;
+                  handleDownloadClick(displayUrl || '', filename);
+                  setTimeout(() => setIsDownloadClicked(false), 100);
+                }
               }}
               title="下载"
               style={{ cursor: 'pointer', background: 'rgba(0,0,0,0.6)', borderRadius: '50%', padding: 8 }}
@@ -269,8 +280,9 @@ export default function GalleryCard({
       </div>
 
       {/* 状态信息和控制按钮区域 */}
-      {!hideShowcaseButton || !hideDeleteButton || !hideStatusInfo ? (
-        <div className="flex flex-col gap-2 p-3">
+      {!hideShowcaseButton || !hideDeleteButton || !hideStatusInfo
+        ? (
+          <div className="flex flex-col gap-2 p-3">
           {/* 状态信息和日期 */}
           {!hideStatusInfo && (
             <div className="flex items-center justify-between w-full mb-3">
@@ -299,13 +311,17 @@ export default function GalleryCard({
                     disabled={showcaseLoading}
                     className="sr-only peer"
                   />
-                  <div 
+                  <div
                     className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600"
                     style={{ backgroundColor: result.is_showcase ? '#f97316' : undefined }}
-                  ></div>
+                  />
                 </label>
                 <span className="text-xs">
-                  {showcaseLoading ? t('showcaseStatus.processing') : (!result.is_showcase ? t('showcaseStatus.notShowcased') : t('showcaseStatus.showcased'))}
+                  {showcaseLoading
+                    ? t('showcaseStatus.processing')
+                    : !result.is_showcase
+                      ? t('showcaseStatus.notShowcased')
+                      : t('showcaseStatus.showcased')}
                   {/* 调试信息 */}
                   <span className="text-gray-400 ml-1">
                     (
@@ -318,7 +334,8 @@ export default function GalleryCard({
             {/* 下载和删除按钮并排显示在右侧 */}
             {!hideDeleteButton && (
               <div className="flex gap-2">
-                <div
+                <button
+                  type="button"
                   className="cursor-pointer p-1"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -332,8 +349,9 @@ export default function GalleryCard({
                   title="下载"
                 >
                   <Download size={20} className="text-purple-500 hover:text-purple-600" />
-                </div>
-                <div
+                </button>
+                <button
+                  type="button"
                   className="cursor-pointer p-1"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -344,7 +362,7 @@ export default function GalleryCard({
                   title="删除"
                 >
                   <Trash2 size={20} className="text-red-500 hover:text-red-700" />
-                </div>
+                </button>
               </div>
             )}
           </div>
@@ -353,15 +371,16 @@ export default function GalleryCard({
           <div className="flex gap-2 w-full">
             {/* 表情视频状态 */}
             {result.emoji_compatible && (
-              <div className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs ${
-                result.emoji_status === 'SUCCEEDED'
-                  ? 'bg-green-100 text-green-700'
-                  : result.emoji_status === 'RUNNING'
-                    ? 'bg-blue-100 text-blue-700'
-                    : result.emoji_status === 'FAILED'
-                      ? 'bg-red-100 text-red-700'
-                      : 'bg-gray-100 text-gray-700'
-              }`}
+              <div
+                className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs ${
+                  result.emoji_status === 'SUCCEEDED'
+                    ? 'bg-green-100 text-green-700'
+                    : result.emoji_status === 'RUNNING'
+                      ? 'bg-blue-100 text-blue-700'
+                      : result.emoji_status === 'FAILED'
+                        ? 'bg-red-100 text-red-700'
+                        : 'bg-gray-100 text-gray-700'
+                }`}
               >
                 <Smile size={12} />
                 <span>
@@ -377,15 +396,16 @@ export default function GalleryCard({
             )}
             {/* 对口型视频状态 */}
             {result.liveportrait_compatible && (
-              <div className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs ${
-                result.liveportrait_status === 'SUCCEEDED'
-                  ? 'bg-green-100 text-green-700'
-                  : result.liveportrait_status === 'RUNNING'
-                    ? 'bg-blue-100 text-blue-700'
-                    : result.liveportrait_status === 'FAILED'
-                      ? 'bg-red-100 text-red-700'
-                      : 'bg-gray-100 text-gray-700'
-              }`}
+              <div
+                className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs ${
+                  result.liveportrait_status === 'SUCCEEDED'
+                    ? 'bg-green-100 text-green-700'
+                    : result.liveportrait_status === 'RUNNING'
+                      ? 'bg-blue-100 text-blue-700'
+                      : result.liveportrait_status === 'FAILED'
+                        ? 'bg-red-100 text-red-700'
+                        : 'bg-gray-100 text-gray-700'
+                }`}
               >
                 <Mic size={12} />
                 <span>
