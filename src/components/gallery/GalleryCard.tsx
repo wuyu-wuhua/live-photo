@@ -353,11 +353,19 @@ export default function GalleryCard({
               <div className="flex items-center gap-2">
                 <div
                   className="relative inline-flex items-center cursor-pointer"
-                  onClick={e => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!showcaseLoading) {
+                      handleShowcaseToggle(!result.is_showcase);
+                    }
+                  }}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
                       e.stopPropagation();
+                      if (!showcaseLoading) {
+                        handleShowcaseToggle(!result.is_showcase);
+                      }
                     }
                   }}
                   tabIndex={0}

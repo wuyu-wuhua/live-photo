@@ -38,7 +38,10 @@
     "imageTitle": "上色图片作品",
     "videoTitle": "上色视频作品",
     "foundImages": "共找到 {count} 张图片",
-    "foundVideos": "共找到 {count} 个视频"
+    "foundVideos": "共找到 {count} 个视频",
+    "common": {
+      "loadingFailed": "加载失败"
+    }
   },
   "NotFound": {
     "description": "抱歉，您访问的页面不存在。",
@@ -778,6 +781,14 @@
       "showcased": "已展示",
       "notShowcased": "未展示",
       "processing": "处理中..."
+    },
+    "showcaseModal": {
+      "title": "是否将该视频展示到\"作品展示\"页面？",
+      "description": "您可以随时在\"我的作品\"页面修改展示状态。",
+      "showcase": "展示",
+      "notShowcase": "不展示",
+      "showcaseSuccess": "作品已添加到展示页面",
+      "notShowcaseSuccess": "作品已设置为不展示"
     },
     "common": {
       "loadingFailed": "加载失败",

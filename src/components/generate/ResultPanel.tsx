@@ -69,6 +69,7 @@ export function ResultPanel({
   colorizeError,
 }: ResultPanelProps) {
   const t = useTranslations('resultPanel');
+  const galleryT = useTranslations('gallery');
   const { user } = useUser();
   const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure();
 
@@ -104,9 +105,20 @@ export function ResultPanel({
     if (!imageEditResult) {
       return;
     }
-    const supabase = createSupabaseClient();
-    await supabase.from('image_edit_results').update({ is_showcase: accept }).eq('id', imageEditResult.id);
-    onShowcaseModalClose();
+    try {
+      const supabase = createSupabaseClient();
+      await supabase.from('image_edit_results').update({ is_showcase: accept }).eq('id', imageEditResult.id);
+      onShowcaseModalClose();
+
+      if (accept) {
+        toast.success(galleryT('showcaseModal.showcaseSuccess'));
+      } else {
+        toast.success(galleryT('showcaseModal.notShowcaseSuccess'));
+      }
+    } catch (error) {
+      console.error('更新展示状态失败:', error);
+      toast.error(galleryT('common.updateShowcaseFailed'));
+    }
   };
 
   // 监控 generatedVideoUrl 变化
@@ -359,13 +371,13 @@ export function ResultPanel({
       {/* 新增：作品展示弹窗 */}
       <Modal isOpen={isShowcaseModalOpen} onClose={onShowcaseModalClose}>
         <ModalContent>
-          <ModalHeader>是否将该作品展示到“作品展示”页面？</ModalHeader>
+          <ModalHeader>{galleryT('showcaseModal.title')}</ModalHeader>
           <ModalBody>
-            <div className="text-base">您可以随时在“我的作品”页面修改展示状态。</div>
+            <div className="text-base">{galleryT('showcaseModal.description')}</div>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onPress={() => handleShowcaseChoice(true)}>展示</Button>
-            <Button color="default" variant="light" onPress={() => handleShowcaseChoice(false)}>不展示</Button>
+            <Button color="primary" onPress={() => handleShowcaseChoice(true)}>{galleryT('showcaseModal.showcase')}</Button>
+            <Button color="default" variant="light" onPress={() => handleShowcaseChoice(false)}>{galleryT('showcaseModal.notShowcase')}</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

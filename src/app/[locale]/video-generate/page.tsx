@@ -187,13 +187,13 @@ export default function VideoGeneratePage() {
       setPendingShowcaseId(null);
 
       if (accept) {
-        toast.success('作品已添加到展示页面');
+        toast.success(t('gallery.showcaseModal.showcaseSuccess'));
       } else {
-        toast.success('作品已设置为不展示');
+        toast.success(t('gallery.showcaseModal.notShowcaseSuccess'));
       }
     } catch (error) {
       console.error('更新展示状态失败:', error);
-      toast.error('更新展示状态失败');
+      toast.error(t('gallery.common.updateShowcaseFailed'));
     }
   };
 
@@ -453,22 +453,22 @@ export default function VideoGeneratePage() {
         <ModalContent className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg">
           <ModalHeader className="flex flex-col gap-1 border-b border-slate-200 dark:border-slate-800 pb-3">
             <h3 className="text-lg font-semibold bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-400 dark:to-slate-200 bg-clip-text text-transparent">
-              是否将该视频展示到"作品展示"页面？
+              {t('gallery.showcaseModal.title')}
             </h3>
           </ModalHeader>
           <ModalBody className="pb-6 pt-4">
             <div className="space-y-4">
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                您可以随时在"我的作品"页面修改展示状态。
+                {t('gallery.showcaseModal.description')}
               </p>
             </div>
           </ModalBody>
           <ModalFooter className="flex gap-2">
             <Button color="primary" onPress={() => handleShowcaseChoice(true)}>
-              展示
+              {t('gallery.showcaseModal.showcase')}
             </Button>
             <Button color="default" variant="light" onPress={() => handleShowcaseChoice(false)}>
-              不展示
+              {t('gallery.showcaseModal.notShowcase')}
             </Button>
           </ModalFooter>
         </ModalContent>

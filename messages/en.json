@@ -39,7 +39,10 @@
     "imageTitle": "Colored Images",
     "videoTitle": "Colored Videos",
     "foundImages": "Found {count} images",
-    "foundVideos": "Found {count} videos"
+    "foundVideos": "Found {count} videos",
+    "common": {
+      "loadingFailed": "Loading Failed"
+    }
   },
   "auth": {
     "signIn": "Sign In",
@@ -744,6 +747,14 @@
       "showcased": "Showcased",
       "notShowcased": "Not Showcased",
       "processing": "Processing..."
+    },
+    "showcaseModal": {
+      "title": "Would you like to showcase this video on the showcase page?",
+      "description": "You can modify the showcase status anytime in the \"My Works\" page.",
+      "showcase": "Showcase",
+      "notShowcase": "Don't Showcase",
+      "showcaseSuccess": "Work has been added to the showcase page",
+      "notShowcaseSuccess": "Work has been set to not showcase"
     },
     "common": {
       "loadingFailed": "Loading Failed",
