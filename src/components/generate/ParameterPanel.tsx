@@ -157,7 +157,7 @@ export function ParameterPanel({
                   }
                 }
               }}
-              onUploadError={(error, file) => {
+              onUploadError={(error) => {
                 setUploadError(error);
               }}
             />
