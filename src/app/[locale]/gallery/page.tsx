@@ -1,8 +1,7 @@
 'use client';
-'use client';
 
 import type { ImageEditResult, QueryParams } from '@/types/database';
-import { Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Spinner, useDisclosure } from '@heroui/react';
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Spinner, useDisclosure } from '@heroui/react';
 import { Images, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { usePathname, useRouter } from 'next/navigation';
@@ -12,7 +11,7 @@ import { toast } from 'sonner';
 import GalleryCard from '@/components/gallery/GalleryCard';
 import ImageDetailModal from '@/components/gallery/ImageDetailModal';
 import VideoDetailModal from '@/components/gallery/VideoDetailModal';
-import { VideoParameterPanel } from '@/components/video-generate/VideoParameterPanel';
+
 import { useImageEditResults } from '@/hooks/useDatabase';
 
 import '@/styles/masonry.css';
@@ -99,11 +98,6 @@ export default function GalleryPage(props: GalleryPageProps) {
   // 模态框控制
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // Drawer控制
-  const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure();
-  const [selectedVideoType, setSelectedVideoType] = useState<'emoji' | 'liveportrait'>('emoji');
-  const [selectedImageForVideo, setSelectedImageForVideo] = useState<ImageEditResult | null>(null);
-
   // 删除确认模态框控制
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
   const [imageToDelete, setImageToDelete] = useState<ImageEditResult | null>(null);
@@ -157,11 +151,6 @@ export default function GalleryPage(props: GalleryPageProps) {
   };
 
   // 处理视频生成按钮点击
-  const handleVideoGeneration = (result: ImageEditResult, type: 'emoji' | 'liveportrait') => {
-    setSelectedImageForVideo(result);
-    setSelectedVideoType(type);
-    onDrawerOpen();
-  };
 
   const handleDelete = (result: ImageEditResult) => {
     setImageToDelete(result);
@@ -455,8 +444,6 @@ export default function GalleryPage(props: GalleryPageProps) {
                 key={result.id}
                 result={result}
                 onImageClick={handleCardClick}
-                onDownload={handleDownload}
-                onVideoGeneration={handleVideoGeneration}
                 onDelete={handleDelete}
                 formatTime={formatTime}
                 isSelectMode={isSelectMode}
@@ -503,25 +490,6 @@ export default function GalleryPage(props: GalleryPageProps) {
           formatTime={formatTime}
         />
       )}
-
-      {/* 视频生成抽屉 */}
-      <Drawer isOpen={isDrawerOpen} onClose={onDrawerClose} placement="right">
-        <DrawerContent>
-          <DrawerHeader className="border-b">
-            {selectedVideoType === 'emoji' ? t('generateEmojiVideo') : t('generateLipsyncVideo')}
-          </DrawerHeader>
-          <DrawerBody>
-            {selectedImageForVideo && (
-              <VideoParameterPanel referenceImage={selectedImageForVideo.result_image_url?.[0] || selectedImageForVideo.source_image_url || ''} />
-            )}
-          </DrawerBody>
-          <DrawerFooter>
-            <Button color="danger" variant="light" onPress={onDrawerClose}>
-              {t('cancel')}
-            </Button>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
 
       {/* 删除确认模态框 */}
       <Modal isOpen={isDeleteModalOpen} onClose={onDeleteModalClose}>

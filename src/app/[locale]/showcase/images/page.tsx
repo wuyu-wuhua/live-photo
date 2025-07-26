@@ -39,10 +39,11 @@ export default function ShowcaseImagesPage() {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(blobUrl);
-    } catch (error) {
+    } catch {
       window.open(url, '_blank');
     }
   };
+
   // 格式化时间
   const formatTime = (date: string) => {
     return new Date(date).toLocaleString('zh-CN', {
@@ -66,39 +67,42 @@ export default function ShowcaseImagesPage() {
           {t('videoTab')}
         </Button>
       </div>
-      {loading ? (
-        <div className="flex justify-center items-center py-12">加载中...</div>
-      ) : results.length === 0 ? (
-        <div className="flex justify-center items-center py-12 text-red-500">{t('common.loadingFailed')}</div>
-      ) : (
-        <div className="w-full">
-          <div className="text-sm text-gray-500 mb-4">{t('foundImages', { count: results.length })}</div>
-          <Masonry
-            breakpointCols={4}
-            className="my-masonry-grid"
-            columnClassName="my-masonry-grid_column"
-          >
-            {results.map(result => (
-              <GalleryCard
-                key={result.id}
-                result={result}
-                onImageClick={() => setSelected(result)}
-                onDownload={handleDownload}
-                hideShowcaseButton
-                hideDeleteButton
-                hideStatusInfo
-              />
-            ))}
-          </Masonry>
-          <ImageDetailModal
-            isOpen={!!selected}
-            imageResult={selected}
-            onClose={() => setSelected(null)}
-            handleDownload={handleDownload}
-            formatTime={formatTime}
-          />
-        </div>
-      )}
+      {loading
+        ? (
+            <div className="flex justify-center items-center py-12">加载中...</div>
+          )
+        : results.length === 0
+          ? (
+              <div className="flex justify-center items-center py-12 text-red-500">{t('common.loadingFailed')}</div>
+            )
+          : (
+              <div className="w-full">
+                <div className="text-sm text-gray-500 mb-4">{t('foundImages', { count: results.length })}</div>
+                <Masonry
+                  breakpointCols={4}
+                  className="my-masonry-grid"
+                  columnClassName="my-masonry-grid_column"
+                >
+                  {results.map(result => (
+                    <GalleryCard
+                      key={result.id}
+                      result={result}
+                      onImageClick={() => setSelected(result)}
+                      hideShowcaseButton
+                      hideDeleteButton
+                      hideStatusInfo
+                    />
+                  ))}
+                </Masonry>
+                <ImageDetailModal
+                  isOpen={!!selected}
+                  imageResult={selected}
+                  onClose={() => setSelected(null)}
+                  handleDownload={handleDownload}
+                  formatTime={formatTime}
+                />
+              </div>
+            )}
     </div>
   );
 }

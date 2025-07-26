@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import clsx from 'clsx';
+import { fontSans } from '@/config/fonts';
+import '@/styles/globals.css';
 
 export const metadata: Metadata = {
   title: 'Live Photo - AI image editing platform',
@@ -13,8 +16,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={clsx(
+          'min-h-screen bg-background font-sans antialiased',
+          fontSans.variable,
+        )}
+      >
         {children}
       </body>
     </html>

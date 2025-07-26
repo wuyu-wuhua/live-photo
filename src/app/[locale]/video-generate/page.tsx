@@ -13,8 +13,8 @@ import { VideoResultPanel } from '@/components/video-generate/VideoResultPanel';
 import { useCredits } from '@/hooks/useCredits';
 import { useUser } from '@/hooks/useUser';
 import { createSupabaseClient } from '@/lib/supabase';
-import { ImageEditService } from '@/services/databaseService';
 import type { ImageEditResult, TaskStatus } from '@/types/database';
+import { ImageEditService } from '@/services/databaseService';
 
 export default function VideoGeneratePage() {
   const t = useTranslations();

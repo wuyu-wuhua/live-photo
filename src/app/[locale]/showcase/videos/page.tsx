@@ -32,16 +32,15 @@ export default function ShowcaseVideosPage() {
           {t('videoTab')}
         </Button>
       </div>
-      {
-        loading
-          ? (
+      {loading
+        ? (
             <div className="flex justify-center items-center py-12">加载中...</div>
           )
-          : error
-            ? (
+        : error
+          ? (
               <div className="flex justify-center items-center py-12 text-red-500">{t('common.loadingFailed')}</div>
             )
-            : (
+          : (
               <div className="w-full">
                 <div className="text-sm text-gray-500 mb-4">{t('foundVideos', { count: results.length })}</div>
                 <Masonry
@@ -54,7 +53,6 @@ export default function ShowcaseVideosPage() {
                       key={result.id}
                       result={result}
                       onImageClick={() => {}}
-                      onDownload={() => {}}
                       hideShowcaseButton
                       hideDeleteButton
                       hideStatusInfo
@@ -63,8 +61,7 @@ export default function ShowcaseVideosPage() {
                   ))}
                 </Masonry>
               </div>
-            )
-      }
+            )}
     </div>
   );
 }
